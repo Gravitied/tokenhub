@@ -1,0 +1,6 @@
+node_modules/
+dist/
+.tokenhub/
+artifacts/proof/*.html
+*.tsbuildinfo
+npm-debug.log*
