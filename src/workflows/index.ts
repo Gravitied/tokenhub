@@ -9,6 +9,8 @@ import { runGitAction, summarizeGit } from "../modules/git.js";
 import { answerFromWeb } from "../modules/answer-web.js";
 import type { SearchProvider } from "../modules/search.js";
 import type { FetchLike } from "../modules/github.js";
+import { runResolveRequestWorkflow } from "./resolve-request.js";
+import type { EvidenceMode, ExecutionMode, OutputShape, RequestDepth } from "../core/request-shape.js";
 
 const execFileAsync = promisify(execFile);
 
@@ -28,7 +30,12 @@ export type WorkflowInput = {
   ref?: string;
   branch?: string;
   query?: string;
-  target?: "ranked_list";
+  request?: string;
+  target?: "ranked_list" | "summary";
+  depth?: RequestDepth;
+  outputShape?: OutputShape;
+  evidence?: EvidenceMode;
+  execution?: ExecutionMode;
   provider?: SearchProvider;
   apiKey?: string;
   limit?: number;
@@ -57,7 +64,30 @@ export async function runWorkflow(input: WorkflowInput): Promise<{
   if (input.name === "answer_from_web") {
     return runAnswerFromWebWorkflow(input);
   }
+  if (input.name === "resolve_request") {
+    return runResolveRequestWorkflow({
+      root: input.root,
+      request: requireRequest(input.request),
+      budgetTokens: input.budgetTokens,
+      provider: input.provider,
+      apiKey: input.apiKey,
+      resourceStore: input.resourceStore,
+      telemetry: input.telemetry,
+      fetchImpl: input.fetchImpl,
+      depth: input.depth,
+      outputShape: input.outputShape,
+      evidence: input.evidence,
+      execution: input.execution
+    });
+  }
   return runProjectScan(input);
+}
+
+function requireRequest(request: string | undefined): string {
+  if (!request) {
+    throw new Error("resolve_request requires request.");
+  }
+  return request;
 }
 
 async function runAnswerFromWebWorkflow(input: WorkflowInput) {
@@ -78,7 +108,7 @@ async function runAnswerFromWebWorkflow(input: WorkflowInput) {
   const telemetry = input.telemetry.record({
     capability: "workflow.answer_from_web",
     estimatedToolCostTokens: result.tokenEstimate,
-    estimatedSavedTokens: Math.max(500, result.sources.length * 350 + result.items.length * 80),
+    estimatedSavedTokens: Math.max(500, result.sources.length * 350 + result.items.length * 80 + result.contextSnippets.length * 60),
     outputTokens: result.tokenEstimate
   });
   return {
@@ -88,6 +118,7 @@ async function runAnswerFromWebWorkflow(input: WorkflowInput) {
     warnings: result.warnings,
     data: {
       items: result.items,
+      contextSnippets: result.contextSnippets,
       sources: result.sources
     }
   };

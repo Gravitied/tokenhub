@@ -63,7 +63,12 @@ export function createTokenHubRuntime(options: RuntimeOptions) {
       ref?: string;
       branch?: string;
       query?: string;
-      target?: "ranked_list";
+      request?: string;
+      target?: "ranked_list" | "summary";
+      depth?: "fast" | "standard" | "deep" | "exhaustive";
+      outputShape?: "paragraph" | "list" | "table" | "plan" | "patch_plan" | "citations" | "structured_data" | "agent_context";
+      evidence?: "none" | "sources" | "snippets" | "resource_links" | "raw_extracts";
+      execution?: "answer_only" | "plan_only" | "implement" | "implement_and_verify";
       provider?: SearchProvider;
       apiKey?: string;
       limit?: number;
@@ -327,7 +332,12 @@ export function createMcpServer(options: RuntimeOptions): McpServer {
         ref: z.string().optional(),
         branch: z.string().optional(),
         query: z.string().optional(),
-        target: z.enum(["ranked_list"]).optional(),
+        request: z.string().optional(),
+        target: z.enum(["ranked_list", "summary"]).optional(),
+        depth: z.enum(["fast", "standard", "deep", "exhaustive"]).optional(),
+        outputShape: z.enum(["paragraph", "list", "table", "plan", "patch_plan", "citations", "structured_data", "agent_context"]).optional(),
+        evidence: z.enum(["none", "sources", "snippets", "resource_links", "raw_extracts"]).optional(),
+        execution: z.enum(["answer_only", "plan_only", "implement", "implement_and_verify"]).optional(),
         provider: z.enum(["brave", "exa", "tavily", "serpapi", "duckduckgo"]).optional(),
         apiKey: z.string().optional(),
         limit: z.number().int().positive().max(25).optional(),
@@ -482,9 +492,19 @@ function createDefaultRegistry(): CapabilityRegistry {
     id: "web.answer",
     module: "web",
     title: "Answer from web",
-    summary: "Search, fetch source pages, scrape them, and synthesize a cited ranked answer server-side.",
-    keywords: ["answer", "web", "search", "scrape", "ranked", "citations"],
+    summary: "Search, fetch source pages, scrape them, and synthesize cited ranked lists or summary answers server-side.",
+    keywords: ["answer", "web", "search", "scrape", "ranked", "summary", "citations"],
     costHintTokens: 220,
+    inputSchema: { deferred: true }
+  });
+  registry.register({
+    id: "workflow.resolve_request",
+    module: "workflow",
+    title: "Resolve dynamic request",
+    summary:
+      "Infer intent, sources, depth, evidence, and output shape from a natural-language request, then gather compact context or answer from the right internal modules.",
+    keywords: ["dynamic", "resolve", "request", "router", "auto", "intent", "research", "compare", "implement"],
+    costHintTokens: 260,
     inputSchema: { deferred: true }
   });
   registry.register({

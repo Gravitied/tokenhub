@@ -37,6 +37,64 @@ describe("search provider limits", () => {
 });
 
 describe("answer from web", () => {
+  test("summarizes latest research papers from searched and scraped sources with context links", async () => {
+    const dir = await mkdtemp(join(tmpdir(), "tokenhub-answer-summary-"));
+    const resourceStore = new ResourceStore({ rootDir: join(dir, ".tokenhub", "resources") });
+    try {
+      const result = await answerFromWeb({
+        query: "1 paragraph summary of the latest DeepSeek research papers",
+        target: "summary",
+        limit: 1,
+        sourceLimit: 3,
+        provider: "tavily",
+        apiKey: "test-key",
+        resourceStore,
+        fetchImpl: async (url, init) => {
+          const urlText = url.toString();
+          if (urlText.includes("api.tavily.com")) {
+            expect(JSON.parse(String(init?.body)).max_results).toBeGreaterThanOrEqual(6);
+            return new Response(
+              JSON.stringify({
+                results: [
+                  {
+                    title: "DeepSeek-V3.2: Pushing the Frontier of Open Large Language Models",
+                    url: "https://arxiv.org/abs/2512.02556",
+                    content: "DeepSeek-V3.2 introduces sparse attention and stronger reasoning for open LLMs."
+                  },
+                  {
+                    title: "DeepSeek new models offer inference cost savings",
+                    url: "https://example.test/deepseek-inference",
+                    content: "The paper describes compressed sparse attention and heavy compressed attention."
+                  },
+                  {
+                    title: "The DeepSeek Series: A Technical Overview",
+                    url: "https://example.test/deepseek-overview",
+                    content: "The overview connects DeepSeek-V3, R1 reasoning, and efficient MoE training."
+                  }
+                ]
+              }),
+              { status: 200 }
+            );
+          }
+          return new Response(deepSeekPaperHtml(urlText), { status: 200, headers: { "content-type": "text/html" } });
+        }
+      });
+
+      expect(result.target).toBe("summary");
+      expect(result.items).toEqual([]);
+      expect(result.summary.split(/\n\n/)[0].split(/[.!?]+/).filter(Boolean).length).toBeLessThanOrEqual(4);
+      expect(result.summary).toContain("DeepSeek");
+      expect(result.summary).toContain("sparse attention");
+      expect(result.summary).toContain("reasoning");
+      expect(result.summary).toContain("Sources:");
+      expect(result.sources).toHaveLength(3);
+      expect(result.sources.every((source) => source.resourceUri?.startsWith("tokenhub://resource/"))).toBe(true);
+      expect(result.contextSnippets.length).toBeGreaterThanOrEqual(3);
+    } finally {
+      await rm(dir, { recursive: true, force: true });
+    }
+  });
+
   test("searches, scrapes, aggregates, and returns a cited top 10 vegetable list", async () => {
     const dir = await mkdtemp(join(tmpdir(), "tokenhub-answer-web-"));
     const resourceStore = new ResourceStore({ rootDir: join(dir, ".tokenhub", "resources") });
@@ -167,4 +225,16 @@ function pageHtml(url: string): string {
   return `<!doctype html><html><head><title>${url}</title><script>secret()</script></head><body><main><ol>${lists[url]
     .map((item) => `<li>${item}</li>`)
     .join("")}</ol></main></body></html>`;
+}
+
+function deepSeekPaperHtml(url: string): string {
+  const pages: Record<string, string> = {
+    "https://arxiv.org/abs/2512.02556":
+      "DeepSeek-V3.2 pushes the frontier of open large language models. The paper reports better reasoning, agentic tool use, and efficient sparse attention while preserving open model availability.",
+    "https://example.test/deepseek-inference":
+      "DeepSeek researchers describe compressed sparse attention and heavy compressed attention. These mechanisms reduce inference cost, KV-cache memory, and long-context overhead.",
+    "https://example.test/deepseek-overview":
+      "The DeepSeek technical series connects V3 mixture-of-experts training with R1 reasoning models. It highlights efficient training, reinforcement learning for reasoning, and open research directions."
+  };
+  return `<!doctype html><html><head><title>${url}</title></head><body><article><p>${pages[url]}</p></article></body></html>`;
 }

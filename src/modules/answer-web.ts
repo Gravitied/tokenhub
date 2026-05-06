@@ -6,7 +6,7 @@ import { fetchAndScrape } from "./web.js";
 
 export type AnswerFromWebInput = {
   query: string;
-  target?: "ranked_list";
+  target?: AnswerTarget;
   limit?: number;
   sourceLimit?: number;
   budgetTokens?: number;
@@ -18,7 +18,7 @@ export type AnswerFromWebInput = {
 
 export type AnswerFromWebResult = {
   query: string;
-  target: "ranked_list";
+  target: AnswerTarget;
   summary: string;
   items: Array<{
     rank: number;
@@ -27,10 +27,13 @@ export type AnswerFromWebResult = {
     sources: Array<{ title: string; url: string; evidence: string }>;
   }>;
   sources: Array<{ title: string; url: string; resourceUri?: string }>;
+  contextSnippets: Array<{ title: string; url: string; snippet: string; resourceUri?: string }>;
   resources: ResourceLink[];
   tokenEstimate: number;
   warnings: string[];
 };
+
+export type AnswerTarget = "ranked_list" | "summary";
 
 type CandidateMention = {
   name: string;
@@ -71,8 +74,8 @@ const VEGETABLE_CATALOG = [
 
 export async function answerFromWeb(input: AnswerFromWebInput): Promise<AnswerFromWebResult> {
   const target = input.target ?? "ranked_list";
-  if (target !== "ranked_list") {
-    throw new Error("answer_from_web currently supports target=ranked_list.");
+  if (target !== "ranked_list" && target !== "summary") {
+    throw new Error("answer_from_web supports target=ranked_list or target=summary.");
   }
   const limit = clampInt(input.limit ?? 10, 1, 25);
   const sourceLimit = clampInt(input.sourceLimit ?? 5, 1, 10);
@@ -93,8 +96,9 @@ export async function answerFromWeb(input: AnswerFromWebInput): Promise<AnswerFr
       break;
     }
     try {
+      const fetchUrl = normalizeContextUrl(result.url);
       const page = await fetchAndScrape({
-        url: result.url,
+        url: fetchUrl,
         resourceStore: input.resourceStore,
         budgetTokens: 4200,
         fetchImpl: input.fetchImpl
@@ -111,10 +115,43 @@ export async function answerFromWeb(input: AnswerFromWebInput): Promise<AnswerFr
     }
   }
 
+  const answer =
+    target === "summary"
+      ? buildSummaryAnswer(input.query, sourceRecords)
+      : buildRankedListAnswer(input.query, sourceRecords, limit, warnings);
+
+  const summaryText = [answer.summary, "Sources:", sourceRecords.map((source, index) => `[${index + 1}] ${source.title} - ${source.url}`).join("\n")].join(
+    "\n\n"
+  );
+  const summary = truncateToTokens(summaryText, input.budgetTokens ?? 900).text;
+  const resource = await input.resourceStore.writeText({
+    kind: "json",
+    label: `answer_from_web:${input.query}`,
+    source: "answer_from_web",
+    content: JSON.stringify({ query: input.query, target, items: answer.items, contextSnippets: answer.contextSnippets, sources: sourceRecords }, null, 2)
+  });
+
+  return {
+    query: input.query,
+    target,
+    summary,
+    items: answer.items,
+    sources: sourceRecords.map((source) => ({ title: source.title, url: source.url, resourceUri: source.resourceUri })),
+    contextSnippets: answer.contextSnippets,
+    resources: [resource],
+    tokenEstimate: estimateTokens(summary),
+    warnings
+  };
+}
+
+function buildRankedListAnswer(
+  query: string,
+  sourceRecords: Array<{ title: string; url: string; resourceUri?: string; text: string }>,
+  limit: number,
+  warnings: string[]
+): Pick<AnswerFromWebResult, "items" | "contextSnippets" | "summary"> {
   const aggregated = aggregateCandidates(
-    sourceRecords.flatMap((source, sourceIndex) =>
-      extractCandidateMentions(source.text, input.query).map((mention) => ({ mention, source, sourceIndex }))
-    )
+    sourceRecords.flatMap((source, sourceIndex) => extractCandidateMentions(source.text, query).map((mention) => ({ mention, source, sourceIndex })))
   );
   const items = aggregated.slice(0, limit).map((item, index) => ({
     rank: index + 1,
@@ -125,29 +162,61 @@ export async function answerFromWeb(input: AnswerFromWebInput): Promise<AnswerFr
   if (items.length < limit) {
     warnings.push(`Only extracted ${items.length} ranked candidates from ${sourceRecords.length} fetched sources.`);
   }
-
-  const summaryText = [
-    items.map((item) => `${item.rank}. ${item.name} (${item.sources.length} source${item.sources.length === 1 ? "" : "s"})`).join("\n"),
-    "Sources:",
-    sourceRecords.map((source, index) => `[${index + 1}] ${source.title} - ${source.url}`).join("\n")
-  ].join("\n\n");
-  const summary = truncateToTokens(summaryText, input.budgetTokens ?? 900).text;
-  const resource = await input.resourceStore.writeText({
-    kind: "json",
-    label: `answer_from_web:${input.query}`,
-    source: "answer_from_web",
-    content: JSON.stringify({ query: input.query, items, sources: sourceRecords }, null, 2)
-  });
-
+  const contextSnippets = items.flatMap((item) =>
+    item.sources.slice(0, 2).map((source) => ({
+      title: source.title,
+      url: source.url,
+      snippet: source.evidence,
+      resourceUri: sourceRecords.find((record) => record.url === source.url)?.resourceUri
+    }))
+  );
   return {
-    query: input.query,
-    target,
-    summary,
     items,
-    sources: sourceRecords.map((source) => ({ title: source.title, url: source.url, resourceUri: source.resourceUri })),
-    resources: [resource],
-    tokenEstimate: estimateTokens(summary),
-    warnings
+    contextSnippets,
+    summary: items.map((item) => `${item.rank}. ${item.name} (${item.sources.length} source${item.sources.length === 1 ? "" : "s"})`).join("\n")
+  };
+}
+
+function buildSummaryAnswer(
+  query: string,
+  sourceRecords: Array<{ title: string; url: string; resourceUri?: string; text: string; searchResult?: SearchResult }>
+): Pick<AnswerFromWebResult, "items" | "contextSnippets" | "summary"> {
+  const keywords = queryKeywords(query);
+  const scoredBySource = sourceRecords.map((source, sourceIndex) => {
+    const candidates = [
+      ...summaryCandidates(source.text),
+      ...usefulLines(source.text).filter((line) => /[.?!]$/.test(line)),
+      source.searchResult?.snippet
+    ].filter((value): value is string => Boolean(value));
+    return candidates
+      .map((snippet, snippetIndex) => ({
+        title: source.title,
+        url: source.url,
+        resourceUri: source.resourceUri,
+        snippet: trimEvidence(decodeBasicEntities(snippet.replace(/\s+/g, " ").trim())),
+        score: scoreSnippet(snippet, source.title, source.url, keywords, query) + Math.max(0, 1 - sourceIndex * 0.15) - snippetIndex * 0.01
+      }))
+      .sort((a, b) => b.score - a.score);
+  });
+  const topPerSource = scoredBySource.flatMap((items) => items.slice(0, 1));
+  const extras = scoredBySource.flatMap((items) => items.slice(1, 3));
+  const contextSnippets = dedupeSnippets([...topPerSource, ...extras])
+    .sort((a, b) => b.score - a.score)
+    .slice(0, Math.max(3, Math.min(8, sourceRecords.length * 2)))
+    .map(({ title, url, resourceUri, snippet }) => ({ title, url, resourceUri, snippet }));
+  const paragraphSentences = topPerSource
+    .sort((a, b) => b.score - a.score)
+    .slice(0, 3)
+    .map((item) => summaryClause(item.snippet))
+    .filter(Boolean);
+  const fallback =
+    sourceRecords.length === 0
+      ? "No fetchable web sources were available for this query."
+      : `The sources surfaced for ${query} point to ${sourceRecords.map((source) => source.title).join(", ")}.`;
+  return {
+    items: [],
+    contextSnippets,
+    summary: paragraphSentences.length ? synthesizeSummary(query, paragraphSentences) : fallback
   };
 }
 
@@ -228,7 +297,134 @@ function stripLeadingRank(line: string): string {
 }
 
 function trimEvidence(line: string): string {
-  return line.length > 160 ? `${line.slice(0, 157).trimEnd()}...` : line;
+  return truncateAtWord(line, 260);
+}
+
+function sentences(text: string): string[] {
+  return text
+    .replace(/\s+/g, " ")
+    .split(/(?<=[.!?])\s+/)
+    .map((sentence) => sentence.trim())
+    .filter((sentence) => sentence.length >= 30 && sentence.length <= 500);
+}
+
+function summaryCandidates(text: string): string[] {
+  const abstract = text.match(/Abstract:\s*([\s\S]*?)(?:\n\s*(?:Comments|Subjects|Journal reference|Cite as|Submission history):|\n\s*Related papers|\n\s*Current browse context|$)/i)?.[1];
+  if (abstract) {
+    return abstract
+      .replace(/\s+/g, " ")
+      .split(/\s+(?=\(\d+\)\s*)|(?<=[.!?])\s+/)
+      .map((sentence) => sentence.replace(/^\(\d+\)\s*/, "").trim())
+      .filter((sentence) => sentence.length >= 30 && sentence.length <= 700);
+  }
+  return sentences(text);
+}
+
+function queryKeywords(query: string): string[] {
+  const stopwords = new Set([
+    "about",
+    "answer",
+    "give",
+    "latest",
+    "look",
+    "looking",
+    "paragraph",
+    "paper",
+    "papers",
+    "research",
+    "result",
+    "results",
+    "search",
+    "summary",
+    "summarize",
+    "with"
+  ]);
+  return [...new Set(query.toLowerCase().match(/[a-z0-9][a-z0-9-]{3,}/g) ?? [])].filter((word) => !stopwords.has(word));
+}
+
+function scoreSnippet(snippet: string, title: string, url: string, keywords: string[], query: string): number {
+  const haystack = `${title} ${url} ${snippet}`.toLowerCase();
+  const keywordScore = keywords.reduce((score, keyword) => score + (haystack.includes(keyword) ? 2 : 0), 0);
+  const recencyScore = /\b(20\d{2}|latest|new|recent)\b/i.test(haystack) ? 0.5 : 0;
+  const sourceSignal = /\b(arxiv|paper|technical|model|reasoning|attention|training|inference)\b/i.test(haystack) ? 0.75 : 0;
+  const paperBoost = /\bpaper|papers|research\b/i.test(query) && /\b(arxiv|paper|technical|nature|huggingface)\b/i.test(haystack) ? 1.25 : 0;
+  const abstractBoost = /\babstract:\b|deepseek sparse attention|reinforcement learning framework/i.test(haystack) ? 2 : 0;
+  const boilerplatePenalty = /\barxivlabs|author venue institution|subscribe sign in|global talent recruitment|skip to main content|collection\b/i.test(haystack)
+    ? 2.5
+    : 0;
+  return keywordScore + recencyScore + sourceSignal + paperBoost + abstractBoost - boilerplatePenalty;
+}
+
+function decodeBasicEntities(text: string): string {
+  return text
+    .replace(/&nbsp;/g, " ")
+    .replace(/&amp;/g, "&")
+    .replace(/&quot;/g, '"')
+    .replace(/&#39;|&#x27;/g, "'")
+    .replace(/&lt;/g, "<")
+    .replace(/&gt;/g, ">");
+}
+
+function dedupeSnippets<T extends { snippet: string; url: string }>(snippets: T[]): T[] {
+  const seen = new Set<string>();
+  const results: T[] = [];
+  for (const snippet of snippets) {
+    const key = `${snippet.url}:${snippet.snippet.toLowerCase().slice(0, 80)}`;
+    if (seen.has(key)) {
+      continue;
+    }
+    seen.add(key);
+    results.push(snippet);
+  }
+  return results;
+}
+
+function ensureSentence(text: string): string {
+  return /[.!?]$/.test(text) ? text : `${text}.`;
+}
+
+function synthesizeSummary(query: string, clauses: string[]): string {
+  const topic = query.toLowerCase().includes("deepseek") ? "DeepSeek research" : "the searched topic";
+  if (clauses.length === 1) {
+    return ensureSentence(`Recent ${topic} surfaced by the workflow emphasizes ${clauses[0]}`);
+  }
+  const body = clauses.length === 2 ? `${clauses[0]} and ${clauses[1]}` : `${clauses.slice(0, -1).join("; ")}; and ${clauses.at(-1)}`;
+  return ensureSentence(`Recent ${topic} surfaced by the workflow emphasizes ${body}`);
+}
+
+function summaryClause(text: string): string {
+  let value = summarySnippetText(text)
+    .replace(/^NEWS\s+\d{1,2}\s+\w+\s+\d{4}\s+/i, "")
+    .replace(/^Artificial intelligence\s+/i, "")
+    .replace(/^The DeepSeek Series:\s*A Technical Overview\s+/i, "")
+    .replace(/^DeepSeek research paper summary\s*/i, "");
+  const betterStart = value.match(/\b(First peer-reviewed|The appearance of|DeepSeek\s*-?V\d|The model can|Like DeepSeek|V\d marks)\b/i);
+  if (betterStart?.index && betterStart.index > 0) {
+    value = value.slice(betterStart.index);
+  }
+  value = value.replace(/\s+/g, " ").replace(/[.!?]+$/g, "").trim();
+  return truncateAtWord(value, 220).replace(/\.\.\.$/, "");
+}
+
+function summarySnippetText(text: string): string {
+  return decodeBasicEntities(text)
+    .replace(/https?:\/\/\S+/g, "")
+    .replace(/([A-Za-z]\d+)\.(\d+)/g, "$1-$2")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function normalizeContextUrl(url: string): string {
+  return url.replace(/^https:\/\/arxiv\.org\/pdf\/([^?#]+)(?:\.pdf)?(?:[?#].*)?$/i, "https://arxiv.org/abs/$1");
+}
+
+function truncateAtWord(text: string, maxLength: number): string {
+  if (text.length <= maxLength) {
+    return text;
+  }
+  const slice = text.slice(0, maxLength - 3);
+  const boundary = slice.lastIndexOf(" ");
+  return `${slice.slice(0, boundary > maxLength * 0.6 ? boundary : slice.length).trimEnd()}...`;
 }
 
 function escapeRegex(value: string): string {

@@ -82,4 +82,13 @@ describe("MCP runtime", () => {
       await rm(dir, { recursive: true, force: true });
     }
   });
+
+  test("discovers and accepts the dynamic resolve_request workflow", async () => {
+    const runtime = createTokenHubRuntime({ root: process.cwd() });
+
+    const capabilities = runtime.discoverCapabilities({ query: "dynamic request router", limit: 5 });
+
+    expect(JSON.stringify(capabilities)).toContain("resolve");
+    expect(runtime.publicToolNames()).toContain("run_workflow");
+  });
 });

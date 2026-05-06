@@ -29,7 +29,7 @@ TokenHub exposes only six public tools:
 
 Internal modules cover filesystem retrieval, Git summaries, GitHub, web fetch/scrape, web search provider hooks, browser state capture, SQLite/Postgres inspection, npm package docs lookup, Sentry issue summaries, validation workflows, resource storage, and token telemetry. Large outputs are stored as `tokenhub://resource/...` handles and can be progressively expanded.
 
-`run_workflow` also includes `answer_from_web`, which searches the web, fetches source pages, scrapes clean text, extracts ranked/list candidates, aggregates repeated answers, and returns a cited summary. Example:
+`run_workflow` also includes `answer_from_web`, which searches the web, fetches source pages, scrapes clean text, extracts ranked/list candidates or summary snippets, and returns cited answers with `tokenhub://resource/...` context handles. Examples:
 
 ```json
 {
@@ -38,6 +38,39 @@ Internal modules cover filesystem retrieval, Git summaries, GitHub, web fetch/sc
   "target": "ranked_list",
   "limit": 10,
   "sourceLimit": 5
+}
+```
+
+```json
+{
+  "name": "answer_from_web",
+  "query": "1 paragraph summary of the latest DeepSeek research papers",
+  "target": "summary",
+  "sourceLimit": 5,
+  "budgetTokens": 900
+}
+```
+
+`run_workflow` also supports `resolve_request`, a dynamic workflow that infers intent, source strategy, output shape, depth, evidence, and execution mode from a natural-language request.
+
+```json
+{
+  "name": "resolve_request",
+  "request": "Give me a 1 paragraph summary of the latest DeepSeek research papers",
+  "depth": "standard",
+  "evidence": "resource_links"
+}
+```
+
+For implementation research:
+
+```json
+{
+  "name": "resolve_request",
+  "request": "Look for similar professional optimized implementations of this feature and compare it to this code, then implement the gaps",
+  "depth": "deep",
+  "execution": "plan_only",
+  "outputShape": "patch_plan"
 }
 ```
 
