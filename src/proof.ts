@@ -12,6 +12,7 @@ export type ProofPageInput = {
   generatedAt: string;
   commands: ProofCommand[];
   repoState: string;
+  benchmarkSummary?: string;
 };
 
 export async function createProofPage(input: ProofPageInput): Promise<string> {
@@ -54,6 +55,11 @@ function renderProofPage(input: ProofPageInput): string {
       <div style="border:2px solid #111827;background:#fff;padding:18px"><div style="font-size:12px;text-transform:uppercase;font-weight:800;color:#52606d">Generated</div><div style="margin-top:8px;font-size:18px;font-weight:650">${escapeHtml(input.generatedAt)}</div></div>
       <div style="border:2px solid #111827;background:#fff;padding:18px"><div style="font-size:12px;text-transform:uppercase;font-weight:800;color:#52606d">Repository State</div><div style="margin-top:8px;font-size:18px;font-weight:650">${escapeHtml(input.repoState)}</div></div>
     </section>
+    ${
+      input.benchmarkSummary
+        ? `<section style="margin:24px 0;border:2px solid #111827;background:#fff;padding:18px"><div style="font-size:12px;text-transform:uppercase;font-weight:800;color:#52606d">Benchmark Result</div><div style="margin-top:8px;font-size:18px;font-weight:650">${escapeHtml(input.benchmarkSummary)}</div></section>`
+        : ""
+    }
     <table style="width:100%;border-collapse:collapse;background:#fff;border:2px solid #111827">
       <thead><tr><th style="text-align:left;padding:14px 16px;background:#e4e7eb">Command</th><th style="text-align:left;padding:14px 16px;background:#e4e7eb">Exit</th><th style="text-align:left;padding:14px 16px;background:#e4e7eb">Evidence Summary</th></tr></thead>
       <tbody>${rows}</tbody>

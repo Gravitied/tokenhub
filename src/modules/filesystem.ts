@@ -1,5 +1,5 @@
-import { readdir, readFile, stat } from "node:fs/promises";
-import { relative, resolve, sep } from "node:path";
+import { mkdir, readdir, readFile, rename, rm, stat, writeFile } from "node:fs/promises";
+import { dirname, relative, resolve, sep } from "node:path";
 import type { ResourceStore } from "../core/resources.js";
 import { estimateTokens, truncateToTokens } from "../core/token.js";
 
@@ -19,6 +19,53 @@ export type FileSearchMatch = {
   line: number;
   resourceUri: string;
 };
+
+export type FilesystemActionInput = {
+  root: string;
+  action: "write" | "move" | "delete" | "tree";
+  path?: string;
+  destination?: string;
+  content?: string;
+  limit?: number;
+};
+
+export async function applyFilesystemAction(input: FilesystemActionInput): Promise<{
+  summary: string;
+  entries?: Array<{ path: string; type: "file" | "directory" }>;
+}> {
+  const root = resolve(input.root);
+  if (input.action === "tree") {
+    const entries = (await walkEntries(root)).slice(0, input.limit ?? 100);
+    return { summary: `listed ${entries.length} entries`, entries };
+  }
+
+  if (!input.path) {
+    throw new Error(`filesystem ${input.action} requires path.`);
+  }
+  const target = safeWorkspacePath(root, input.path);
+  const relTarget = relative(root, target).split(sep).join("/");
+
+  if (input.action === "write") {
+    await mkdir(dirname(target), { recursive: true });
+    await writeFile(target, input.content ?? "", "utf8");
+    return { summary: `wrote ${relTarget}` };
+  }
+
+  if (input.action === "move") {
+    if (!input.destination) {
+      throw new Error("filesystem move requires destination.");
+    }
+    const destination = safeWorkspacePath(root, input.destination);
+    await mkdir(dirname(destination), { recursive: true });
+    await rename(target, destination);
+    return {
+      summary: `moved ${relTarget} to ${relative(root, destination).split(sep).join("/")}`
+    };
+  }
+
+  await rm(target, { recursive: true, force: true });
+  return { summary: `deleted ${relTarget}` };
+}
 
 export async function searchFiles(input: FileSearchInput): Promise<{
   matches: FileSearchMatch[];
@@ -85,6 +132,33 @@ async function walk(dir: string): Promise<string[]> {
     }
   }
   return files;
+}
+
+async function walkEntries(root: string, dir = root): Promise<Array<{ path: string; type: "file" | "directory" }>> {
+  const entries = await readdir(dir, { withFileTypes: true }).catch(() => []);
+  const out: Array<{ path: string; type: "file" | "directory" }> = [];
+  for (const entry of entries) {
+    if (IGNORED_DIRS.has(entry.name)) {
+      continue;
+    }
+    const full = resolve(dir, entry.name);
+    const path = relative(root, full).split(sep).join("/");
+    if (entry.isDirectory()) {
+      out.push({ path, type: "directory" });
+      out.push(...(await walkEntries(root, full)));
+    } else if (entry.isFile()) {
+      out.push({ path, type: "file" });
+    }
+  }
+  return out;
+}
+
+function safeWorkspacePath(root: string, path: string): string {
+  const target = resolve(root, path);
+  if (target !== root && !target.startsWith(root + sep)) {
+    throw new Error(`Refusing filesystem action outside workspace: ${path}`);
+  }
+  return target;
 }
 
 function buildSnippet(content: string, matchLine: number, budgetTokens: number): string {

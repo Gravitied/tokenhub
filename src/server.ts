@@ -47,7 +47,21 @@ export function createTokenHubRuntime(options: RuntimeOptions) {
     publicToolNames: (): PublicToolName[] => [...PUBLIC_TOOLS],
     discoverCapabilities: (input: { query: string; limit?: number }) =>
       registry.discover(input.query, { limit: input.limit }),
-    runWorkflow: (input: { name: string; budgetTokens?: number; includeRaw?: boolean; command?: string; args?: string[] }) =>
+    runWorkflow: (input: {
+      name: string;
+      budgetTokens?: number;
+      includeRaw?: boolean;
+      command?: string;
+      args?: string[];
+      action?: string;
+      path?: string;
+      destination?: string;
+      content?: string;
+      paths?: string[];
+      message?: string;
+      ref?: string;
+      branch?: string;
+    }) =>
       runWorkflowImpl({
         ...input,
         root,
@@ -296,7 +310,15 @@ export function createMcpServer(options: RuntimeOptions): McpServer {
         budgetTokens: z.number().int().positive().optional(),
         includeRaw: z.boolean().optional(),
         command: z.string().optional(),
-        args: z.array(z.string()).optional()
+        args: z.array(z.string()).optional(),
+        action: z.string().optional(),
+        path: z.string().optional(),
+        destination: z.string().optional(),
+        content: z.string().optional(),
+        paths: z.array(z.string()).optional(),
+        message: z.string().optional(),
+        ref: z.string().optional(),
+        branch: z.string().optional()
       }
     },
     async (input) => asToolResult(await runtime.runWorkflow(input))

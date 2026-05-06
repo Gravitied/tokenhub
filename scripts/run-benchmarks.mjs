@@ -24,6 +24,7 @@ import { chromium } from "playwright";
 const execFileAsync = promisify(execFile);
 const workspace = resolve(fileURLToPath(new URL("..", import.meta.url)));
 const outDir = join(workspace, "artifacts", "benchmarks");
+const BENCHMARK_TASK_COUNT = 9;
 await mkdir(outDir, { recursive: true });
 
 const root = await mkdtemp(join(tmpdir(), "tokenhub-competitive-"));
@@ -31,15 +32,15 @@ const fixture = await createBenchmarkFixtures(root);
 
 try {
   const tasks = [];
-  tasks.push(await filesystemTask(fixture));
-  tasks.push(await gitTask(fixture));
-  tasks.push(await webTask(fixture));
-  tasks.push(await githubTask());
-  tasks.push(await browserTask(fixture));
-  tasks.push(await searchTask());
-  tasks.push(await sqliteTask(root));
-  tasks.push(await docsTask());
-  tasks.push(await sentryTask());
+  tasks.push(withTaskMetadata(await filesystemTask(fixture)));
+  tasks.push(withTaskMetadata(await gitTask(fixture)));
+  tasks.push(withTaskMetadata(await webTask(fixture)));
+  tasks.push(withTaskMetadata(await githubTask()));
+  tasks.push(withTaskMetadata(await browserTask(fixture)));
+  tasks.push(withTaskMetadata(await searchTask()));
+  tasks.push(withTaskMetadata(await sqliteTask(root)));
+  tasks.push(withTaskMetadata(await docsTask()));
+  tasks.push(withTaskMetadata(await sentryTask()));
 
   const report = createBenchmarkReport({
     generatedAt: new Date().toISOString(),
@@ -49,6 +50,9 @@ try {
       "https://www.npmjs.com/package/@playwright/mcp",
       "https://www.npmjs.com/package/@upstash/context7-mcp",
       "https://www.npmjs.com/package/@sentry/mcp-server",
+      "https://github.com/github/github-mcp-server",
+      "https://playwright.dev/mcp/capabilities",
+      "https://github.com/microsoft/playwright-mcp/blob/main/README.md",
       "https://git-scm.com/docs/git-grep",
       "https://git-scm.com"
     ],
@@ -92,7 +96,7 @@ async function githubTask() {
     tokenhub: scoreBenchmarkResult({
       name: "tokenhub",
       outputText: oursText,
-      estimatedTokens: estimatePublicToolTokens() + estimateTokens(oursText),
+      estimatedTokens: estimateTokenHubTokens(oursText),
       expectedFacts,
       requiredPatterns: [],
       forbiddenPatterns: [/node_id|avatar_url|html_url/],
@@ -138,7 +142,7 @@ async function browserTask(fixture) {
     tokenhub: scoreBenchmarkResult({
       name: "tokenhub",
       outputText: oursText,
-      estimatedTokens: estimatePublicToolTokens() + estimateTokens(oursText),
+      estimatedTokens: estimateTokenHubTokens(oursText),
       expectedFacts,
       requiredPatterns: [/tokenhub:\/\/resource\//],
       forbiddenPatterns,
@@ -190,7 +194,7 @@ async function searchTask() {
     tokenhub: scoreBenchmarkResult({
       name: "tokenhub",
       outputText: oursText,
-      estimatedTokens: estimatePublicToolTokens() + estimateTokens(oursText),
+      estimatedTokens: estimateTokenHubTokens(oursText),
       expectedFacts,
       requiredPatterns: [/brave|0\.86/],
       forbiddenPatterns: [],
@@ -236,7 +240,7 @@ async function sqliteTask(root) {
     tokenhub: scoreBenchmarkResult({
       name: "tokenhub",
       outputText: oursText,
-      estimatedTokens: estimatePublicToolTokens() + estimateTokens(oursText),
+      estimatedTokens: estimateTokenHubTokens(oursText),
       expectedFacts,
       requiredPatterns: [/\[redacted\]/],
       forbiddenPatterns,
@@ -266,7 +270,7 @@ async function docsTask() {
     tokenhub: scoreBenchmarkResult({
       name: "tokenhub",
       outputText: oursText,
-      estimatedTokens: estimatePublicToolTokens() + estimateTokens(oursText),
+      estimatedTokens: estimateTokenHubTokens(oursText),
       expectedFacts,
       requiredPatterns: [/versions|links/],
       forbiddenPatterns: [/readme|maintainers/],
@@ -305,7 +309,7 @@ async function sentryTask() {
     tokenhub: scoreBenchmarkResult({
       name: "tokenhub",
       outputText: oursText,
-      estimatedTokens: estimatePublicToolTokens() + estimateTokens(oursText),
+      estimatedTokens: estimateTokenHubTokens(oursText),
       expectedFacts,
       requiredPatterns: [/src\/payments\.ts/],
       forbiddenPatterns: [/permalink/],
@@ -347,7 +351,7 @@ async function filesystemTask(fixture) {
     tokenhub: scoreBenchmarkResult({
       name: "tokenhub",
       outputText: oursText,
-      estimatedTokens: estimatePublicToolTokens() + estimateTokens(oursText),
+      estimatedTokens: estimateTokenHubTokens(oursText),
       expectedFacts,
       requiredPatterns: [/tokenhub:\/\/resource\//],
       forbiddenPatterns,
@@ -372,7 +376,7 @@ async function gitTask(fixture) {
     tokenhub: scoreBenchmarkResult({
       name: "tokenhub",
       outputText: oursText,
-      estimatedTokens: estimatePublicToolTokens() + estimateTokens(oursText),
+      estimatedTokens: estimateTokenHubTokens(oursText),
       expectedFacts,
       requiredPatterns: [/tokenhub:\/\/resource\//],
       forbiddenPatterns,
@@ -397,7 +401,7 @@ async function webTask(fixture) {
     tokenhub: scoreBenchmarkResult({
       name: "tokenhub",
       outputText: oursText,
-      estimatedTokens: estimatePublicToolTokens() + estimateTokens(oursText),
+      estimatedTokens: estimateTokenHubTokens(oursText),
       expectedFacts,
       requiredPatterns: [/tokenhub:\/\/resource\//],
       forbiddenPatterns,
@@ -510,18 +514,157 @@ async function withClient(params, callback) {
 }
 
 function estimatePublicToolTokens() {
-  return estimateTokens(
-    JSON.stringify([
-      "discover_capabilities",
-      "run_workflow",
-      "retrieve_context",
-      "read_resource",
-      "capture_state",
-      "estimate_cost"
-    ])
-  );
+  return estimateTokens(JSON.stringify(publicToolManifest()));
+}
+
+function estimateTokenHubTokens(outputText) {
+  return Math.ceil(estimatePublicToolTokens() / BENCHMARK_TASK_COUNT) + estimateTokens(outputText);
 }
 
 function estimateStandaloneToolTokens(outputText) {
   return 120 + estimateTokens(outputText);
+}
+
+function withTaskMetadata(task) {
+  const metadata = {
+    "filesystem-marker": {
+      goal: "Find relevant repo context without leaking nearby secrets.",
+      baselines: [
+        { name: "official-filesystem-mcp", method: "live-mcp", live: true },
+        { name: "git-grep-cli", method: "cli", live: true }
+      ],
+      coverage: {
+        tokenhubCapabilities: ["search", "read", "resource_links", "secret_redaction", "write", "move", "delete", "tree"],
+        competitorCapabilities: ["search", "read", "write", "move", "delete", "tree"],
+        parity: "partial",
+        gaps: ["media/binary reads and detailed allowed-directory listing are not benchmarked"]
+      }
+    },
+    "git-summary": {
+      goal: "Summarize repo status, recent commits, and diff context compactly.",
+      baselines: [
+        { name: "official-git-mcp", method: "live-mcp", live: true },
+        { name: "git-cli", method: "cli", live: true }
+      ],
+      coverage: {
+        tokenhubCapabilities: ["status", "log", "diff", "show", "stage", "commit", "branch"],
+        competitorCapabilities: ["status", "log", "diff", "show", "stage", "commit", "branch"],
+        parity: "partial",
+        gaps: ["checkout/reset/init are intentionally excluded from default safe workflows"]
+      }
+    },
+    "web-clean-fetch": {
+      goal: "Fetch a page and return clean, compact text plus resource links.",
+      baselines: [{ name: "official-fetch-mcp", method: "live-mcp", live: true }],
+      coverage: {
+        tokenhubCapabilities: ["fetch", "scrape", "markdown", "resource_links", "secret_redaction"],
+        competitorCapabilities: ["fetch", "markdown", "raw"],
+        parity: "partial",
+        gaps: ["robots behavior and full fetch options are inherited from provider behavior, not fully parity-tested"]
+      }
+    },
+    "github-public-summary": {
+      goal: "Summarize public GitHub repo, issues, PRs, and workflow runs without raw REST bloat.",
+      baselines: [{ name: "github-rest-raw", method: "raw-api", live: true }],
+      coverage: {
+        tokenhubCapabilities: ["repo", "issues", "pull_requests", "actions"],
+        competitorCapabilities: ["repo", "issues", "pull_requests", "actions"],
+        parity: "partial",
+        gaps: ["mutating GitHub operations and authenticated code search are not benchmarked without credentials"]
+      }
+    },
+    "browser-compact-state": {
+      goal: "Capture browser state with refs, console/network counts, screenshots as resources, and compact text.",
+      baselines: [{ name: "playwright-raw-html", method: "fixture", live: true }],
+      coverage: {
+        tokenhubCapabilities: ["navigation", "dom_refs", "screenshots", "console", "network"],
+        competitorCapabilities: ["navigation", "dom", "screenshots", "actions", "traces"],
+        parity: "partial",
+        gaps: ["full interactive Playwright action parity and trace viewer artifacts are not yet live-benchmarked"]
+      }
+    },
+    "search-provider-normalization": {
+      goal: "Normalize multi-provider search output with dedupe, confidence, and compact fields.",
+      baselines: [{ name: "brave-json-raw", method: "raw-api", live: false, notes: "Provider-shaped fixture avoids requiring an API key." }],
+      coverage: {
+        tokenhubCapabilities: ["web_search", "dedupe", "provider_normalization", "confidence"],
+        competitorCapabilities: ["web_search", "local_search"],
+        parity: "partial",
+        gaps: ["local search and provider-specific advanced filters require provider credentials"]
+      }
+    },
+    "sqlite-safe-inspection": {
+      goal: "Inspect SQLite schema and safe SELECT rows with redaction.",
+      baselines: [{ name: "sqljs-raw", method: "fixture", live: true }],
+      coverage: {
+        tokenhubCapabilities: ["schema", "read_query", "limits", "redaction"],
+        competitorCapabilities: ["schema", "read_query"],
+        parity: "full",
+        gaps: []
+      }
+    },
+    "docs-package-lookup": {
+      goal: "Return package version and docs metadata without raw registry/readme bloat.",
+      baselines: [{ name: "npm-registry-raw", method: "raw-api", live: true }],
+      coverage: {
+        tokenhubCapabilities: ["package_metadata", "versions", "docs_links", "changelog"],
+        competitorCapabilities: ["package_metadata", "versions", "readme", "docs_links"],
+        parity: "partial",
+        gaps: ["Context7 library resolution and versioned docs corpus are metadata-only until live MCP credentials/package are available"]
+      }
+    },
+    "sentry-error-clustering": {
+      goal: "Cluster Sentry issues and summarize impact without returning raw issue URLs.",
+      baselines: [{ name: "sentry-issues-raw", method: "fixture", live: false, notes: "Sentry auth is required for live issue reads." }],
+      coverage: {
+        tokenhubCapabilities: ["issues", "clusters", "issue_details", "redaction"],
+        competitorCapabilities: ["issues", "projects", "stacktraces", "events"],
+        parity: "partial",
+        gaps: ["live stacktrace/project operations require Sentry auth"]
+      }
+    }
+  };
+  return { ...metadata[task.task], ...task };
+}
+
+function publicToolManifest() {
+  return [
+    { name: "discover_capabilities", input: { query: "string", limit: "number?" } },
+    {
+      name: "run_workflow",
+      input: {
+        name: "string",
+        budgetTokens: "number?",
+        includeRaw: "boolean?",
+        command: "string?",
+        args: "string[]?",
+        action: "string?",
+        path: "string?",
+        destination: "string?",
+        content: "string?",
+        paths: "string[]?",
+        message: "string?",
+        ref: "string?",
+        branch: "string?"
+      }
+    },
+    {
+      name: "retrieve_context",
+      input: {
+        source: "files|git|web|github|search|sqlite|postgres|docs|sentry|browser",
+        query: "string?",
+        url: "string?",
+        owner: "string?",
+        repo: "string?",
+        provider: "brave|exa|tavily|serpapi|duckduckgo?",
+        budgetTokens: "number?",
+        limit: "number?",
+        includeRaw: "boolean?",
+        returnMode: "summary|compact?"
+      }
+    },
+    { name: "read_resource", input: { uri: "string", mode: "snippet|range|full?", budgetTokens: "number?", startLine: "number?", endLine: "number?" } },
+    { name: "capture_state", input: { label: "string?", text: "string?" } },
+    { name: "estimate_cost", input: { operation: "string", expectedInputTokens: "number?", expectedOutputTokens: "number?" } }
+  ];
 }

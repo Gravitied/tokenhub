@@ -61,4 +61,13 @@ Run:
 npm run bench
 ```
 
-The benchmark downloads or invokes free baselines through `npx`, `uvx`, local Git CLI tools, public APIs, Playwright, SQL.js, and raw provider payloads, then compares TokenHub on expected facts, secret redaction, resource-link behavior, and estimated token usage. Reports are written to `artifacts/benchmarks/competitive-report.json`.
+The benchmark downloads or invokes free baselines through `npx`, `uvx`, local Git CLI tools, public APIs, Playwright, SQL.js, and raw provider payloads, then compares TokenHub on expected facts, secret redaction, resource-link behavior, coverage, and estimated token usage. Reports are written to `artifacts/benchmarks/competitive-report.json`.
+
+The report separates:
+
+- `qualityScore`: calculated from expected facts, required patterns, forbidden leakage, and output bloat.
+- `coverageScore`: calculated from declared capability overlap, parity level, and known gaps.
+- `estimatedTokens`: output tokens plus tool overhead. TokenHub uses an amortized one-server session overhead because its six public tools are loaded once across the benchmark suite; standalone MCP/CLI/API baselines are charged per invoked baseline.
+- `baselines`: whether each comparison is a live MCP call, CLI call, raw public API, or fixture-shaped provider payload.
+
+Auth-gated competitors such as GitHub MCP, Sentry MCP, Brave Search MCP, and Postgres MCP are cataloged, but only run live when credentials are available.

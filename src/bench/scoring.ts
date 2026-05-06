@@ -21,12 +21,21 @@ export type BenchmarkScore = {
 
 export type TaskComparison = {
   task: string;
+  goal?: string;
+  baselines?: Array<{ name: string; method: "live-mcp" | "raw-api" | "cli" | "fixture"; live: boolean; notes?: string }>;
+  coverage?: {
+    tokenhubCapabilities: string[];
+    competitorCapabilities: string[];
+    parity: "full" | "partial" | "missing";
+    gaps: string[];
+  };
   tokenhub: BenchmarkScore;
   competitors: BenchmarkScore[];
 };
 
 export type ComparedTask = TaskComparison & {
   strongestCompetitor?: BenchmarkScore;
+  coverageScore: number;
   passed: boolean;
   reason: string;
 };
@@ -97,6 +106,7 @@ export function compareBenchmarkResults(tasks: TaskComparison[]): {
     if (!strongestCompetitor) {
       return {
         ...task,
+        coverageScore: scoreCoverage(task.coverage),
         passed: true,
         reason: "No competitor result was available."
       };
@@ -105,6 +115,7 @@ export function compareBenchmarkResults(tasks: TaskComparison[]): {
     return {
       ...task,
       strongestCompetitor,
+      coverageScore: scoreCoverage(task.coverage),
       passed: result.passed,
       reason: result.reason
     };
@@ -114,6 +125,18 @@ export function compareBenchmarkResults(tasks: TaskComparison[]): {
     taskResults,
     weakTasks: taskResults.filter((task) => !task.passed).map((task) => task.task)
   };
+}
+
+function scoreCoverage(coverage: TaskComparison["coverage"]): number {
+  if (!coverage) {
+    return 50;
+  }
+  const competitor = new Set(coverage.competitorCapabilities);
+  const covered = coverage.tokenhubCapabilities.filter((capability) => competitor.has(capability)).length;
+  const overlap = competitor.size === 0 ? 100 : (covered / competitor.size) * 100;
+  const parityBonus = coverage.parity === "full" ? 15 : coverage.parity === "partial" ? 10 : -25;
+  const gapPenalty = Math.min(30, coverage.gaps.length * 5);
+  return Math.round(clamp(overlap + parityBonus - gapPenalty, 0, 100));
 }
 
 function clamp(value: number, min: number, max: number): number {

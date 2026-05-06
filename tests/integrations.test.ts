@@ -1,5 +1,5 @@
 import { describe, expect, test } from "vitest";
-import { mkdtemp, rm } from "node:fs/promises";
+import { mkdtemp, rm, writeFile } from "node:fs/promises";
 import { createServer } from "node:http";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
@@ -11,10 +11,12 @@ import { inspectSqlite, projectRows, summarizePostgresSchemaRows } from "../src/
 import { lookupNpmPackage } from "../src/modules/docs.js";
 import { summarizeSentryIssues } from "../src/modules/sentry.js";
 import { captureBrowserState } from "../src/modules/browser.js";
+import { applyFilesystemAction } from "../src/modules/filesystem.js";
+import { runGitAction, summarizeGit } from "../src/modules/git.js";
 import { createTokenHubRuntime } from "../src/server.js";
 
 describe("GitHub module", () => {
-  test("summarizes public repo metadata and issue facts compactly", async () => {
+  test("summarizes public repo metadata, issue, PR, and workflow facts compactly", async () => {
     const result = await summarizeGitHubRepo({
       owner: "example",
       repo: "demo",
@@ -23,6 +25,10 @@ describe("GitHub module", () => {
           JSON.stringify(
             url.toString().includes("/issues")
               ? [{ number: 7, title: "Crash on boot", state: "open", html_url: "https://github.com/example/demo/issues/7" }]
+              : url.toString().includes("/pulls")
+                ? [{ number: 9, title: "Fix boot crash", state: "open", user: { login: "dev" } }]
+                : url.toString().includes("/actions/runs")
+                  ? { workflow_runs: [{ name: "CI", status: "completed", conclusion: "failure", head_branch: "main" }] }
               : {
                   full_name: "example/demo",
                   description: "Demo repository",
@@ -39,7 +45,57 @@ describe("GitHub module", () => {
     expect(result.summary).toContain("example/demo");
     expect(result.summary).toContain("42 stars");
     expect(result.issues[0]).toEqual({ number: 7, title: "Crash on boot", state: "open" });
+    expect(result.pullRequests[0]).toEqual({ number: 9, title: "Fix boot crash", state: "open", author: "dev" });
+    expect(result.workflowRuns[0]).toEqual({ name: "CI", status: "completed", conclusion: "failure", branch: "main" });
     expect(JSON.stringify(result)).not.toContain("html_url");
+  });
+});
+
+describe("filesystem action module", () => {
+  test("writes, moves, and deletes files within the workspace only", async () => {
+    const dir = await mkdtemp(join(tmpdir(), "tokenhub-fs-action-"));
+    try {
+      const write = await applyFilesystemAction({ root: dir, action: "write", path: "notes/a.txt", content: "hello" });
+      const move = await applyFilesystemAction({ root: dir, action: "move", path: "notes/a.txt", destination: "notes/b.txt" });
+      const del = await applyFilesystemAction({ root: dir, action: "delete", path: "notes/b.txt" });
+
+      expect(write.summary).toContain("wrote notes/a.txt");
+      expect(move.summary).toContain("moved notes/a.txt to notes/b.txt");
+      expect(del.summary).toContain("deleted notes/b.txt");
+      await expect(applyFilesystemAction({ root: dir, action: "write", path: "../escape.txt", content: "no" })).rejects.toThrow(
+        /outside workspace/
+      );
+    } finally {
+      await rm(dir, { recursive: true, force: true });
+    }
+  });
+});
+
+describe("git action module", () => {
+  test("summarizes changed files and supports safe stage/commit/status actions", async () => {
+    const dir = await mkdtemp(join(tmpdir(), "tokenhub-git-action-"));
+    const store = new ResourceStore({ rootDir: join(dir, ".tokenhub", "resources") });
+    try {
+      const { execFile } = await import("node:child_process");
+      const { promisify } = await import("node:util");
+      const execFileAsync = promisify(execFile);
+      await execFileAsync("git", ["init"], { cwd: dir });
+      await execFileAsync("git", ["config", "user.email", "bench@example.com"], { cwd: dir });
+      await execFileAsync("git", ["config", "user.name", "Bench"], { cwd: dir });
+      await writeFile(join(dir, "a.txt"), "one");
+      await runGitAction({ root: dir, action: "stage", paths: ["a.txt"] });
+      const commit = await runGitAction({ root: dir, action: "commit", message: "initial" });
+      await writeFile(join(dir, "a.txt"), "two");
+
+      const summary = await summarizeGit({ root: dir, resourceStore: store });
+      const status = await runGitAction({ root: dir, action: "status" });
+
+      expect(commit.summary).toContain("committed");
+      expect(summary.changedFiles).toEqual([{ path: "a.txt", status: "modified" }]);
+      expect(status.summary).toContain("modified: a.txt");
+    } finally {
+      await rm(dir, { recursive: true, force: true });
+    }
   });
 });
 
@@ -112,7 +168,8 @@ describe("docs/package module", () => {
             "dist-tags": { latest: "2.0.0" },
             versions: { "1.0.0": {}, "2.0.0": {} },
             homepage: "https://example.com",
-            repository: { url: "git+https://github.com/example/demo.git" }
+            repository: { url: "git+https://github.com/example/demo.git" },
+            readme: "# Demo\nlong raw docs"
           }),
           { status: 200 }
         )
@@ -120,17 +177,43 @@ describe("docs/package module", () => {
 
     expect(result.summary).toContain("demo@2.0.0");
     expect(result.versions).toEqual(["2.0.0", "1.0.0"]);
+    expect(result.docs.changelog).toBe("https://github.com/example/demo/releases");
+    expect(result.docs.readmeResource).toBeUndefined();
   });
 });
 
 describe("sentry module", () => {
   test("clusters Sentry issues by culprit and strips noisy raw fields", () => {
     const result = summarizeSentryIssues([
-      { title: "TypeError: boom", culprit: "src/app.ts", count: "12", userCount: 5, permalink: "https://sentry/1" },
-      { title: "TypeError: boom again", culprit: "src/app.ts", count: "3", userCount: 2, permalink: "https://sentry/2" }
+      {
+        title: "TypeError: boom",
+        culprit: "src/app.ts",
+        count: "12",
+        userCount: 5,
+        level: "error",
+        status: "unresolved",
+        permalink: "https://sentry/1"
+      },
+      {
+        title: "TypeError: boom again",
+        culprit: "src/app.ts",
+        count: "3",
+        userCount: 2,
+        level: "error",
+        status: "resolved",
+        permalink: "https://sentry/2"
+      }
     ]);
 
     expect(result.clusters[0]).toEqual({ culprit: "src/app.ts", issues: 2, events: 15, users: 7 });
+    expect(result.issueDetails[0]).toEqual({
+      title: "TypeError: boom",
+      culprit: "src/app.ts",
+      events: 12,
+      users: 5,
+      level: "error",
+      status: "unresolved"
+    });
     expect(JSON.stringify(result)).not.toContain("permalink");
   });
 });
@@ -156,6 +239,7 @@ describe("browser module", () => {
 
       expect(result.state.headings).toEqual(["Browser Fixture"]);
       expect(result.state.links[0].text).toBe("Docs");
+      expect(result.state.elements[0]).toEqual(expect.objectContaining({ ref: "e1", role: "link", text: "Docs" }));
       expect(result.state.consoleErrors).toContain("fixture error");
       expect(result.resources[0]).toMatch(/^tokenhub:\/\/resource\//);
     } finally {

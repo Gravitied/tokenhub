@@ -4,7 +4,8 @@ import type { ResourceLink, ResourceStore } from "../core/resources.js";
 import type { TokenTelemetry } from "../core/telemetry.js";
 import { estimateTokens, truncateToTokens } from "../core/token.js";
 import { searchFiles } from "../modules/filesystem.js";
-import { summarizeGit } from "../modules/git.js";
+import { applyFilesystemAction } from "../modules/filesystem.js";
+import { runGitAction, summarizeGit } from "../modules/git.js";
 
 const execFileAsync = promisify(execFile);
 
@@ -15,6 +16,14 @@ export type WorkflowInput = {
   includeRaw?: boolean;
   command?: string;
   args?: string[];
+  action?: string;
+  path?: string;
+  destination?: string;
+  content?: string;
+  paths?: string[];
+  message?: string;
+  ref?: string;
+  branch?: string;
   resourceStore: ResourceStore;
   telemetry: TokenTelemetry;
 };
@@ -28,7 +37,49 @@ export async function runWorkflow(input: WorkflowInput): Promise<{
   if (input.name === "validate") {
     return runValidation(input);
   }
+  if (input.name === "filesystem_action") {
+    return runFilesystemActionWorkflow(input);
+  }
+  if (input.name === "git_action") {
+    return runGitActionWorkflow(input);
+  }
   return runProjectScan(input);
+}
+
+async function runFilesystemActionWorkflow(input: WorkflowInput) {
+  const result = await applyFilesystemAction({
+    root: input.root,
+    action: parseFilesystemAction(input.action),
+    path: input.path,
+    destination: input.destination,
+    content: input.content
+  });
+  const telemetry = input.telemetry.record({
+    capability: "workflow.filesystem_action",
+    estimatedToolCostTokens: estimateTokens(result.summary),
+    estimatedSavedTokens: 180,
+    outputTokens: estimateTokens(result.summary)
+  });
+  return { summary: result.summary, resources: [], telemetry, warnings: [] };
+}
+
+async function runGitActionWorkflow(input: WorkflowInput) {
+  const result = await runGitAction({
+    root: input.root,
+    action: parseGitAction(input.action),
+    paths: input.paths,
+    message: input.message,
+    ref: input.ref,
+    branch: input.branch,
+    budgetTokens: input.budgetTokens
+  });
+  const telemetry = input.telemetry.record({
+    capability: "workflow.git_action",
+    estimatedToolCostTokens: estimateTokens(result.summary),
+    estimatedSavedTokens: 220,
+    outputTokens: estimateTokens(result.summary)
+  });
+  return { summary: result.summary, resources: [], telemetry, warnings: result.warnings };
 }
 
 async function runProjectScan(input: WorkflowInput) {
@@ -128,4 +179,16 @@ async function runValidation(input: WorkflowInput) {
 
 function redactSecrets(text: string): string {
   return text.replace(/(token|api[_-]?key|password|secret)=\S+/gi, "$1=[redacted]");
+}
+
+function parseFilesystemAction(action: string | undefined): "write" | "move" | "delete" | "tree" {
+  if (action === "write" || action === "move" || action === "delete" || action === "tree") return action;
+  throw new Error("filesystem_action requires action write, move, delete, or tree.");
+}
+
+function parseGitAction(action: string | undefined): "status" | "diff" | "show" | "stage" | "commit" | "branch" {
+  if (action === "status" || action === "diff" || action === "show" || action === "stage" || action === "commit" || action === "branch") {
+    return action;
+  }
+  throw new Error("git_action requires action status, diff, show, stage, commit, or branch.");
 }

@@ -19,6 +19,7 @@ export async function captureBrowserState(input: BrowserCaptureInput): Promise<{
     textSnippets: string[];
     consoleErrors: string[];
     failedRequests: string[];
+    elements: Array<{ ref: string; role: "link" | "button" | "input"; text: string; href?: string; name?: string }>;
   };
   resources: string[];
   tokenEstimate: number;
@@ -37,6 +38,22 @@ export async function captureBrowserState(input: BrowserCaptureInput): Promise<{
 
   try {
     await page.goto(input.url, { waitUntil: "domcontentloaded", timeout: 20000 });
+    const elements = await page.locator("a[href],button,input,textarea,select").evaluateAll((nodes) =>
+      nodes.slice(0, 40).map((node, index) => {
+        const tag = node.tagName.toLowerCase();
+        const input = node as HTMLInputElement;
+        const anchor = node as HTMLAnchorElement;
+        const role: "link" | "button" | "input" =
+          tag === "a" ? "link" : tag === "button" || input.type === "button" || input.type === "submit" ? "button" : "input";
+        return {
+          ref: `e${index + 1}`,
+          role,
+          text: (node.textContent || input.value || input.placeholder || input.getAttribute("aria-label") || "").trim(),
+          href: role === "link" ? anchor.href : undefined,
+          name: input.name || input.id || undefined
+        };
+      })
+    );
     const state = {
       title: await page.title(),
       url: page.url(),
@@ -59,7 +76,8 @@ export async function captureBrowserState(input: BrowserCaptureInput): Promise<{
           .filter(Boolean)
       ),
       consoleErrors,
-      failedRequests
+      failedRequests,
+      elements
     };
     const resources: string[] = [];
     if (input.includeScreenshot) {
@@ -75,6 +93,8 @@ export async function captureBrowserState(input: BrowserCaptureInput): Promise<{
     const summary = truncateToTokens(
       `Page ${state.title} ${state.url}\nHeadings: ${state.headings.join(" | ")}\nText: ${state.textSnippets.join(" | ")}\nLinks: ${state.links
         .map((link, index) => `[${index + 1}] ${link.text} -> ${link.href}`)
+        .join(" | ")}\nElements: ${state.elements
+        .map((element) => `${element.ref}:${element.role}:${element.text || element.name || ""}`)
         .join(" | ")}\nConsole errors: ${consoleErrors.length}; failed requests: ${failedRequests.length}`,
       input.budgetTokens ?? 500
     ).text;

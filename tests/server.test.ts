@@ -62,4 +62,24 @@ describe("MCP runtime", () => {
       await rm(dir, { recursive: true, force: true });
     }
   });
+
+  test("routes safe filesystem actions through run_workflow", async () => {
+    const dir = await mkdtemp(join(tmpdir(), "tokenhub-workflow-actions-"));
+    try {
+      const runtime = createTokenHubRuntime({ root: dir });
+      const write = await runtime.runWorkflow({
+        name: "filesystem_action",
+        action: "write",
+        path: "notes.txt",
+        content: "hello"
+      });
+
+      expect(write.summary).toContain("wrote notes.txt");
+      await expect(runtime.runWorkflow({ name: "filesystem_action", action: "write", path: "../escape.txt" })).rejects.toThrow(
+        /outside workspace/
+      );
+    } finally {
+      await rm(dir, { recursive: true, force: true });
+    }
+  });
 });

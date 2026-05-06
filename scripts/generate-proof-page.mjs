@@ -1,5 +1,5 @@
 import { execFile } from "node:child_process";
-import { mkdir, stat } from "node:fs/promises";
+import { mkdir, readFile, stat } from "node:fs/promises";
 import { fileURLToPath } from "node:url";
 import { join, resolve } from "node:path";
 import { promisify } from "node:util";
@@ -13,13 +13,16 @@ const outDir = join(root, "artifacts", "proof");
 const commands = [];
 commands.push(await run("npm", ["test"]));
 commands.push(await run("npm", ["run", "build"]));
+commands.push(await run("npm", ["run", "bench"]));
 
 const repoState = await gitState();
+const benchmarkSummary = await readBenchmarkSummary();
 const htmlPath = await createProofPage({
   outDir,
   generatedAt: new Date().toISOString(),
   commands,
-  repoState
+  repoState,
+  benchmarkSummary
 });
 
 const pngPath = join(outDir, "tokenhub-proof.png");
@@ -86,4 +89,14 @@ function summarize(output, durationMs) {
     .slice(-8)
     .join(" | ");
   return `${meaningful || "no output"} (${Math.round(durationMs / 100) / 10}s)`;
+}
+
+async function readBenchmarkSummary() {
+  try {
+    const report = JSON.parse(await readFile(join(root, "artifacts", "benchmarks", "competitive-report.json"), "utf8"));
+    const weak = report.weakTasks?.length ? ` Weak tasks: ${report.weakTasks.join(", ")}.` : " No weak tasks.";
+    return `${report.summary}${weak}`;
+  } catch {
+    return "Benchmark report was not available.";
+  }
 }

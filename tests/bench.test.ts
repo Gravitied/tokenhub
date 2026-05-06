@@ -100,6 +100,14 @@ describe("benchmark fixtures and report", () => {
       tasks: [
         {
           task: "filesystem-marker",
+          goal: "Find a marker without leaking secrets.",
+          coverage: {
+            tokenhubCapabilities: ["search", "resource_links", "secret_redaction"],
+            competitorCapabilities: ["search", "read"],
+            parity: "partial",
+            gaps: ["write operations are covered by separate workflow tests"]
+          },
+          baselines: [{ name: "ripgrep-cli", method: "cli", live: true }],
           tokenhub: scoreBenchmarkResult({
             name: "tokenhub",
             outputText: "TOKENHUB_BENCHMARK_NEEDLE tokenhub://resource/abc",
@@ -124,5 +132,24 @@ describe("benchmark fixtures and report", () => {
 
     expect(report.summary).toContain("1/1 tasks passed");
     expect(report.sources[0]).toContain("modelcontextprotocol");
+    expect(report.taskResults[0].coverage.parity).toBe("partial");
+    expect(report.taskResults[0].baselines[0]).toEqual({ name: "ripgrep-cli", method: "cli", live: true });
+    expect(report.taskResults[0].coverageScore).toBeGreaterThan(50);
+    expect(report.taskResults[0].strongestCompetitor?.name).toBe("ripgrep-cli");
+  });
+
+  test("catalog includes stronger free competitors and declares auth-gated entries", () => {
+    const catalog = freeCompetitorCatalog();
+    const names = catalog.map((competitor) => competitor.name);
+
+    expect(names).toEqual(
+      expect.arrayContaining([
+        "official-postgres-mcp",
+        "official-brave-search-mcp",
+        "official-github-mcp",
+        "charlotte-compact-browser-mcp"
+      ])
+    );
+    expect(catalog.find((competitor) => competitor.name === "official-github-mcp")?.requiresAuth).toBe(true);
   });
 });

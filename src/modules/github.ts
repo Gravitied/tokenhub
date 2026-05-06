@@ -21,6 +21,8 @@ export type GitHubSummary = {
     defaultBranch: string;
   };
   issues: Array<{ number: number; title: string; state: string }>;
+  pullRequests: Array<{ number: number; title: string; state: string; author: string }>;
+  workflowRuns: Array<{ name: string; status: string; conclusion: string; branch: string }>;
   tokenEstimate: number;
 };
 
@@ -29,16 +31,22 @@ export async function summarizeGitHubRepo(input: GitHubSummaryInput): Promise<Gi
   const headers = githubHeaders(input.token);
   const repoUrl = `https://api.github.com/repos/${input.owner}/${input.repo}`;
   const issuesUrl = `${repoUrl}/issues?state=open&per_page=${input.limit ?? 5}`;
+  const pullsUrl = `${repoUrl}/pulls?state=open&per_page=${input.limit ?? 5}`;
+  const runsUrl = `${repoUrl}/actions/runs?per_page=${input.limit ?? 5}`;
 
-  const [repoResponse, issuesResponse] = await Promise.all([
+  const [repoResponse, issuesResponse, pullsResponse, runsResponse] = await Promise.all([
     fetchImpl(repoUrl, { headers }),
-    fetchImpl(issuesUrl, { headers })
+    fetchImpl(issuesUrl, { headers }),
+    fetchImpl(pullsUrl, { headers }),
+    fetchImpl(runsUrl, { headers })
   ]);
   if (!repoResponse.ok) {
     throw new Error(`GitHub repo lookup failed: HTTP ${repoResponse.status}`);
   }
   const repoJson = (await repoResponse.json()) as Record<string, unknown>;
   const issuesJson = issuesResponse.ok ? ((await issuesResponse.json()) as Array<Record<string, unknown>>) : [];
+  const pullsJson = pullsResponse.ok ? ((await pullsResponse.json()) as Array<Record<string, unknown>>) : [];
+  const runsJson = runsResponse.ok ? ((await runsResponse.json()) as { workflow_runs?: Array<Record<string, unknown>> }) : {};
   const repo = {
     fullName: stringValue(repoJson.full_name),
     description: stringValue(repoJson.description),
@@ -54,11 +62,29 @@ export async function summarizeGitHubRepo(input: GitHubSummaryInput): Promise<Gi
       title: stringValue(issue.title),
       state: stringValue(issue.state)
     }));
+  const pullRequests = pullsJson.slice(0, input.limit ?? 5).map((pull) => ({
+    number: numberValue(pull.number),
+    title: stringValue(pull.title),
+    state: stringValue(pull.state),
+    author: stringAtRecord(pull, ["user", "login"])
+  }));
+  const workflowRuns = (runsJson.workflow_runs ?? []).slice(0, input.limit ?? 5).map((run) => ({
+    name: stringValue(run.name),
+    status: stringValue(run.status),
+    conclusion: stringValue(run.conclusion),
+    branch: stringValue(run.head_branch)
+  }));
   const issueSummary = issues.length
     ? `Open issues: ${issues.map((issue) => `#${issue.number} ${issue.title}`).join("; ")}`
     : "Open issues: none returned.";
+  const prSummary = pullRequests.length
+    ? `Open PRs: ${pullRequests.map((pull) => `#${pull.number} ${pull.title}`).join("; ")}`
+    : "Open PRs: none returned.";
+  const runSummary = workflowRuns.length
+    ? `Workflow runs: ${workflowRuns.map((run) => `${run.name} ${run.status}/${run.conclusion}`).join("; ")}`
+    : "Workflow runs: none returned.";
   const summary = truncateToTokens(
-    `${repo.fullName}: ${repo.description || "No description"}; ${repo.stars} stars; ${repo.openIssues} open issues; default ${repo.defaultBranch}. ${issueSummary}`,
+    `${repo.fullName}: ${repo.description || "No description"}; ${repo.stars} stars; ${repo.openIssues} open issues; default ${repo.defaultBranch}. ${issueSummary} ${prSummary} ${runSummary}`,
     input.budgetTokens ?? 400
   ).text;
 
@@ -66,6 +92,8 @@ export async function summarizeGitHubRepo(input: GitHubSummaryInput): Promise<Gi
     summary,
     repo,
     issues,
+    pullRequests,
+    workflowRuns,
     tokenEstimate: estimateTokens(summary)
   };
 }
@@ -80,6 +108,14 @@ function githubHeaders(token?: string): HeadersInit {
 
 function stringValue(value: unknown): string {
   return typeof value === "string" ? value : "";
+}
+
+function stringAtRecord(value: Record<string, unknown>, path: string[]): string {
+  let current: unknown = value;
+  for (const key of path) {
+    current = typeof current === "object" && current !== null ? (current as Record<string, unknown>)[key] : undefined;
+  }
+  return stringValue(current);
 }
 
 function numberValue(value: unknown): number {

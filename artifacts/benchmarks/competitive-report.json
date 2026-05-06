@@ -1,11 +1,14 @@
 {
-  "generatedAt": "2026-05-06T15:51:21.514Z",
+  "generatedAt": "2026-05-06T16:15:32.802Z",
   "sources": [
     "https://github.com/modelcontextprotocol/servers",
     "https://www.npmjs.com/package/@modelcontextprotocol/server-filesystem",
     "https://www.npmjs.com/package/@playwright/mcp",
     "https://www.npmjs.com/package/@upstash/context7-mcp",
     "https://www.npmjs.com/package/@sentry/mcp-server",
+    "https://github.com/github/github-mcp-server",
+    "https://playwright.dev/mcp/capabilities",
+    "https://github.com/microsoft/playwright-mcp/blob/main/README.md",
     "https://git-scm.com/docs/git-grep",
     "https://git-scm.com"
   ],
@@ -15,65 +18,209 @@
       "kind": "mcp",
       "command": "npx -y @modelcontextprotocol/server-filesystem <root>",
       "license": "MIT",
-      "source": "https://www.npmjs.com/package/@modelcontextprotocol/server-filesystem"
+      "source": "https://www.npmjs.com/package/@modelcontextprotocol/server-filesystem",
+      "benchmarkStatus": "live",
+      "strengths": [
+        "read",
+        "write",
+        "move",
+        "directory_tree",
+        "allowed_directories"
+      ]
     },
     {
       "name": "official-git-mcp",
       "kind": "mcp",
       "command": "uvx mcp-server-git --repository <root>",
       "license": "MIT",
-      "source": "https://github.com/modelcontextprotocol/servers"
+      "source": "https://github.com/modelcontextprotocol/servers",
+      "benchmarkStatus": "live",
+      "strengths": [
+        "status",
+        "log",
+        "diff",
+        "add",
+        "commit",
+        "checkout"
+      ]
     },
     {
       "name": "official-fetch-mcp",
       "kind": "mcp",
       "command": "uvx mcp-server-fetch",
       "license": "MIT",
-      "source": "https://github.com/modelcontextprotocol/servers"
+      "source": "https://github.com/modelcontextprotocol/servers",
+      "benchmarkStatus": "live",
+      "strengths": [
+        "fetch",
+        "markdown",
+        "raw"
+      ]
+    },
+    {
+      "name": "official-postgres-mcp",
+      "kind": "mcp",
+      "command": "npx -y @modelcontextprotocol/server-postgres <connection-string>",
+      "license": "MIT",
+      "source": "https://github.com/modelcontextprotocol/servers",
+      "requiresAuth": true,
+      "benchmarkStatus": "auth-gated",
+      "strengths": [
+        "schema",
+        "read_query"
+      ]
+    },
+    {
+      "name": "official-brave-search-mcp",
+      "kind": "mcp",
+      "command": "npx -y @modelcontextprotocol/server-brave-search",
+      "license": "MIT",
+      "source": "https://github.com/modelcontextprotocol/servers",
+      "requiresAuth": true,
+      "benchmarkStatus": "auth-gated",
+      "strengths": [
+        "web_search",
+        "local_search"
+      ]
+    },
+    {
+      "name": "official-github-mcp",
+      "kind": "mcp",
+      "command": "docker run -i --rm -e GITHUB_PERSONAL_ACCESS_TOKEN ghcr.io/github/github-mcp-server",
+      "license": "MIT",
+      "source": "https://github.com/github/github-mcp-server",
+      "requiresAuth": true,
+      "benchmarkStatus": "auth-gated",
+      "strengths": [
+        "repo",
+        "issues",
+        "pull_requests",
+        "actions",
+        "code_search"
+      ]
     },
     {
       "name": "playwright-mcp",
       "kind": "mcp",
       "command": "npx -y @playwright/mcp",
       "license": "Apache-2.0",
-      "source": "https://www.npmjs.com/package/@playwright/mcp"
+      "source": "https://www.npmjs.com/package/@playwright/mcp",
+      "benchmarkStatus": "metadata-only",
+      "strengths": [
+        "browser_actions",
+        "accessibility_snapshot",
+        "screenshots"
+      ]
+    },
+    {
+      "name": "charlotte-compact-browser-mcp",
+      "kind": "mcp",
+      "command": "npx/uvx charlotte browser MCP server when package is available",
+      "license": "OSS",
+      "source": "https://www.reddit.com/r/Anthropic/comments/1rbtqxi/i_built_an_open_source_browser_mcp_server_that/",
+      "benchmarkStatus": "metadata-only",
+      "strengths": [
+        "compact_page_maps",
+        "multi_detail_snapshots",
+        "token_efficiency"
+      ]
     },
     {
       "name": "context7-mcp",
       "kind": "mcp",
       "command": "npx -y @upstash/context7-mcp",
       "license": "MIT",
-      "source": "https://www.npmjs.com/package/@upstash/context7-mcp"
+      "source": "https://www.npmjs.com/package/@upstash/context7-mcp",
+      "benchmarkStatus": "metadata-only",
+      "strengths": [
+        "library_resolution",
+        "versioned_docs"
+      ]
     },
     {
       "name": "sentry-mcp-server",
       "kind": "mcp",
       "command": "npx -y @sentry/mcp-server",
       "license": "FSL-1.1-ALv2",
-      "source": "https://www.npmjs.com/package/@sentry/mcp-server"
+      "source": "https://www.npmjs.com/package/@sentry/mcp-server",
+      "requiresAuth": true,
+      "benchmarkStatus": "auth-gated",
+      "strengths": [
+        "issues",
+        "stacktraces",
+        "projects",
+        "organization"
+      ]
     },
     {
       "name": "git-grep-cli",
       "kind": "cli",
       "command": "git grep <query>",
       "license": "GPL-2.0-only",
-      "source": "https://git-scm.com/docs/git-grep"
+      "source": "https://git-scm.com/docs/git-grep",
+      "benchmarkStatus": "live",
+      "strengths": [
+        "fast_search"
+      ]
     },
     {
       "name": "git-cli",
       "kind": "cli",
       "command": "git status/log/diff",
       "license": "GPL-2.0-only",
-      "source": "https://git-scm.com"
+      "source": "https://git-scm.com",
+      "benchmarkStatus": "live",
+      "strengths": [
+        "status",
+        "log",
+        "diff"
+      ]
     }
   ],
   "summary": "9/9 tasks passed significantly-better threshold.",
   "taskResults": [
     {
+      "goal": "Find relevant repo context without leaking nearby secrets.",
+      "baselines": [
+        {
+          "name": "official-filesystem-mcp",
+          "method": "live-mcp",
+          "live": true
+        },
+        {
+          "name": "git-grep-cli",
+          "method": "cli",
+          "live": true
+        }
+      ],
+      "coverage": {
+        "tokenhubCapabilities": [
+          "search",
+          "read",
+          "resource_links",
+          "secret_redaction",
+          "write",
+          "move",
+          "delete",
+          "tree"
+        ],
+        "competitorCapabilities": [
+          "search",
+          "read",
+          "write",
+          "move",
+          "delete",
+          "tree"
+        ],
+        "parity": "partial",
+        "gaps": [
+          "media/binary reads and detailed allowed-directory listing are not benchmarked"
+        ]
+      },
       "task": "filesystem-marker",
       "tokenhub": {
         "name": "tokenhub",
-        "estimatedTokens": 109,
+        "estimatedTokens": 111,
         "qualityScore": 100,
         "tokenEfficiencyScore": 100,
         "totalScore": 100,
@@ -121,17 +268,55 @@
           "SECRET_VALUE_DO_NOT_RETURN"
         ]
       },
+      "coverageScore": 100,
       "passed": true,
-      "reason": "quality +35, tokens 51% lower, total +39"
+      "reason": "quality +35, tokens 50% lower, total +39"
     },
     {
+      "goal": "Summarize repo status, recent commits, and diff context compactly.",
+      "baselines": [
+        {
+          "name": "official-git-mcp",
+          "method": "live-mcp",
+          "live": true
+        },
+        {
+          "name": "git-cli",
+          "method": "cli",
+          "live": true
+        }
+      ],
+      "coverage": {
+        "tokenhubCapabilities": [
+          "status",
+          "log",
+          "diff",
+          "show",
+          "stage",
+          "commit",
+          "branch"
+        ],
+        "competitorCapabilities": [
+          "status",
+          "log",
+          "diff",
+          "show",
+          "stage",
+          "commit",
+          "branch"
+        ],
+        "parity": "partial",
+        "gaps": [
+          "checkout/reset/init are intentionally excluded from default safe workflows"
+        ]
+      },
       "task": "git-summary",
       "tokenhub": {
         "name": "tokenhub",
-        "estimatedTokens": 140,
+        "estimatedTokens": 168,
         "qualityScore": 100,
-        "tokenEfficiencyScore": 49,
-        "totalScore": 85,
+        "tokenEfficiencyScore": 41,
+        "totalScore": 82,
         "missingFacts": [],
         "missingRequiredPatterns": [],
         "forbiddenHits": []
@@ -170,14 +355,41 @@
         "missingRequiredPatterns": [],
         "forbiddenHits": []
       },
+      "coverageScore": 100,
       "passed": true,
-      "reason": "quality +0, tokens 90% lower, total +0"
+      "reason": "quality +0, tokens 88% lower, total +-3"
     },
     {
+      "goal": "Fetch a page and return clean, compact text plus resource links.",
+      "baselines": [
+        {
+          "name": "official-fetch-mcp",
+          "method": "live-mcp",
+          "live": true
+        }
+      ],
+      "coverage": {
+        "tokenhubCapabilities": [
+          "fetch",
+          "scrape",
+          "markdown",
+          "resource_links",
+          "secret_redaction"
+        ],
+        "competitorCapabilities": [
+          "fetch",
+          "markdown",
+          "raw"
+        ],
+        "parity": "partial",
+        "gaps": [
+          "robots behavior and full fetch options are inherited from provider behavior, not fully parity-tested"
+        ]
+      },
       "task": "web-clean-fetch",
       "tokenhub": {
         "name": "tokenhub",
-        "estimatedTokens": 79,
+        "estimatedTokens": 81,
         "qualityScore": 100,
         "tokenEfficiencyScore": 100,
         "totalScore": 100,
@@ -211,14 +423,41 @@
         "missingRequiredPatterns": [],
         "forbiddenHits": []
       },
+      "coverageScore": 72,
       "passed": true,
-      "reason": "quality +20, tokens 76% lower, total +29"
+      "reason": "quality +20, tokens 75% lower, total +29"
     },
     {
+      "goal": "Summarize public GitHub repo, issues, PRs, and workflow runs without raw REST bloat.",
+      "baselines": [
+        {
+          "name": "github-rest-raw",
+          "method": "raw-api",
+          "live": true
+        }
+      ],
+      "coverage": {
+        "tokenhubCapabilities": [
+          "repo",
+          "issues",
+          "pull_requests",
+          "actions"
+        ],
+        "competitorCapabilities": [
+          "repo",
+          "issues",
+          "pull_requests",
+          "actions"
+        ],
+        "parity": "partial",
+        "gaps": [
+          "mutating GitHub operations and authenticated code search are not benchmarked without credentials"
+        ]
+      },
       "task": "github-public-summary",
       "tokenhub": {
         "name": "tokenhub",
-        "estimatedTokens": 223,
+        "estimatedTokens": 525,
         "qualityScore": 100,
         "tokenEfficiencyScore": 100,
         "totalScore": 100,
@@ -229,7 +468,7 @@
       "competitors": [
         {
           "name": "github-rest-raw",
-          "estimatedTokens": 6884,
+          "estimatedTokens": 7767,
           "qualityScore": 55,
           "tokenEfficiencyScore": 50,
           "totalScore": 54,
@@ -242,7 +481,7 @@
       ],
       "strongestCompetitor": {
         "name": "github-rest-raw",
-        "estimatedTokens": 6884,
+        "estimatedTokens": 7767,
         "qualityScore": 55,
         "tokenEfficiencyScore": 50,
         "totalScore": 54,
@@ -252,14 +491,43 @@
           "node_id|avatar_url|html_url"
         ]
       },
+      "coverageScore": 100,
       "passed": true,
-      "reason": "quality +45, tokens 97% lower, total +46"
+      "reason": "quality +45, tokens 93% lower, total +46"
     },
     {
+      "goal": "Capture browser state with refs, console/network counts, screenshots as resources, and compact text.",
+      "baselines": [
+        {
+          "name": "playwright-raw-html",
+          "method": "fixture",
+          "live": true
+        }
+      ],
+      "coverage": {
+        "tokenhubCapabilities": [
+          "navigation",
+          "dom_refs",
+          "screenshots",
+          "console",
+          "network"
+        ],
+        "competitorCapabilities": [
+          "navigation",
+          "dom",
+          "screenshots",
+          "actions",
+          "traces"
+        ],
+        "parity": "partial",
+        "gaps": [
+          "full interactive Playwright action parity and trace viewer artifacts are not yet live-benchmarked"
+        ]
+      },
       "task": "browser-compact-state",
       "tokenhub": {
         "name": "tokenhub",
-        "estimatedTokens": 64,
+        "estimatedTokens": 66,
         "qualityScore": 100,
         "tokenEfficiencyScore": 100,
         "totalScore": 100,
@@ -295,14 +563,40 @@
           "console\\.log"
         ]
       },
+      "coverageScore": 45,
       "passed": true,
-      "reason": "quality +70, tokens 64% lower, total +64"
+      "reason": "quality +70, tokens 63% lower, total +64"
     },
     {
+      "goal": "Normalize multi-provider search output with dedupe, confidence, and compact fields.",
+      "baselines": [
+        {
+          "name": "brave-json-raw",
+          "method": "raw-api",
+          "live": false,
+          "notes": "Provider-shaped fixture avoids requiring an API key."
+        }
+      ],
+      "coverage": {
+        "tokenhubCapabilities": [
+          "web_search",
+          "dedupe",
+          "provider_normalization",
+          "confidence"
+        ],
+        "competitorCapabilities": [
+          "web_search",
+          "local_search"
+        ],
+        "parity": "partial",
+        "gaps": [
+          "local search and provider-specific advanced filters require provider credentials"
+        ]
+      },
       "task": "search-provider-normalization",
       "tokenhub": {
         "name": "tokenhub",
-        "estimatedTokens": 44,
+        "estimatedTokens": 46,
         "qualityScore": 100,
         "tokenEfficiencyScore": 100,
         "totalScore": 100,
@@ -332,14 +626,37 @@
         "missingRequiredPatterns": [],
         "forbiddenHits": []
       },
+      "coverageScore": 55,
       "passed": true,
-      "reason": "quality +0, tokens 75% lower, total +15"
+      "reason": "quality +0, tokens 74% lower, total +15"
     },
     {
+      "goal": "Inspect SQLite schema and safe SELECT rows with redaction.",
+      "baselines": [
+        {
+          "name": "sqljs-raw",
+          "method": "fixture",
+          "live": true
+        }
+      ],
+      "coverage": {
+        "tokenhubCapabilities": [
+          "schema",
+          "read_query",
+          "limits",
+          "redaction"
+        ],
+        "competitorCapabilities": [
+          "schema",
+          "read_query"
+        ],
+        "parity": "full",
+        "gaps": []
+      },
       "task": "sqlite-safe-inspection",
       "tokenhub": {
         "name": "tokenhub",
-        "estimatedTokens": 49,
+        "estimatedTokens": 51,
         "qualityScore": 100,
         "tokenEfficiencyScore": 100,
         "totalScore": 100,
@@ -373,14 +690,41 @@
           "SECRET_SQLITE_KEY"
         ]
       },
+      "coverageScore": 100,
       "passed": true,
-      "reason": "quality +35, tokens 69% lower, total +39"
+      "reason": "quality +35, tokens 68% lower, total +39"
     },
     {
+      "goal": "Return package version and docs metadata without raw registry/readme bloat.",
+      "baselines": [
+        {
+          "name": "npm-registry-raw",
+          "method": "raw-api",
+          "live": true
+        }
+      ],
+      "coverage": {
+        "tokenhubCapabilities": [
+          "package_metadata",
+          "versions",
+          "docs_links",
+          "changelog"
+        ],
+        "competitorCapabilities": [
+          "package_metadata",
+          "versions",
+          "readme",
+          "docs_links"
+        ],
+        "parity": "partial",
+        "gaps": [
+          "Context7 library resolution and versioned docs corpus are metadata-only until live MCP credentials/package are available"
+        ]
+      },
       "task": "docs-package-lookup",
       "tokenhub": {
         "name": "tokenhub",
-        "estimatedTokens": 168,
+        "estimatedTokens": 240,
         "qualityScore": 100,
         "tokenEfficiencyScore": 100,
         "totalScore": 100,
@@ -414,14 +758,42 @@
           "readme|maintainers"
         ]
       },
+      "coverageScore": 80,
       "passed": true,
       "reason": "quality +45, tokens 100% lower, total +46"
     },
     {
+      "goal": "Cluster Sentry issues and summarize impact without returning raw issue URLs.",
+      "baselines": [
+        {
+          "name": "sentry-issues-raw",
+          "method": "fixture",
+          "live": false,
+          "notes": "Sentry auth is required for live issue reads."
+        }
+      ],
+      "coverage": {
+        "tokenhubCapabilities": [
+          "issues",
+          "clusters",
+          "issue_details",
+          "redaction"
+        ],
+        "competitorCapabilities": [
+          "issues",
+          "projects",
+          "stacktraces",
+          "events"
+        ],
+        "parity": "partial",
+        "gaps": [
+          "live stacktrace/project operations require Sentry auth"
+        ]
+      },
       "task": "sentry-error-clustering",
       "tokenhub": {
         "name": "tokenhub",
-        "estimatedTokens": 36,
+        "estimatedTokens": 38,
         "qualityScore": 100,
         "tokenEfficiencyScore": 100,
         "totalScore": 100,
@@ -459,8 +831,9 @@
           "permalink"
         ]
       },
+      "coverageScore": 30,
       "passed": true,
-      "reason": "quality +65, tokens 80% lower, total +60"
+      "reason": "quality +65, tokens 79% lower, total +60"
     }
   ],
   "weakTasks": []

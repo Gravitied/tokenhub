@@ -11,10 +11,23 @@ export type GitSummaryInput = {
   budgetTokens?: number;
 };
 
+export type GitChangedFile = { path: string; status: "modified" | "added" | "deleted" | "untracked" | "renamed" | "other" };
+
+export type GitActionInput = {
+  root: string;
+  action: "status" | "diff" | "show" | "stage" | "commit" | "branch";
+  paths?: string[];
+  message?: string;
+  ref?: string;
+  branch?: string;
+  budgetTokens?: number;
+};
+
 export async function summarizeGit(input: GitSummaryInput): Promise<{
   isRepo: boolean;
   summary: string;
   rawResourceUri?: string;
+  changedFiles: GitChangedFile[];
   tokenEstimate: number;
   warnings: string[];
 }> {
@@ -23,6 +36,7 @@ export async function summarizeGit(input: GitSummaryInput): Promise<{
     return {
       isRepo: false,
       summary: "Not a Git repository.",
+      changedFiles: [],
       tokenEstimate: 6,
       warnings: []
     };
@@ -53,8 +67,41 @@ export async function summarizeGit(input: GitSummaryInput): Promise<{
     isRepo: true,
     summary: truncated.text,
     rawResourceUri: link.uri,
+    changedFiles: parseChangedFiles(status),
     tokenEstimate: estimateTokens(truncated.text),
     warnings: truncated.truncated ? ["Git summary was truncated; raw output is available as a resource."] : []
+  };
+}
+
+export async function runGitAction(input: GitActionInput): Promise<{ summary: string; output: string; warnings: string[] }> {
+  const warnings: string[] = [];
+  let args: string[];
+  if (input.action === "status") {
+    args = ["status", "--short"];
+  } else if (input.action === "diff") {
+    args = ["diff", "--stat", ...(input.paths ?? [])];
+  } else if (input.action === "show") {
+    args = ["show", "--stat", "--oneline", "--no-renames", input.ref ?? "HEAD"];
+  } else if (input.action === "stage") {
+    const paths = input.paths?.filter(Boolean);
+    if (!paths?.length) throw new Error("git stage requires at least one path.");
+    args = ["add", "--", ...paths];
+  } else if (input.action === "commit") {
+    if (!input.message?.trim()) throw new Error("git commit requires message.");
+    args = ["commit", "-m", input.message.trim()];
+  } else {
+    args = input.branch ? ["branch", input.branch] : ["branch", "--show-current"];
+  }
+
+  const output = await runGit(input.root, args).catch((error: Error) => {
+    warnings.push(error.message.trim());
+    return error.message.trim();
+  });
+  const redacted = redactSecrets(output);
+  return {
+    summary: summarizeGitAction(input.action, redacted),
+    output: truncateToTokens(redacted, input.budgetTokens ?? 500).text,
+    warnings
   };
 }
 
@@ -69,7 +116,7 @@ async function runGit(root: string, args: string[]): Promise<string> {
     timeout: 10000,
     maxBuffer: 1024 * 1024
   });
-  return `${stdout}${stderr}`.trim();
+  return `${stdout}${stderr}`.trimEnd();
 }
 
 async function runGitSafe(root: string, args: string[]): Promise<string> {
@@ -103,4 +150,37 @@ function summarizeStatus(status: string): string {
     });
 
   return `Working tree status:\n${lines.join("\n")}`;
+}
+
+function parseChangedFiles(status: string): GitChangedFile[] {
+  return status
+    .split(/\r?\n/)
+    .filter(Boolean)
+    .map((line) => {
+      const code = line.slice(0, 2);
+      const path = line.slice(3).split(" -> ").pop() ?? line.slice(3);
+      return { path, status: statusName(code) };
+    });
+}
+
+function statusName(code: string): GitChangedFile["status"] {
+  if (code.includes("R")) return "renamed";
+  if (code.includes("?")) return "untracked";
+  if (code.includes("M")) return "modified";
+  if (code.includes("A")) return "added";
+  if (code.includes("D")) return "deleted";
+  return "other";
+}
+
+function summarizeGitAction(action: GitActionInput["action"], output: string): string {
+  if (action === "stage") return "staged requested paths";
+  if (action === "commit") return `committed changes\n${output}`;
+  if (action === "status") return summarizeStatus(output);
+  return output || `${action} completed`;
+}
+
+function redactSecrets(text: string): string {
+  return text
+    .replace(/(password|secret|token|api[_-]?key)(\s*[:=]\s*)["']?[^"'\s;]+["']?/gi, "$1$2[redacted]")
+    .replace(/SECRET_[A-Z0-9_:-]+/g, "[redacted]");
 }

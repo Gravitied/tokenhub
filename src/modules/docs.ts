@@ -14,6 +14,12 @@ export async function lookupNpmPackage(input: PackageLookupInput): Promise<{
   description: string;
   versions: string[];
   links: string[];
+  docs: {
+    homepage?: string;
+    repository?: string;
+    changelog?: string;
+    readmeResource?: string;
+  };
   tokenEstimate: number;
 }> {
   const fetchImpl = input.fetchImpl ?? fetch;
@@ -28,9 +34,16 @@ export async function lookupNpmPackage(input: PackageLookupInput): Promise<{
     typeof json.homepage === "string" ? json.homepage : "",
     repositoryUrl(json.repository)
   ].filter(Boolean);
+  const repository = repositoryUrl(json.repository);
+  const docs = {
+    homepage: typeof json.homepage === "string" ? json.homepage : undefined,
+    repository: repository || undefined,
+    changelog: inferChangelogUrl(repository) || undefined,
+    readmeResource: undefined
+  };
   const description = typeof json.description === "string" ? json.description : "";
   const summary = truncateToTokens(
-    `${input.name}@${latest}: ${description}. Recent versions: ${versions.join(", ")}. Links: ${links.join(", ")}`,
+    `${input.name}@${latest}: ${description}. Recent versions: ${versions.join(", ")}. Links: ${links.join(", ")}${docs.changelog ? `. Changelog: ${docs.changelog}` : ""}`,
     input.budgetTokens ?? 300
   ).text;
 
@@ -41,6 +54,7 @@ export async function lookupNpmPackage(input: PackageLookupInput): Promise<{
     description,
     versions,
     links,
+    docs,
     tokenEstimate: estimateTokens(summary)
   };
 }
@@ -59,6 +73,11 @@ function repositoryUrl(value: unknown): string {
     return (value as { url: string }).url.replace(/^git\+/, "");
   }
   return "";
+}
+
+function inferChangelogUrl(repository: string): string {
+  const clean = repository.replace(/\.git$/, "");
+  return /^https:\/\/github\.com\/[^/]+\/[^/]+$/i.test(clean) ? `${clean}/releases` : "";
 }
 
 function compareVersionsDesc(a: string, b: string): number {
