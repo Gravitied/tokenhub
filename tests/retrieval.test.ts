@@ -36,6 +36,31 @@ describe("filesystem retrieval", () => {
       await rm(dir, { recursive: true, force: true });
     }
   });
+
+  test("redacts secret-looking values from model-facing snippets", async () => {
+    const dir = await mkdtemp(join(tmpdir(), "tokenhub-fs-redact-"));
+    const store = new ResourceStore({ rootDir: join(dir, ".tokenhub", "resources") });
+    try {
+      await writeFile(
+        join(dir, "secrets.ts"),
+        "export const marker = 'TOKENHUB_BENCHMARK_NEEDLE';\nexport const password = 'SECRET_VALUE_DO_NOT_RETURN';\n"
+      );
+
+      const result = await searchFiles({
+        root: dir,
+        query: "TOKENHUB_BENCHMARK_NEEDLE",
+        limit: 5,
+        budgetTokens: 80,
+        resourceStore: store
+      });
+
+      expect(result.matches[0].snippet).toContain("TOKENHUB_BENCHMARK_NEEDLE");
+      expect(result.matches[0].snippet).not.toContain("SECRET_VALUE_DO_NOT_RETURN");
+      expect(result.matches[0].snippet).toContain("[redacted]");
+    } finally {
+      await rm(dir, { recursive: true, force: true });
+    }
+  });
 });
 
 describe("git retrieval", () => {

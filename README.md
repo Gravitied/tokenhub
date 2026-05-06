@@ -52,3 +52,13 @@ npm run proof
 ```
 
 The proof command writes `artifacts/proof/tokenhub-proof.png`, a PNG screenshot generated from real local verification command results.
+
+## Competitive Benchmarks
+
+Run:
+
+```bash
+npm run bench
+```
+
+The benchmark downloads or invokes free baselines through `npx`, `uvx`, and local Git CLI tools, then compares TokenHub on expected facts, secret redaction, resource-link behavior, and estimated token usage. Reports are written to `artifacts/benchmarks/competitive-report.json`.

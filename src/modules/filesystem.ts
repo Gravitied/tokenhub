@@ -92,5 +92,11 @@ function buildSnippet(content: string, matchLine: number, budgetTokens: number):
   const start = Math.max(1, matchLine - 2);
   const end = Math.min(lines.length, matchLine + 2);
   const numbered = lines.slice(start - 1, end).map((line, index) => `${start + index}: ${line}`);
-  return truncateToTokens(numbered.join("\n"), budgetTokens).text;
+  return truncateToTokens(redactSecrets(numbered.join("\n")), budgetTokens).text;
+}
+
+function redactSecrets(text: string): string {
+  return text
+    .replace(/(password|secret|token|api[_-]?key)(\s*[:=]\s*)["']?[^"'\s;]+["']?/gi, "$1$2[redacted]")
+    .replace(/SECRET_[A-Z0-9_:-]+/g, "[redacted]");
 }

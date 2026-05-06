@@ -17,6 +17,7 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "lint": "tsc -p tsconfig.json --noEmit",
+    "bench": "npm run build && node scripts/run-benchmarks.mjs",
     "proof": "node scripts/generate-proof-page.mjs",
     "prepack": "npm run build"
   },

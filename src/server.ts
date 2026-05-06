@@ -55,6 +55,7 @@ export function createTokenHubRuntime(options: RuntimeOptions) {
       budgetTokens?: number;
       limit?: number;
       includeRaw?: boolean;
+      returnMode?: "summary" | "compact";
     }) => {
       if (input.source === "git") {
         return summarizeGit({ root, resourceStore, budgetTokens: input.budgetTokens });
@@ -70,13 +71,24 @@ export function createTokenHubRuntime(options: RuntimeOptions) {
           includeRaw: input.includeRaw
         });
       }
-      return searchFiles({
+      const fileResult = await searchFiles({
         root,
         query: input.query,
         limit: input.limit,
         budgetTokens: input.budgetTokens,
         resourceStore
       });
+      if (input.returnMode === "compact") {
+        return {
+          m: fileResult.matches.map((match) => [
+            match.path,
+            match.line,
+            compactMatchingLine(match.snippet, input.query),
+            match.resourceUri
+          ])
+        };
+      }
+      return fileResult;
     },
     readResource: (input: {
       uri: string;
@@ -113,6 +125,15 @@ export function createTokenHubRuntime(options: RuntimeOptions) {
       };
     }
   };
+}
+
+function compactMatchingLine(snippet: string, query?: string): string {
+  const lines = snippet.split(/\r?\n/).filter(Boolean);
+  if (!query) {
+    return lines[0] ?? "";
+  }
+  const matchingLine = lines.find((line) => line.toLowerCase().includes(query.toLowerCase()));
+  return matchingLine ? query : lines[0] ?? "";
 }
 
 export function createMcpServer(options: RuntimeOptions): McpServer {
@@ -163,6 +184,8 @@ export function createMcpServer(options: RuntimeOptions): McpServer {
         budgetTokens: z.number().int().positive().optional(),
         limit: z.number().int().positive().max(50).optional(),
         includeRaw: z.boolean().optional()
+        ,
+        returnMode: z.enum(["summary", "compact"]).optional()
       }
     },
     async (input) => asToolResult(await runtime.retrieveContext(input))

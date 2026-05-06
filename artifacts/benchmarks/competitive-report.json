@@ -1,0 +1,195 @@
+{
+  "generatedAt": "2026-05-06T15:32:24.980Z",
+  "sources": [
+    "https://github.com/modelcontextprotocol/servers",
+    "https://www.npmjs.com/package/@modelcontextprotocol/server-filesystem",
+    "https://git-scm.com/docs/git-grep",
+    "https://git-scm.com"
+  ],
+  "competitors": [
+    {
+      "name": "official-filesystem-mcp",
+      "kind": "mcp",
+      "command": "npx -y @modelcontextprotocol/server-filesystem <root>",
+      "license": "MIT",
+      "source": "https://www.npmjs.com/package/@modelcontextprotocol/server-filesystem"
+    },
+    {
+      "name": "official-git-mcp",
+      "kind": "mcp",
+      "command": "uvx mcp-server-git --repository <root>",
+      "license": "MIT",
+      "source": "https://github.com/modelcontextprotocol/servers"
+    },
+    {
+      "name": "official-fetch-mcp",
+      "kind": "mcp",
+      "command": "uvx mcp-server-fetch",
+      "license": "MIT",
+      "source": "https://github.com/modelcontextprotocol/servers"
+    },
+    {
+      "name": "git-grep-cli",
+      "kind": "cli",
+      "command": "git grep <query>",
+      "license": "GPL-2.0-only",
+      "source": "https://git-scm.com/docs/git-grep"
+    },
+    {
+      "name": "git-cli",
+      "kind": "cli",
+      "command": "git status/log/diff",
+      "license": "GPL-2.0-only",
+      "source": "https://git-scm.com"
+    }
+  ],
+  "summary": "3/3 tasks passed significantly-better threshold.",
+  "taskResults": [
+    {
+      "task": "filesystem-marker",
+      "tokenhub": {
+        "name": "tokenhub",
+        "estimatedTokens": 109,
+        "qualityScore": 100,
+        "tokenEfficiencyScore": 100,
+        "totalScore": 100,
+        "missingFacts": [],
+        "missingRequiredPatterns": [],
+        "forbiddenHits": []
+      },
+      "competitors": [
+        {
+          "name": "official-filesystem-mcp",
+          "estimatedTokens": 6800,
+          "qualityScore": 25,
+          "tokenEfficiencyScore": 50,
+          "totalScore": 33,
+          "missingFacts": [
+            "src/feature.ts"
+          ],
+          "missingRequiredPatterns": [],
+          "forbiddenHits": [
+            "SECRET_VALUE_DO_NOT_RETURN"
+          ]
+        },
+        {
+          "name": "git-grep-cli",
+          "estimatedTokens": 222,
+          "qualityScore": 65,
+          "tokenEfficiencyScore": 50,
+          "totalScore": 61,
+          "missingFacts": [],
+          "missingRequiredPatterns": [],
+          "forbiddenHits": [
+            "SECRET_VALUE_DO_NOT_RETURN"
+          ]
+        }
+      ],
+      "strongestCompetitor": {
+        "name": "git-grep-cli",
+        "estimatedTokens": 222,
+        "qualityScore": 65,
+        "tokenEfficiencyScore": 50,
+        "totalScore": 61,
+        "missingFacts": [],
+        "missingRequiredPatterns": [],
+        "forbiddenHits": [
+          "SECRET_VALUE_DO_NOT_RETURN"
+        ]
+      },
+      "passed": true,
+      "reason": "quality +35, tokens 51% lower, total +39"
+    },
+    {
+      "task": "git-summary",
+      "tokenhub": {
+        "name": "tokenhub",
+        "estimatedTokens": 140,
+        "qualityScore": 100,
+        "tokenEfficiencyScore": 49,
+        "totalScore": 85,
+        "missingFacts": [],
+        "missingRequiredPatterns": [],
+        "forbiddenHits": []
+      },
+      "competitors": [
+        {
+          "name": "official-git-mcp",
+          "estimatedTokens": 1348,
+          "qualityScore": 100,
+          "tokenEfficiencyScore": 50,
+          "totalScore": 85,
+          "missingFacts": [],
+          "missingRequiredPatterns": [],
+          "forbiddenHits": []
+        },
+        {
+          "name": "git-cli",
+          "estimatedTokens": 137,
+          "qualityScore": 80,
+          "tokenEfficiencyScore": 50,
+          "totalScore": 71,
+          "missingFacts": [
+            "modified"
+          ],
+          "missingRequiredPatterns": [],
+          "forbiddenHits": []
+        }
+      ],
+      "strongestCompetitor": {
+        "name": "official-git-mcp",
+        "estimatedTokens": 1348,
+        "qualityScore": 100,
+        "tokenEfficiencyScore": 50,
+        "totalScore": 85,
+        "missingFacts": [],
+        "missingRequiredPatterns": [],
+        "forbiddenHits": []
+      },
+      "passed": true,
+      "reason": "quality +0, tokens 90% lower, total +0"
+    },
+    {
+      "task": "web-clean-fetch",
+      "tokenhub": {
+        "name": "tokenhub",
+        "estimatedTokens": 79,
+        "qualityScore": 100,
+        "tokenEfficiencyScore": 100,
+        "totalScore": 100,
+        "missingFacts": [],
+        "missingRequiredPatterns": [],
+        "forbiddenHits": []
+      },
+      "competitors": [
+        {
+          "name": "official-fetch-mcp",
+          "estimatedTokens": 326,
+          "qualityScore": 80,
+          "tokenEfficiencyScore": 50,
+          "totalScore": 71,
+          "missingFacts": [
+            "TOKENHUB_BENCHMARK_NEEDLE"
+          ],
+          "missingRequiredPatterns": [],
+          "forbiddenHits": []
+        }
+      ],
+      "strongestCompetitor": {
+        "name": "official-fetch-mcp",
+        "estimatedTokens": 326,
+        "qualityScore": 80,
+        "tokenEfficiencyScore": 50,
+        "totalScore": 71,
+        "missingFacts": [
+          "TOKENHUB_BENCHMARK_NEEDLE"
+        ],
+        "missingRequiredPatterns": [],
+        "forbiddenHits": []
+      },
+      "passed": true,
+      "reason": "quality +20, tokens 76% lower, total +29"
+    }
+  ],
+  "weakTasks": []
+}
