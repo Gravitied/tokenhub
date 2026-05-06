@@ -64,7 +64,7 @@ function inferOutputShape(lower: string, intent: RequestIntent, subject: Request
   if (/\b(cite|cites|citation|citations|sources)\b/.test(lower)) return "citations";
   if (/\b(table|spreadsheet|columns|rows)\b/.test(lower)) return "table";
   if (intent === "plan") return "plan";
-  if (/\b(list|top \d+|ranked|best)\b/.test(lower)) return "list";
+  if (/\b(list|top \d+|ranked)\b/.test(lower)) return "list";
   if (/\b(1 paragraph|one paragraph|summary|summarize)\b/.test(lower)) return "paragraph";
   if (intent === "extract" || subject === "data") return "structured_data";
   if (intent === "research" || intent === "compare") return "agent_context";

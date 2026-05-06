@@ -19,6 +19,7 @@
     "lint": "tsc -p tsconfig.json --noEmit",
     "bench": "npm run build && node scripts/run-benchmarks.mjs",
     "eval:resolve-request": "npm run build && node scripts/evaluate-resolve-request.mjs",
+    "eval:resolve-request:live": "npm run build && node scripts/evaluate-live-resolve-request.mjs",
     "proof": "node scripts/generate-proof-page.mjs",
     "prepack": "npm run build"
   },

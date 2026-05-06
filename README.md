@@ -92,11 +92,14 @@ Run:
 
 ```bash
 npm test
+npm run eval:resolve-request
+npm run eval:resolve-request:live
 npm run build
 npm run proof
 ```
 
 The proof command writes `artifacts/proof/tokenhub-proof.png`, a PNG screenshot generated from real local verification command results.
+`npm run eval:resolve-request:live` uses live DuckDuckGo search and live page fetches, then scores source count, domain diversity, preferred official domains, context snippets, topic coverage, resource links, and telemetry.
 
 ## Competitive Benchmarks
 

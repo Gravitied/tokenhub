@@ -14,6 +14,7 @@ const commands = [];
 commands.push(await run("npm", ["test"]));
 commands.push(await run("npm", ["test", "--", "tests/request-router.test.ts", "tests/resolve-request.test.ts"]));
 commands.push(await run("npm", ["run", "eval:resolve-request"]));
+commands.push(await run("npm", ["run", "eval:resolve-request:live"]));
 commands.push(await run("npm", ["run", "build"]));
 commands.push(await run("npm", ["run", "bench"]));
 

@@ -16,6 +16,7 @@ describe("proof page", () => {
           { command: "npm test", exitCode: 0, summary: "4 files passed" },
           { command: "npm test -- tests/request-router.test.ts tests/resolve-request.test.ts", exitCode: 0, summary: "dynamic resolve_request tests passed" },
           { command: "npm run eval:resolve-request", exitCode: 0, summary: "30 of 30 resolve_request prompt evaluations passed" },
+          { command: "npm run eval:resolve-request:live", exitCode: 0, summary: "10 of 10 live resolve_request source-quality evaluations passed" },
           { command: "npm run build", exitCode: 0, summary: "TypeScript compiled" }
         ],
         repoState: "clean"
@@ -27,6 +28,7 @@ describe("proof page", () => {
       expect(html).toContain("npm test");
       expect(html).toContain("resolve_request");
       expect(html).toContain("eval:resolve-request");
+      expect(html).toContain("eval:resolve-request:live");
       expect(html).toContain("4 files passed");
       expect(html).not.toContain("{");
     } finally {
