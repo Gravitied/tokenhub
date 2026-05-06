@@ -127,7 +127,81 @@ describe("web search module", () => {
     expect(result.results[0].provider).toBe("brave");
     expect(result.summary).toContain("TokenHub");
   });
+
+  test("uses configured provider tooling from environment keys", async () => {
+    const previousBraveKey = process.env.BRAVE_SEARCH_API_KEY;
+    process.env.BRAVE_SEARCH_API_KEY = "env-key";
+    try {
+      const result = await searchWeb({
+        query: "tokenhub mcp",
+        fetchImpl: async (_url, init) => {
+          expect(init?.headers).toEqual(expect.objectContaining({ "x-subscription-token": "env-key" }));
+          return new Response(
+            JSON.stringify({ web: { results: [{ title: "TokenHub", url: "https://example.com", description: "MCP hub" }] } }),
+            { status: 200 }
+          );
+        }
+      });
+
+      expect(result.results[0].provider).toBe("brave");
+      expect(result.warnings).toEqual([]);
+    } finally {
+      if (previousBraveKey === undefined) {
+        delete process.env.BRAVE_SEARCH_API_KEY;
+      } else {
+        process.env.BRAVE_SEARCH_API_KEY = previousBraveKey;
+      }
+    }
+  });
+
+  test("uses a no-key DuckDuckGo fallback when providers are unconfigured", async () => {
+    const previousKeys = {
+      brave: process.env.BRAVE_SEARCH_API_KEY,
+      exa: process.env.EXA_API_KEY,
+      tavily: process.env.TAVILY_API_KEY,
+      serpapi: process.env.SERPAPI_API_KEY
+    };
+    delete process.env.BRAVE_SEARCH_API_KEY;
+    delete process.env.EXA_API_KEY;
+    delete process.env.TAVILY_API_KEY;
+    delete process.env.SERPAPI_API_KEY;
+    try {
+      const result = await searchWeb({
+        query: "top 10 most healthy vegetables",
+        limit: 10,
+        fetchImpl: async (url) => {
+          expect(url.toString()).toContain("duckduckgo.com/html/");
+          return new Response(duckDuckGoHtml(10), { status: 200 });
+        }
+      });
+
+      expect(result.results).toHaveLength(10);
+      expect(result.results[0].provider).toBe("duckduckgo");
+      expect(result.warnings[0]).toContain("DuckDuckGo");
+    } finally {
+      for (const [key, value] of Object.entries({
+        BRAVE_SEARCH_API_KEY: previousKeys.brave,
+        EXA_API_KEY: previousKeys.exa,
+        TAVILY_API_KEY: previousKeys.tavily,
+        SERPAPI_API_KEY: previousKeys.serpapi
+      })) {
+        if (value === undefined) {
+          delete process.env[key];
+        } else {
+          process.env[key] = value;
+        }
+      }
+    }
+  });
 });
+
+function duckDuckGoHtml(count: number): string {
+  return Array.from(
+    { length: count },
+    (_value, index) => `<a class="result__a" href="https://example.com/${index + 1}">Result ${index + 1}</a>
+      <a class="result__snippet">Snippet ${index + 1}</a>`
+  ).join("\n");
+}
 
 describe("database module", () => {
   test("inspects sqlite schema and projects rows without raw bloat", async () => {
@@ -254,7 +328,7 @@ describe("runtime routing", () => {
     const dir = await mkdtemp(join(tmpdir(), "tokenhub-routing-"));
     try {
       const runtime = createTokenHubRuntime({ root: dir });
-      const capabilities = runtime.discoverCapabilities({ query: "github browser sentry postgres sqlite docs search", limit: 20 });
+      const capabilities = runtime.discoverCapabilities({ query: "github browser sentry postgres sqlite docs search answer", limit: 20 });
 
       expect(capabilities.map((capability) => capability.id)).toEqual(
         expect.arrayContaining([
@@ -262,10 +336,11 @@ describe("runtime routing", () => {
           "browser.capture",
           "web.search",
           "database.sqlite",
-          "database.postgres",
-          "docs.npm",
-          "observability.sentry"
-        ])
+            "database.postgres",
+            "docs.npm",
+            "observability.sentry",
+            "web.answer"
+          ])
       );
     } finally {
       await rm(dir, { recursive: true, force: true });

@@ -6,6 +6,9 @@ import { estimateTokens, truncateToTokens } from "../core/token.js";
 import { searchFiles } from "../modules/filesystem.js";
 import { applyFilesystemAction } from "../modules/filesystem.js";
 import { runGitAction, summarizeGit } from "../modules/git.js";
+import { answerFromWeb } from "../modules/answer-web.js";
+import type { SearchProvider } from "../modules/search.js";
+import type { FetchLike } from "../modules/github.js";
 
 const execFileAsync = promisify(execFile);
 
@@ -24,6 +27,13 @@ export type WorkflowInput = {
   message?: string;
   ref?: string;
   branch?: string;
+  query?: string;
+  target?: "ranked_list";
+  provider?: SearchProvider;
+  apiKey?: string;
+  limit?: number;
+  sourceLimit?: number;
+  fetchImpl?: FetchLike;
   resourceStore: ResourceStore;
   telemetry: TokenTelemetry;
 };
@@ -33,6 +43,7 @@ export async function runWorkflow(input: WorkflowInput): Promise<{
   resources: ResourceLink[];
   telemetry: ReturnType<TokenTelemetry["record"]>;
   warnings: string[];
+  data?: unknown;
 }> {
   if (input.name === "validate") {
     return runValidation(input);
@@ -43,7 +54,43 @@ export async function runWorkflow(input: WorkflowInput): Promise<{
   if (input.name === "git_action") {
     return runGitActionWorkflow(input);
   }
+  if (input.name === "answer_from_web") {
+    return runAnswerFromWebWorkflow(input);
+  }
   return runProjectScan(input);
+}
+
+async function runAnswerFromWebWorkflow(input: WorkflowInput) {
+  if (!input.query) {
+    throw new Error("answer_from_web requires query.");
+  }
+  const result = await answerFromWeb({
+    query: input.query,
+    target: input.target,
+    limit: input.limit,
+    sourceLimit: input.sourceLimit,
+    budgetTokens: input.budgetTokens,
+    provider: input.provider,
+    apiKey: input.apiKey,
+    resourceStore: input.resourceStore,
+    fetchImpl: input.fetchImpl
+  });
+  const telemetry = input.telemetry.record({
+    capability: "workflow.answer_from_web",
+    estimatedToolCostTokens: result.tokenEstimate,
+    estimatedSavedTokens: Math.max(500, result.sources.length * 350 + result.items.length * 80),
+    outputTokens: result.tokenEstimate
+  });
+  return {
+    summary: result.summary,
+    resources: result.resources,
+    telemetry,
+    warnings: result.warnings,
+    data: {
+      items: result.items,
+      sources: result.sources
+    }
+  };
 }
 
 async function runFilesystemActionWorkflow(input: WorkflowInput) {

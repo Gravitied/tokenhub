@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-05-06T16:15:32.802Z",
+  "generatedAt": "2026-05-06T20:31:55.377Z",
   "sources": [
     "https://github.com/modelcontextprotocol/servers",
     "https://www.npmjs.com/package/@modelcontextprotocol/server-filesystem",
@@ -220,10 +220,10 @@
       "task": "filesystem-marker",
       "tokenhub": {
         "name": "tokenhub",
-        "estimatedTokens": 111,
+        "estimatedTokens": 116,
         "qualityScore": 100,
-        "tokenEfficiencyScore": 100,
-        "totalScore": 100,
+        "tokenEfficiencyScore": 96,
+        "totalScore": 99,
         "missingFacts": [],
         "missingRequiredPatterns": [],
         "forbiddenHits": []
@@ -270,7 +270,7 @@
       },
       "coverageScore": 100,
       "passed": true,
-      "reason": "quality +35, tokens 50% lower, total +39"
+      "reason": "quality +35, tokens 48% lower, total +38"
     },
     {
       "goal": "Summarize repo status, recent commits, and diff context compactly.",
@@ -313,9 +313,9 @@
       "task": "git-summary",
       "tokenhub": {
         "name": "tokenhub",
-        "estimatedTokens": 168,
+        "estimatedTokens": 173,
         "qualityScore": 100,
-        "tokenEfficiencyScore": 41,
+        "tokenEfficiencyScore": 40,
         "totalScore": 82,
         "missingFacts": [],
         "missingRequiredPatterns": [],
@@ -357,7 +357,7 @@
       },
       "coverageScore": 100,
       "passed": true,
-      "reason": "quality +0, tokens 88% lower, total +-3"
+      "reason": "quality +0, tokens 87% lower, total +-3"
     },
     {
       "goal": "Fetch a page and return clean, compact text plus resource links.",
@@ -389,7 +389,7 @@
       "task": "web-clean-fetch",
       "tokenhub": {
         "name": "tokenhub",
-        "estimatedTokens": 81,
+        "estimatedTokens": 86,
         "qualityScore": 100,
         "tokenEfficiencyScore": 100,
         "totalScore": 100,
@@ -425,7 +425,7 @@
       },
       "coverageScore": 72,
       "passed": true,
-      "reason": "quality +20, tokens 75% lower, total +29"
+      "reason": "quality +20, tokens 74% lower, total +29"
     },
     {
       "goal": "Summarize public GitHub repo, issues, PRs, and workflow runs without raw REST bloat.",
@@ -457,7 +457,7 @@
       "task": "github-public-summary",
       "tokenhub": {
         "name": "tokenhub",
-        "estimatedTokens": 525,
+        "estimatedTokens": 530,
         "qualityScore": 100,
         "tokenEfficiencyScore": 100,
         "totalScore": 100,
@@ -527,7 +527,7 @@
       "task": "browser-compact-state",
       "tokenhub": {
         "name": "tokenhub",
-        "estimatedTokens": 66,
+        "estimatedTokens": 71,
         "qualityScore": 100,
         "tokenEfficiencyScore": 100,
         "totalScore": 100,
@@ -565,7 +565,7 @@
       },
       "coverageScore": 45,
       "passed": true,
-      "reason": "quality +70, tokens 63% lower, total +64"
+      "reason": "quality +70, tokens 61% lower, total +64"
     },
     {
       "goal": "Normalize multi-provider search output with dedupe, confidence, and compact fields.",
@@ -596,7 +596,7 @@
       "task": "search-provider-normalization",
       "tokenhub": {
         "name": "tokenhub",
-        "estimatedTokens": 46,
+        "estimatedTokens": 51,
         "qualityScore": 100,
         "tokenEfficiencyScore": 100,
         "totalScore": 100,
@@ -628,7 +628,7 @@
       },
       "coverageScore": 55,
       "passed": true,
-      "reason": "quality +0, tokens 74% lower, total +15"
+      "reason": "quality +0, tokens 71% lower, total +15"
     },
     {
       "goal": "Inspect SQLite schema and safe SELECT rows with redaction.",
@@ -656,7 +656,7 @@
       "task": "sqlite-safe-inspection",
       "tokenhub": {
         "name": "tokenhub",
-        "estimatedTokens": 51,
+        "estimatedTokens": 56,
         "qualityScore": 100,
         "tokenEfficiencyScore": 100,
         "totalScore": 100,
@@ -692,7 +692,7 @@
       },
       "coverageScore": 100,
       "passed": true,
-      "reason": "quality +35, tokens 68% lower, total +39"
+      "reason": "quality +35, tokens 64% lower, total +39"
     },
     {
       "goal": "Return package version and docs metadata without raw registry/readme bloat.",
@@ -724,7 +724,7 @@
       "task": "docs-package-lookup",
       "tokenhub": {
         "name": "tokenhub",
-        "estimatedTokens": 240,
+        "estimatedTokens": 245,
         "qualityScore": 100,
         "tokenEfficiencyScore": 100,
         "totalScore": 100,
@@ -793,7 +793,7 @@
       "task": "sentry-error-clustering",
       "tokenhub": {
         "name": "tokenhub",
-        "estimatedTokens": 38,
+        "estimatedTokens": 43,
         "qualityScore": 100,
         "tokenEfficiencyScore": 100,
         "totalScore": 100,
@@ -833,7 +833,7 @@
       },
       "coverageScore": 30,
       "passed": true,
-      "reason": "quality +65, tokens 79% lower, total +60"
+      "reason": "quality +65, tokens 77% lower, total +60"
     }
   ],
   "weakTasks": []

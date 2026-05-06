@@ -29,6 +29,18 @@ TokenHub exposes only six public tools:
 
 Internal modules cover filesystem retrieval, Git summaries, GitHub, web fetch/scrape, web search provider hooks, browser state capture, SQLite/Postgres inspection, npm package docs lookup, Sentry issue summaries, validation workflows, resource storage, and token telemetry. Large outputs are stored as `tokenhub://resource/...` handles and can be progressively expanded.
 
+`run_workflow` also includes `answer_from_web`, which searches the web, fetches source pages, scrapes clean text, extracts ranked/list candidates, aggregates repeated answers, and returns a cited summary. Example:
+
+```json
+{
+  "name": "answer_from_web",
+  "query": "top 10 most healthy vegetables",
+  "target": "ranked_list",
+  "limit": 10,
+  "sourceLimit": 5
+}
+```
+
 ## Token ROI Rule
 
 Every capability records estimated tool cost, estimated saved tokens, output tokens, and whether it clears the default graduation threshold:

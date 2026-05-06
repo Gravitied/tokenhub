@@ -1,5 +1,6 @@
 import type { ResourceStore } from "../core/resources.js";
 import { estimateTokens, truncateToTokens } from "../core/token.js";
+import type { FetchLike } from "./github.js";
 
 export type CleanHtmlResult = {
   title?: string;
@@ -11,6 +12,7 @@ export type FetchWebInput = {
   resourceStore: ResourceStore;
   budgetTokens?: number;
   includeRaw?: boolean;
+  fetchImpl?: FetchLike;
 };
 
 export function cleanHtmlToText(html: string): CleanHtmlResult {
@@ -39,7 +41,8 @@ export async function fetchAndScrape(input: FetchWebInput): Promise<{
   tokenEstimate: number;
   warnings: string[];
 }> {
-  const response = await fetch(input.url, {
+  const fetchImpl = input.fetchImpl ?? fetch;
+  const response = await fetchImpl(input.url, {
     headers: {
       "user-agent": "tokenhub-mcp/0.1 (+https://github.com/tokenhub-mcp/tokenhub-mcp)"
     }

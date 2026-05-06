@@ -11,6 +11,7 @@ import { summarizeGit } from "./modules/git.js";
 import { runWorkflow as runWorkflowImpl } from "./workflows/index.js";
 import { summarizeGitHubRepo } from "./modules/github.js";
 import { searchWeb } from "./modules/search.js";
+import type { SearchProvider } from "./modules/search.js";
 import { inspectPostgres, inspectSqlite } from "./modules/database.js";
 import { lookupNpmPackage } from "./modules/docs.js";
 import { fetchSentryIssues, summarizeSentryIssues } from "./modules/sentry.js";
@@ -61,6 +62,12 @@ export function createTokenHubRuntime(options: RuntimeOptions) {
       message?: string;
       ref?: string;
       branch?: string;
+      query?: string;
+      target?: "ranked_list";
+      provider?: SearchProvider;
+      apiKey?: string;
+      limit?: number;
+      sourceLimit?: number;
     }) =>
       runWorkflowImpl({
         ...input,
@@ -318,7 +325,13 @@ export function createMcpServer(options: RuntimeOptions): McpServer {
         paths: z.array(z.string()).optional(),
         message: z.string().optional(),
         ref: z.string().optional(),
-        branch: z.string().optional()
+        branch: z.string().optional(),
+        query: z.string().optional(),
+        target: z.enum(["ranked_list"]).optional(),
+        provider: z.enum(["brave", "exa", "tavily", "serpapi", "duckduckgo"]).optional(),
+        apiKey: z.string().optional(),
+        limit: z.number().int().positive().max(25).optional(),
+        sourceLimit: z.number().int().positive().max(10).optional()
       }
     },
     async (input) => asToolResult(await runtime.runWorkflow(input))
@@ -463,6 +476,15 @@ function createDefaultRegistry(): CapabilityRegistry {
     summary: "Normalize Brave, Exa, Tavily, SerpAPI, and DuckDuckGo fallback results into compact ranked snippets.",
     keywords: ["search", "web", "brave", "exa", "tavily", "serpapi"],
     costHintTokens: 90,
+    inputSchema: { deferred: true }
+  });
+  registry.register({
+    id: "web.answer",
+    module: "web",
+    title: "Answer from web",
+    summary: "Search, fetch source pages, scrape them, and synthesize a cited ranked answer server-side.",
+    keywords: ["answer", "web", "search", "scrape", "ranked", "citations"],
+    costHintTokens: 220,
     inputSchema: { deferred: true }
   });
   registry.register({

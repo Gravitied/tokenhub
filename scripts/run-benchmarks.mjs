@@ -645,7 +645,13 @@ function publicToolManifest() {
         paths: "string[]?",
         message: "string?",
         ref: "string?",
-        branch: "string?"
+        branch: "string?",
+        query: "string?",
+        target: "ranked_list?",
+        provider: "brave|exa|tavily|serpapi|duckduckgo?",
+        apiKey: "string?",
+        limit: "number?",
+        sourceLimit: "number?"
       }
     },
     {

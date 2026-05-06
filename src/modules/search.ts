@@ -3,6 +3,9 @@ import type { FetchLike } from "./github.js";
 
 export type SearchProvider = "brave" | "exa" | "tavily" | "serpapi" | "duckduckgo";
 
+const SEARCH_PROVIDER_SETUP_ERROR =
+  "Search requires BRAVE_SEARCH_API_KEY, EXA_API_KEY, TAVILY_API_KEY, SERPAPI_API_KEY, or apiKey with provider.";
+
 export type SearchResult = {
   title: string;
   url: string;
@@ -29,7 +32,7 @@ export async function searchWeb(input: SearchInput): Promise<{
 }> {
   const provider = input.provider ?? providerFromEnv();
   const fetchImpl = input.fetchImpl ?? fetch;
-  const raw = await fetchProvider(provider, input.query, input.apiKey, fetchImpl);
+  const raw = await fetchProvider(provider, input.query, input.apiKey ?? apiKeyFromEnv(provider), fetchImpl, input.limit ?? 5);
   const results = normalizeSearchResults(raw).slice(0, input.limit ?? 5);
   const summaryText = results
     .map((result, index) => `${index + 1}. ${result.title} - ${result.url} - ${result.snippet}`)
@@ -72,11 +75,12 @@ async function fetchProvider(
   provider: SearchProvider,
   query: string,
   apiKey: string | undefined,
-  fetchImpl: FetchLike
+  fetchImpl: FetchLike,
+  limit: number
 ): Promise<Array<{ title: string; url: string; snippet?: string; provider: string }>> {
   if (provider === "brave") {
     if (!apiKey) throw new Error("Brave search requires BRAVE_SEARCH_API_KEY or apiKey.");
-    const response = await fetchImpl(`https://api.search.brave.com/res/v1/web/search?q=${encodeURIComponent(query)}`, {
+    const response = await fetchImpl(`https://api.search.brave.com/res/v1/web/search?q=${encodeURIComponent(query)}&count=${limit}`, {
       headers: { accept: "application/json", "x-subscription-token": apiKey }
     });
     const json = (await response.json()) as { web?: { results?: Array<{ title: string; url: string; description?: string }> } };
@@ -93,7 +97,7 @@ async function fetchProvider(
     const response = await fetchImpl("https://api.tavily.com/search", {
       method: "POST",
       headers: { "content-type": "application/json" },
-      body: JSON.stringify({ api_key: apiKey, query, max_results: 5 })
+      body: JSON.stringify({ api_key: apiKey, query, max_results: limit })
     });
     const json = (await response.json()) as { results?: Array<{ title: string; url: string; content?: string }> };
     return (json.results ?? []).map((item) => ({ title: item.title, url: item.url, snippet: item.content, provider }));
@@ -102,7 +106,7 @@ async function fetchProvider(
   if (provider === "serpapi") {
     if (!apiKey) throw new Error("SerpAPI search requires SERPAPI_API_KEY or apiKey.");
     const response = await fetchImpl(
-      `https://serpapi.com/search.json?engine=google&q=${encodeURIComponent(query)}&api_key=${encodeURIComponent(apiKey)}`
+      `https://serpapi.com/search.json?engine=google&q=${encodeURIComponent(query)}&num=${limit}&api_key=${encodeURIComponent(apiKey)}`
     );
     const json = (await response.json()) as { organic_results?: Array<{ title: string; link: string; snippet?: string }> };
     return (json.organic_results ?? []).map((item) => ({
@@ -118,7 +122,7 @@ async function fetchProvider(
     const response = await fetchImpl("https://api.exa.ai/search", {
       method: "POST",
       headers: { "content-type": "application/json", "x-api-key": apiKey },
-      body: JSON.stringify({ query, numResults: 5 })
+      body: JSON.stringify({ query, numResults: limit })
     });
     const json = (await response.json()) as { results?: Array<{ title: string; url: string; text?: string }> };
     return (json.results ?? []).map((item) => ({ title: item.title, url: item.url, snippet: item.text, provider }));
@@ -127,7 +131,7 @@ async function fetchProvider(
   const response = await fetchImpl(`https://duckduckgo.com/html/?q=${encodeURIComponent(query)}`);
   const html = await response.text();
   return [...html.matchAll(/<a[^>]+class="result__a"[^>]+href="([^"]+)"[^>]*>([\s\S]*?)<\/a>[\s\S]*?<a[^>]+class="result__snippet"[^>]*>([\s\S]*?)<\/a>/g)]
-    .slice(0, 5)
+    .slice(0, limit)
     .map((match) => ({
       title: stripHtml(match[2]),
       url: decodeDuckDuckGoUrl(match[1]),
@@ -142,6 +146,14 @@ function providerFromEnv(): SearchProvider {
   if (process.env.TAVILY_API_KEY) return "tavily";
   if (process.env.SERPAPI_API_KEY) return "serpapi";
   return "duckduckgo";
+}
+
+function apiKeyFromEnv(provider: SearchProvider): string | undefined {
+  if (provider === "brave") return process.env.BRAVE_SEARCH_API_KEY;
+  if (provider === "exa") return process.env.EXA_API_KEY;
+  if (provider === "tavily") return process.env.TAVILY_API_KEY;
+  if (provider === "serpapi") return process.env.SERPAPI_API_KEY;
+  return undefined;
 }
 
 function normalizeUrl(url: string): string {
