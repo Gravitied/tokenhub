@@ -27,7 +27,7 @@ TokenHub exposes only six public tools:
 - `capture_state`
 - `estimate_cost`
 
-Internal modules cover filesystem retrieval, Git summaries, web fetch/scrape, validation workflows, resource storage, and token telemetry. Large outputs are stored as `tokenhub://resource/...` handles and can be progressively expanded.
+Internal modules cover filesystem retrieval, Git summaries, GitHub, web fetch/scrape, web search provider hooks, browser state capture, SQLite/Postgres inspection, npm package docs lookup, Sentry issue summaries, validation workflows, resource storage, and token telemetry. Large outputs are stored as `tokenhub://resource/...` handles and can be progressively expanded.
 
 ## Token ROI Rule
 
@@ -39,7 +39,7 @@ estimated_saved_tokens >= 3 * estimated_tool_cost_tokens
 
 ## Optional Providers
 
-The first public slice runs locally with no provider keys. Future provider hooks are planned for Brave, Exa, Tavily, SerpAPI, Browserbase, GitHub, databases, and observability systems.
+The local slice runs without provider keys for filesystem, Git, fetch/scrape, SQLite, npm package lookup, browser capture, and fixture-based Sentry summaries. Optional keys unlock richer modes for Brave, Exa, Tavily, SerpAPI, GitHub, Postgres, and Sentry.
 
 ## Proof
 
@@ -61,4 +61,4 @@ Run:
 npm run bench
 ```
 
-The benchmark downloads or invokes free baselines through `npx`, `uvx`, and local Git CLI tools, then compares TokenHub on expected facts, secret redaction, resource-link behavior, and estimated token usage. Reports are written to `artifacts/benchmarks/competitive-report.json`.
+The benchmark downloads or invokes free baselines through `npx`, `uvx`, local Git CLI tools, public APIs, Playwright, SQL.js, and raw provider payloads, then compares TokenHub on expected facts, secret redaction, resource-link behavior, and estimated token usage. Reports are written to `artifacts/benchmarks/competitive-report.json`.

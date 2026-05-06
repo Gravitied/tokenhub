@@ -11,6 +11,15 @@ import { createBenchmarkReport } from "../dist/bench/competitors.js";
 import { scoreBenchmarkResult } from "../dist/bench/scoring.js";
 import { estimateTokens } from "../dist/core/token.js";
 import { createTokenHubRuntime } from "../dist/server.js";
+import { summarizeGitHubRepo } from "../dist/modules/github.js";
+import { captureBrowserState } from "../dist/modules/browser.js";
+import { searchWeb } from "../dist/modules/search.js";
+import { inspectSqlite } from "../dist/modules/database.js";
+import { lookupNpmPackage } from "../dist/modules/docs.js";
+import { summarizeSentryIssues } from "../dist/modules/sentry.js";
+import { ResourceStore } from "../dist/core/resources.js";
+import initSqlJs from "sql.js";
+import { chromium } from "playwright";
 
 const execFileAsync = promisify(execFile);
 const workspace = resolve(fileURLToPath(new URL("..", import.meta.url)));
@@ -25,12 +34,21 @@ try {
   tasks.push(await filesystemTask(fixture));
   tasks.push(await gitTask(fixture));
   tasks.push(await webTask(fixture));
+  tasks.push(await githubTask());
+  tasks.push(await browserTask(fixture));
+  tasks.push(await searchTask());
+  tasks.push(await sqliteTask(root));
+  tasks.push(await docsTask());
+  tasks.push(await sentryTask());
 
   const report = createBenchmarkReport({
     generatedAt: new Date().toISOString(),
     sources: [
       "https://github.com/modelcontextprotocol/servers",
       "https://www.npmjs.com/package/@modelcontextprotocol/server-filesystem",
+      "https://www.npmjs.com/package/@playwright/mcp",
+      "https://www.npmjs.com/package/@upstash/context7-mcp",
+      "https://www.npmjs.com/package/@sentry/mcp-server",
       "https://git-scm.com/docs/git-grep",
       "https://git-scm.com"
     ],
@@ -50,6 +68,260 @@ try {
   }
 } finally {
   await fixture.close();
+}
+
+async function githubTask() {
+  const oursRaw = await summarizeGitHubRepo({
+    owner: "modelcontextprotocol",
+    repo: "servers",
+    limit: 3,
+    budgetTokens: 180
+  });
+  const oursText = JSON.stringify(oursRaw);
+  const repoResponse = await fetch("https://api.github.com/repos/modelcontextprotocol/servers", {
+    headers: { "user-agent": "tokenhub-mcp-bench" }
+  });
+  const issuesResponse = await fetch("https://api.github.com/repos/modelcontextprotocol/servers/issues?state=open&per_page=3", {
+    headers: { "user-agent": "tokenhub-mcp-bench" }
+  });
+  const rawText = JSON.stringify({ repo: await repoResponse.json(), issues: await issuesResponse.json() });
+  const expectedFacts = ["modelcontextprotocol/servers"];
+
+  return {
+    task: "github-public-summary",
+    tokenhub: scoreBenchmarkResult({
+      name: "tokenhub",
+      outputText: oursText,
+      estimatedTokens: estimatePublicToolTokens() + estimateTokens(oursText),
+      expectedFacts,
+      requiredPatterns: [],
+      forbiddenPatterns: [/node_id|avatar_url|html_url/],
+      lowerIsBetterTokenBaseline: estimateStandaloneToolTokens(rawText)
+    }),
+    competitors: [
+      scoreBenchmarkResult({
+        name: "github-rest-raw",
+        outputText: rawText,
+        estimatedTokens: estimateStandaloneToolTokens(rawText),
+        expectedFacts,
+        requiredPatterns: [],
+        forbiddenPatterns: [/node_id|avatar_url|html_url/]
+      })
+    ]
+  };
+}
+
+async function browserTask(fixture) {
+  const runtime = createTokenHubRuntime({ root: fixture.root, resourceDir: join(fixture.root, ".tokenhub", "browser-resources") });
+  const oursRaw = await runtime.retrieveContext({
+    source: "browser",
+    url: fixture.urls.fixturePage,
+    includeRaw: true,
+    budgetTokens: 180,
+    returnMode: "compact"
+  });
+  const oursText = JSON.stringify(oursRaw);
+  const browser = await chromium.launch();
+  let rawText = "";
+  try {
+    const page = await browser.newPage();
+    await page.goto(fixture.urls.fixturePage, { waitUntil: "domcontentloaded" });
+    rawText = await page.content();
+  } finally {
+    await browser.close();
+  }
+  const expectedFacts = [fixture.marker, "Clean docs paragraph"];
+  const forbiddenPatterns = [new RegExp(fixture.secret), /console\.log/];
+
+  return {
+    task: "browser-compact-state",
+    tokenhub: scoreBenchmarkResult({
+      name: "tokenhub",
+      outputText: oursText,
+      estimatedTokens: estimatePublicToolTokens() + estimateTokens(oursText),
+      expectedFacts,
+      requiredPatterns: [/tokenhub:\/\/resource\//],
+      forbiddenPatterns,
+      lowerIsBetterTokenBaseline: estimateStandaloneToolTokens(rawText)
+    }),
+    competitors: [
+      scoreBenchmarkResult({
+        name: "playwright-raw-html",
+        outputText: rawText,
+        estimatedTokens: estimateStandaloneToolTokens(rawText),
+        expectedFacts,
+        requiredPatterns: [],
+        forbiddenPatterns
+      })
+    ]
+  };
+}
+
+async function searchTask() {
+  const providerPayload = {
+    web: {
+      results: [
+        {
+          title: "TokenHub MCP",
+          url: "https://example.com/tokenhub",
+          description: "Compact MCP hub for developer tools"
+        },
+        {
+          title: "Duplicate",
+          url: "https://example.com/tokenhub",
+          description: "Duplicate result"
+        }
+      ]
+    }
+  };
+  const searchRaw = await searchWeb({
+    query: "tokenhub mcp",
+    provider: "brave",
+    apiKey: "bench",
+    fetchImpl: async () => new Response(JSON.stringify(providerPayload), { status: 200 })
+  });
+  const oursRaw = { r: searchRaw.results.map((item) => [item.title, item.url, item.provider, item.confidence]) };
+  const oursText = JSON.stringify(oursRaw);
+  const rawText = JSON.stringify(providerPayload);
+  const expectedFacts = ["TokenHub MCP", "https://example.com/tokenhub"];
+
+  return {
+    task: "search-provider-normalization",
+    tokenhub: scoreBenchmarkResult({
+      name: "tokenhub",
+      outputText: oursText,
+      estimatedTokens: estimatePublicToolTokens() + estimateTokens(oursText),
+      expectedFacts,
+      requiredPatterns: [/brave|0\.86/],
+      forbiddenPatterns: [],
+      lowerIsBetterTokenBaseline: estimateStandaloneToolTokens(rawText)
+    }),
+    competitors: [
+      scoreBenchmarkResult({
+        name: "brave-json-raw",
+        outputText: rawText,
+        estimatedTokens: estimateStandaloneToolTokens(rawText),
+        expectedFacts,
+        requiredPatterns: [],
+        forbiddenPatterns: []
+      })
+    ]
+  };
+}
+
+async function sqliteTask(root) {
+  const SQL = await initSqlJs();
+  const db = new SQL.Database();
+  db.run("CREATE TABLE events (id INTEGER, message TEXT, api_key TEXT);");
+  db.run("INSERT INTO events VALUES (1, 'payment failed', 'SECRET_SQLITE_KEY');");
+  const bytes = db.export();
+  const runtime = createTokenHubRuntime({ root, resourceDir: join(root, ".tokenhub", "sqlite-resources") });
+  const oursRaw = await runtime.retrieveContext({
+    source: "sqlite",
+    databaseBase64: Buffer.from(bytes).toString("base64"),
+    query: "SELECT * FROM events",
+    limit: 5,
+    budgetTokens: 180,
+    returnMode: "compact"
+  });
+  const oursText = JSON.stringify(oursRaw);
+  const rawText = JSON.stringify({
+    schema: "CREATE TABLE events (id INTEGER, message TEXT, api_key TEXT)",
+    rows: [{ id: 1, message: "payment failed", api_key: "SECRET_SQLITE_KEY" }]
+  });
+  const expectedFacts = ["events", "payment failed"];
+  const forbiddenPatterns = [/SECRET_SQLITE_KEY/];
+  return {
+    task: "sqlite-safe-inspection",
+    tokenhub: scoreBenchmarkResult({
+      name: "tokenhub",
+      outputText: oursText,
+      estimatedTokens: estimatePublicToolTokens() + estimateTokens(oursText),
+      expectedFacts,
+      requiredPatterns: [/\[redacted\]/],
+      forbiddenPatterns,
+      lowerIsBetterTokenBaseline: estimateStandaloneToolTokens(rawText)
+    }),
+    competitors: [
+      scoreBenchmarkResult({
+        name: "sqljs-raw",
+        outputText: rawText,
+        estimatedTokens: estimateStandaloneToolTokens(rawText),
+        expectedFacts,
+        requiredPatterns: [],
+        forbiddenPatterns
+      })
+    ]
+  };
+}
+
+async function docsTask() {
+  const oursRaw = await lookupNpmPackage({ name: "@modelcontextprotocol/sdk", budgetTokens: 180 });
+  const oursText = JSON.stringify(oursRaw);
+  const rawResponse = await fetch("https://registry.npmjs.org/%40modelcontextprotocol%2Fsdk");
+  const rawText = JSON.stringify(await rawResponse.json());
+  const expectedFacts = ["@modelcontextprotocol/sdk", "latest"];
+  return {
+    task: "docs-package-lookup",
+    tokenhub: scoreBenchmarkResult({
+      name: "tokenhub",
+      outputText: oursText,
+      estimatedTokens: estimatePublicToolTokens() + estimateTokens(oursText),
+      expectedFacts,
+      requiredPatterns: [/versions|links/],
+      forbiddenPatterns: [/readme|maintainers/],
+      lowerIsBetterTokenBaseline: estimateStandaloneToolTokens(rawText)
+    }),
+    competitors: [
+      scoreBenchmarkResult({
+        name: "npm-registry-raw",
+        outputText: rawText,
+        estimatedTokens: estimateStandaloneToolTokens(rawText),
+        expectedFacts,
+        requiredPatterns: [],
+        forbiddenPatterns: [/readme|maintainers/]
+      })
+    ]
+  };
+}
+
+async function sentryTask() {
+  const issues = [
+    { title: "TypeError: payment failed", culprit: "src/payments.ts", count: "40", userCount: 10, permalink: "https://sentry/1" },
+    { title: "TypeError: payment failed again", culprit: "src/payments.ts", count: "5", userCount: 2, permalink: "https://sentry/2" }
+  ];
+  const runtime = createTokenHubRuntime({ root: process.cwd(), resourceDir: join(process.cwd(), ".tokenhub", "sentry-resources") });
+  const oursRaw = await runtime.retrieveContext({
+    source: "sentry",
+    issues,
+    budgetTokens: 120,
+    returnMode: "compact"
+  });
+  const oursText = JSON.stringify(oursRaw);
+  const rawText = JSON.stringify(issues);
+  const expectedFacts = ["src/payments.ts", "45"];
+  return {
+    task: "sentry-error-clustering",
+    tokenhub: scoreBenchmarkResult({
+      name: "tokenhub",
+      outputText: oursText,
+      estimatedTokens: estimatePublicToolTokens() + estimateTokens(oursText),
+      expectedFacts,
+      requiredPatterns: [/src\/payments\.ts/],
+      forbiddenPatterns: [/permalink/],
+      lowerIsBetterTokenBaseline: estimateStandaloneToolTokens(rawText)
+    }),
+    competitors: [
+      scoreBenchmarkResult({
+        name: "sentry-issues-raw",
+        outputText: rawText,
+        estimatedTokens: estimateStandaloneToolTokens(rawText),
+        expectedFacts,
+        requiredPatterns: [],
+        forbiddenPatterns: [/permalink/]
+      })
+    ]
+  };
 }
 
 async function filesystemTask(fixture) {
@@ -248,4 +520,8 @@ function estimatePublicToolTokens() {
       "estimate_cost"
     ])
   );
+}
+
+function estimateStandaloneToolTokens(outputText) {
+  return 120 + estimateTokens(outputText);
 }

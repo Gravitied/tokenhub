@@ -48,6 +48,27 @@ export function freeCompetitorCatalog(): CompetitorInfo[] {
       source: "https://github.com/modelcontextprotocol/servers"
     },
     {
+      name: "playwright-mcp",
+      kind: "mcp",
+      command: "npx -y @playwright/mcp",
+      license: "Apache-2.0",
+      source: "https://www.npmjs.com/package/@playwright/mcp"
+    },
+    {
+      name: "context7-mcp",
+      kind: "mcp",
+      command: "npx -y @upstash/context7-mcp",
+      license: "MIT",
+      source: "https://www.npmjs.com/package/@upstash/context7-mcp"
+    },
+    {
+      name: "sentry-mcp-server",
+      kind: "mcp",
+      command: "npx -y @sentry/mcp-server",
+      license: "FSL-1.1-ALv2",
+      source: "https://www.npmjs.com/package/@sentry/mcp-server"
+    },
+    {
       name: "git-grep-cli",
       kind: "cli",
       command: "git grep <query>",

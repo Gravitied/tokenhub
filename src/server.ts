@@ -9,6 +9,12 @@ import { searchFiles } from "./modules/filesystem.js";
 import { fetchAndScrape } from "./modules/web.js";
 import { summarizeGit } from "./modules/git.js";
 import { runWorkflow as runWorkflowImpl } from "./workflows/index.js";
+import { summarizeGitHubRepo } from "./modules/github.js";
+import { searchWeb } from "./modules/search.js";
+import { inspectPostgres, inspectSqlite } from "./modules/database.js";
+import { lookupNpmPackage } from "./modules/docs.js";
+import { fetchSentryIssues, summarizeSentryIssues } from "./modules/sentry.js";
+import { captureBrowserState } from "./modules/browser.js";
 
 const PUBLIC_TOOLS = [
   "discover_capabilities",
@@ -49,9 +55,30 @@ export function createTokenHubRuntime(options: RuntimeOptions) {
         telemetry
       }),
     retrieveContext: async (input: {
-      source: "files" | "git" | "web";
+      source:
+        | "files"
+        | "git"
+        | "web"
+        | "github"
+        | "search"
+        | "sqlite"
+        | "postgres"
+        | "docs"
+        | "sentry"
+        | "browser";
       query?: string;
       url?: string;
+      owner?: string;
+      repo?: string;
+      provider?: "brave" | "exa" | "tavily" | "serpapi" | "duckduckgo";
+      apiKey?: string;
+      packageName?: string;
+      databaseBase64?: string;
+      connectionString?: string;
+      organization?: string;
+      project?: string;
+      token?: string;
+      issues?: Array<Record<string, unknown>>;
       budgetTokens?: number;
       limit?: number;
       includeRaw?: boolean;
@@ -70,6 +97,109 @@ export function createTokenHubRuntime(options: RuntimeOptions) {
           budgetTokens: input.budgetTokens,
           includeRaw: input.includeRaw
         });
+      }
+      if (input.source === "github") {
+        if (!input.owner || !input.repo) {
+          throw new Error("retrieve_context source=github requires owner and repo.");
+        }
+        return summarizeGitHubRepo({
+          owner: input.owner,
+          repo: input.repo,
+          token: input.token,
+          limit: input.limit,
+          budgetTokens: input.budgetTokens
+        });
+      }
+      if (input.source === "search") {
+        if (!input.query) {
+          throw new Error("retrieve_context source=search requires query.");
+        }
+        const result = await searchWeb({
+          query: input.query,
+          provider: input.provider,
+          apiKey: input.apiKey,
+          limit: input.limit,
+          budgetTokens: input.budgetTokens
+        });
+        if (input.returnMode === "compact") {
+          return { r: result.results.map((item) => [item.title, item.url, item.provider, item.confidence]) };
+        }
+        return result;
+      }
+      if (input.source === "sqlite") {
+        if (!input.databaseBase64) {
+          throw new Error("retrieve_context source=sqlite requires databaseBase64.");
+        }
+        const result = await inspectSqlite({
+          databaseBytes: Buffer.from(input.databaseBase64, "base64"),
+          query: input.query,
+          limit: input.limit,
+          budgetTokens: input.budgetTokens
+        });
+        if (input.returnMode === "compact") {
+          return {
+            s: result.schema.map((table) => [table.table, table.columns]),
+            r: result.rows.map((row) => Object.values(row))
+          };
+        }
+        return result;
+      }
+      if (input.source === "postgres") {
+        if (!input.connectionString) {
+          throw new Error("retrieve_context source=postgres requires connectionString.");
+        }
+        return inspectPostgres({
+          connectionString: input.connectionString,
+          query: input.query,
+          limit: input.limit,
+          budgetTokens: input.budgetTokens
+        });
+      }
+      if (input.source === "docs") {
+        if (!input.packageName && !input.query) {
+          throw new Error("retrieve_context source=docs requires packageName or query.");
+        }
+        return lookupNpmPackage({ name: input.packageName ?? input.query ?? "", budgetTokens: input.budgetTokens });
+      }
+      if (input.source === "sentry") {
+        if (input.issues) {
+          const result = summarizeSentryIssues(input.issues, { budgetTokens: input.budgetTokens });
+          if (input.returnMode === "compact") {
+            return { c: result.clusters.map((cluster) => [cluster.culprit, cluster.issues, cluster.events, cluster.users]) };
+          }
+          return result;
+        }
+        if (!input.organization || !input.token) {
+          throw new Error("retrieve_context source=sentry requires issues or organization and token.");
+        }
+        return fetchSentryIssues({
+          organization: input.organization,
+          project: input.project,
+          token: input.token,
+          query: input.query,
+          budgetTokens: input.budgetTokens
+        });
+      }
+      if (input.source === "browser") {
+        if (!input.url) {
+          throw new Error("retrieve_context source=browser requires url.");
+        }
+        const result = await captureBrowserState({
+          url: input.url,
+          resourceStore,
+          includeScreenshot: input.includeRaw,
+          budgetTokens: input.budgetTokens
+        });
+        if (input.returnMode === "compact") {
+          return {
+            h: result.state.headings,
+            t: result.state.textSnippets,
+            l: result.state.links.map((link) => [link.text, link.href]),
+            e: [result.state.consoleErrors.length, result.state.failedRequests.length],
+            r: result.resources
+          };
+        }
+        return result;
       }
       const fileResult = await searchFiles({
         root,
@@ -178,9 +308,20 @@ export function createMcpServer(options: RuntimeOptions): McpServer {
       title: "Retrieve context",
       description: "Token-budgeted retrieval across files, Git state, and web pages.",
       inputSchema: {
-        source: z.enum(["files", "git", "web"]),
+        source: z.enum(["files", "git", "web", "github", "search", "sqlite", "postgres", "docs", "sentry", "browser"]),
         query: z.string().optional(),
         url: z.string().url().optional(),
+        owner: z.string().optional(),
+        repo: z.string().optional(),
+        provider: z.enum(["brave", "exa", "tavily", "serpapi", "duckduckgo"]).optional(),
+        apiKey: z.string().optional(),
+        packageName: z.string().optional(),
+        databaseBase64: z.string().optional(),
+        connectionString: z.string().optional(),
+        organization: z.string().optional(),
+        project: z.string().optional(),
+        token: z.string().optional(),
+        issues: z.array(z.record(z.string(), z.unknown())).optional(),
         budgetTokens: z.number().int().positive().optional(),
         limit: z.number().int().positive().max(50).optional(),
         includeRaw: z.boolean().optional()
@@ -273,6 +414,69 @@ function createDefaultRegistry(): CapabilityRegistry {
     summary: "Run tests, builds, or lint commands and summarize failures with artifacts.",
     keywords: ["test", "lint", "build", "validate", "logs"],
     costHintTokens: 120,
+    inputSchema: { deferred: true }
+  });
+  registry.register({
+    id: "github.summary",
+    module: "github",
+    title: "Summarize GitHub repository",
+    summary: "Fetch compact public GitHub repo, issue, and PR context with optional token auth.",
+    keywords: ["github", "repo", "issues", "pull", "actions"],
+    costHintTokens: 95,
+    inputSchema: { deferred: true }
+  });
+  registry.register({
+    id: "browser.capture",
+    module: "browser",
+    title: "Capture compact browser state",
+    summary: "Use Playwright internally for title, headings, links, console errors, failed requests, and screenshot resources.",
+    keywords: ["browser", "playwright", "screenshot", "dom", "console"],
+    costHintTokens: 130,
+    inputSchema: { deferred: true }
+  });
+  registry.register({
+    id: "web.search",
+    module: "search",
+    title: "Search web providers",
+    summary: "Normalize Brave, Exa, Tavily, SerpAPI, and DuckDuckGo fallback results into compact ranked snippets.",
+    keywords: ["search", "web", "brave", "exa", "tavily", "serpapi"],
+    costHintTokens: 90,
+    inputSchema: { deferred: true }
+  });
+  registry.register({
+    id: "database.sqlite",
+    module: "database",
+    title: "Inspect SQLite",
+    summary: "Inspect SQLite schema and run safe read queries with row projection and secret redaction.",
+    keywords: ["sqlite", "database", "sql", "schema", "rows"],
+    costHintTokens: 85,
+    inputSchema: { deferred: true }
+  });
+  registry.register({
+    id: "database.postgres",
+    module: "database",
+    title: "Inspect Postgres",
+    summary: "Inspect Postgres schema and safe SELECT query results with row projection and limits.",
+    keywords: ["postgres", "postgresql", "database", "sql", "schema"],
+    costHintTokens: 105,
+    inputSchema: { deferred: true }
+  });
+  registry.register({
+    id: "docs.npm",
+    module: "docs",
+    title: "Lookup npm package docs",
+    summary: "Fetch package metadata, latest versions, docs links, and compact package context.",
+    keywords: ["docs", "package", "npm", "version", "changelog"],
+    costHintTokens: 70,
+    inputSchema: { deferred: true }
+  });
+  registry.register({
+    id: "observability.sentry",
+    module: "observability",
+    title: "Summarize Sentry issues",
+    summary: "Cluster Sentry issues by culprit and summarize event/user impact with optional token auth.",
+    keywords: ["sentry", "observability", "errors", "traces", "logs"],
+    costHintTokens: 100,
     inputSchema: { deferred: true }
   });
   return registry;

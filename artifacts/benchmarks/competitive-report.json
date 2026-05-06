@@ -1,8 +1,11 @@
 {
-  "generatedAt": "2026-05-06T15:32:24.980Z",
+  "generatedAt": "2026-05-06T15:51:21.514Z",
   "sources": [
     "https://github.com/modelcontextprotocol/servers",
     "https://www.npmjs.com/package/@modelcontextprotocol/server-filesystem",
+    "https://www.npmjs.com/package/@playwright/mcp",
+    "https://www.npmjs.com/package/@upstash/context7-mcp",
+    "https://www.npmjs.com/package/@sentry/mcp-server",
     "https://git-scm.com/docs/git-grep",
     "https://git-scm.com"
   ],
@@ -29,6 +32,27 @@
       "source": "https://github.com/modelcontextprotocol/servers"
     },
     {
+      "name": "playwright-mcp",
+      "kind": "mcp",
+      "command": "npx -y @playwright/mcp",
+      "license": "Apache-2.0",
+      "source": "https://www.npmjs.com/package/@playwright/mcp"
+    },
+    {
+      "name": "context7-mcp",
+      "kind": "mcp",
+      "command": "npx -y @upstash/context7-mcp",
+      "license": "MIT",
+      "source": "https://www.npmjs.com/package/@upstash/context7-mcp"
+    },
+    {
+      "name": "sentry-mcp-server",
+      "kind": "mcp",
+      "command": "npx -y @sentry/mcp-server",
+      "license": "FSL-1.1-ALv2",
+      "source": "https://www.npmjs.com/package/@sentry/mcp-server"
+    },
+    {
       "name": "git-grep-cli",
       "kind": "cli",
       "command": "git grep <query>",
@@ -43,7 +67,7 @@
       "source": "https://git-scm.com"
     }
   ],
-  "summary": "3/3 tasks passed significantly-better threshold.",
+  "summary": "9/9 tasks passed significantly-better threshold.",
   "taskResults": [
     {
       "task": "filesystem-marker",
@@ -189,6 +213,254 @@
       },
       "passed": true,
       "reason": "quality +20, tokens 76% lower, total +29"
+    },
+    {
+      "task": "github-public-summary",
+      "tokenhub": {
+        "name": "tokenhub",
+        "estimatedTokens": 223,
+        "qualityScore": 100,
+        "tokenEfficiencyScore": 100,
+        "totalScore": 100,
+        "missingFacts": [],
+        "missingRequiredPatterns": [],
+        "forbiddenHits": []
+      },
+      "competitors": [
+        {
+          "name": "github-rest-raw",
+          "estimatedTokens": 6884,
+          "qualityScore": 55,
+          "tokenEfficiencyScore": 50,
+          "totalScore": 54,
+          "missingFacts": [],
+          "missingRequiredPatterns": [],
+          "forbiddenHits": [
+            "node_id|avatar_url|html_url"
+          ]
+        }
+      ],
+      "strongestCompetitor": {
+        "name": "github-rest-raw",
+        "estimatedTokens": 6884,
+        "qualityScore": 55,
+        "tokenEfficiencyScore": 50,
+        "totalScore": 54,
+        "missingFacts": [],
+        "missingRequiredPatterns": [],
+        "forbiddenHits": [
+          "node_id|avatar_url|html_url"
+        ]
+      },
+      "passed": true,
+      "reason": "quality +45, tokens 97% lower, total +46"
+    },
+    {
+      "task": "browser-compact-state",
+      "tokenhub": {
+        "name": "tokenhub",
+        "estimatedTokens": 64,
+        "qualityScore": 100,
+        "tokenEfficiencyScore": 100,
+        "totalScore": 100,
+        "missingFacts": [],
+        "missingRequiredPatterns": [],
+        "forbiddenHits": []
+      },
+      "competitors": [
+        {
+          "name": "playwright-raw-html",
+          "estimatedTokens": 180,
+          "qualityScore": 30,
+          "tokenEfficiencyScore": 50,
+          "totalScore": 36,
+          "missingFacts": [],
+          "missingRequiredPatterns": [],
+          "forbiddenHits": [
+            "SECRET_VALUE_DO_NOT_RETURN",
+            "console\\.log"
+          ]
+        }
+      ],
+      "strongestCompetitor": {
+        "name": "playwright-raw-html",
+        "estimatedTokens": 180,
+        "qualityScore": 30,
+        "tokenEfficiencyScore": 50,
+        "totalScore": 36,
+        "missingFacts": [],
+        "missingRequiredPatterns": [],
+        "forbiddenHits": [
+          "SECRET_VALUE_DO_NOT_RETURN",
+          "console\\.log"
+        ]
+      },
+      "passed": true,
+      "reason": "quality +70, tokens 64% lower, total +64"
+    },
+    {
+      "task": "search-provider-normalization",
+      "tokenhub": {
+        "name": "tokenhub",
+        "estimatedTokens": 44,
+        "qualityScore": 100,
+        "tokenEfficiencyScore": 100,
+        "totalScore": 100,
+        "missingFacts": [],
+        "missingRequiredPatterns": [],
+        "forbiddenHits": []
+      },
+      "competitors": [
+        {
+          "name": "brave-json-raw",
+          "estimatedTokens": 177,
+          "qualityScore": 100,
+          "tokenEfficiencyScore": 50,
+          "totalScore": 85,
+          "missingFacts": [],
+          "missingRequiredPatterns": [],
+          "forbiddenHits": []
+        }
+      ],
+      "strongestCompetitor": {
+        "name": "brave-json-raw",
+        "estimatedTokens": 177,
+        "qualityScore": 100,
+        "tokenEfficiencyScore": 50,
+        "totalScore": 85,
+        "missingFacts": [],
+        "missingRequiredPatterns": [],
+        "forbiddenHits": []
+      },
+      "passed": true,
+      "reason": "quality +0, tokens 75% lower, total +15"
+    },
+    {
+      "task": "sqlite-safe-inspection",
+      "tokenhub": {
+        "name": "tokenhub",
+        "estimatedTokens": 49,
+        "qualityScore": 100,
+        "tokenEfficiencyScore": 100,
+        "totalScore": 100,
+        "missingFacts": [],
+        "missingRequiredPatterns": [],
+        "forbiddenHits": []
+      },
+      "competitors": [
+        {
+          "name": "sqljs-raw",
+          "estimatedTokens": 157,
+          "qualityScore": 65,
+          "tokenEfficiencyScore": 50,
+          "totalScore": 61,
+          "missingFacts": [],
+          "missingRequiredPatterns": [],
+          "forbiddenHits": [
+            "SECRET_SQLITE_KEY"
+          ]
+        }
+      ],
+      "strongestCompetitor": {
+        "name": "sqljs-raw",
+        "estimatedTokens": 157,
+        "qualityScore": 65,
+        "tokenEfficiencyScore": 50,
+        "totalScore": 61,
+        "missingFacts": [],
+        "missingRequiredPatterns": [],
+        "forbiddenHits": [
+          "SECRET_SQLITE_KEY"
+        ]
+      },
+      "passed": true,
+      "reason": "quality +35, tokens 69% lower, total +39"
+    },
+    {
+      "task": "docs-package-lookup",
+      "tokenhub": {
+        "name": "tokenhub",
+        "estimatedTokens": 168,
+        "qualityScore": 100,
+        "tokenEfficiencyScore": 100,
+        "totalScore": 100,
+        "missingFacts": [],
+        "missingRequiredPatterns": [],
+        "forbiddenHits": []
+      },
+      "competitors": [
+        {
+          "name": "npm-registry-raw",
+          "estimatedTokens": 74030,
+          "qualityScore": 55,
+          "tokenEfficiencyScore": 50,
+          "totalScore": 54,
+          "missingFacts": [],
+          "missingRequiredPatterns": [],
+          "forbiddenHits": [
+            "readme|maintainers"
+          ]
+        }
+      ],
+      "strongestCompetitor": {
+        "name": "npm-registry-raw",
+        "estimatedTokens": 74030,
+        "qualityScore": 55,
+        "tokenEfficiencyScore": 50,
+        "totalScore": 54,
+        "missingFacts": [],
+        "missingRequiredPatterns": [],
+        "forbiddenHits": [
+          "readme|maintainers"
+        ]
+      },
+      "passed": true,
+      "reason": "quality +45, tokens 100% lower, total +46"
+    },
+    {
+      "task": "sentry-error-clustering",
+      "tokenhub": {
+        "name": "tokenhub",
+        "estimatedTokens": 36,
+        "qualityScore": 100,
+        "tokenEfficiencyScore": 100,
+        "totalScore": 100,
+        "missingFacts": [],
+        "missingRequiredPatterns": [],
+        "forbiddenHits": []
+      },
+      "competitors": [
+        {
+          "name": "sentry-issues-raw",
+          "estimatedTokens": 184,
+          "qualityScore": 35,
+          "tokenEfficiencyScore": 50,
+          "totalScore": 40,
+          "missingFacts": [
+            "45"
+          ],
+          "missingRequiredPatterns": [],
+          "forbiddenHits": [
+            "permalink"
+          ]
+        }
+      ],
+      "strongestCompetitor": {
+        "name": "sentry-issues-raw",
+        "estimatedTokens": 184,
+        "qualityScore": 35,
+        "tokenEfficiencyScore": 50,
+        "totalScore": 40,
+        "missingFacts": [
+          "45"
+        ],
+        "missingRequiredPatterns": [],
+        "forbiddenHits": [
+          "permalink"
+        ]
+      },
+      "passed": true,
+      "reason": "quality +65, tokens 80% lower, total +60"
     }
   ],
   "weakTasks": []
