@@ -62,13 +62,12 @@ async function main() {
     tarballPath = join(repoRoot, packages[0].filename);
     await runNpm(["install", tarballPath, "--ignore-scripts"], tempDir);
 
-    const cliPath = join(tempDir, "node_modules", "tokenhub-mcp", "dist", "cli.js");
-    const help = await run(process.execPath, [cliPath, "--help"], { cwd: tempDir });
+    const help = await runNpm(["exec", "--", "tokenhub-mcp", "--help"], tempDir);
     if (!help.stdout.includes("npx tokenhub-mcp --root")) {
       throw new Error(`Installed CLI help output did not include the expected usage.\n\nstdout:\n${help.stdout}`);
     }
 
-    const version = await run(process.execPath, [cliPath, "--version"], { cwd: tempDir });
+    const version = await runNpm(["exec", "--", "tokenhub-mcp", "--version"], tempDir);
     if (version.stdout.trim() !== expectedVersion) {
       throw new Error(
         `Installed CLI version output did not match package.json version. Expected ${expectedVersion}, got ${version.stdout.trim()}.`

@@ -25,6 +25,9 @@ async function npmPackDryRun() {
 async function readPackageJson() {
   const text = await readFile(join(repoRoot, "package.json"), "utf8");
   return JSON.parse(text) as {
+    name?: string;
+    version?: string;
+    type?: string;
     bin?: Record<string, string>;
     description?: string;
     engines?: Record<string, string>;
@@ -38,6 +41,16 @@ describe("npm package contents", () => {
   test("packs the downloadable runtime files and metadata only", async () => {
     const packed = await npmPackDryRun();
     const paths = packed.files.map((file) => `package/${file.path}`);
+    const allowedPackageFiles = ["package/README.md", "package/LICENSE", "package/package.json"];
+    const allowedPackagePrefixes = ["package/dist/"];
+    const packageRoots = new Set(
+      paths.map((path) => {
+        if (path.startsWith("package/dist/")) {
+          return "package/dist";
+        }
+        return path;
+      })
+    );
 
     expect(paths).toEqual(
       expect.arrayContaining([
@@ -48,27 +61,35 @@ describe("npm package contents", () => {
         "package/LICENSE"
       ])
     );
+    expect([...packageRoots].sort()).toEqual(["package/LICENSE", "package/README.md", "package/dist", "package/package.json"]);
 
-    for (const excludedPath of [
-      "package/src/",
-      "package/tests/",
-      "package/scripts/",
-      "package/artifacts/",
-      "package/.tokenhub/",
-      "package/.worktrees/"
-    ]) {
-      expect(paths.some((path) => path.startsWith(excludedPath))).toBe(false);
+    for (const path of paths) {
+      expect(allowedPackageFiles.includes(path) || allowedPackagePrefixes.some((prefix) => path.startsWith(prefix))).toBe(
+        true
+      );
     }
   });
 
   test("declares production package metadata", async () => {
     const packageJson = await readPackageJson();
 
+    expect(packageJson.name).toBe("tokenhub-mcp");
+    expect(packageJson.version).toMatch(/^\d+\.\d+\.\d+$/);
+    expect(packageJson.type).toBe("module");
     expect(packageJson.bin?.["tokenhub-mcp"]).toBe("dist/cli.js");
     expect(packageJson.engines?.node).toBe(">=20");
     expect(packageJson.files).toEqual(["dist", "README.md", "LICENSE", "package.json"]);
     expect(packageJson.license).toBe("MIT");
-    expect(packageJson.description?.trim().length).toBeGreaterThan(20);
-    expect(packageJson.keywords).toEqual(expect.arrayContaining(["mcp", "model-context-protocol"]));
+    expect(packageJson.description).toBe(
+      "A token-disciplined developer MCP hub with a tiny always-loaded surface and deferred internal capabilities."
+    );
+    expect(packageJson.keywords).toEqual([
+      "mcp",
+      "model-context-protocol",
+      "developer-tools",
+      "token-efficiency",
+      "playwright",
+      "automation"
+    ]);
   });
 });
