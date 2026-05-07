@@ -2,6 +2,7 @@ import { mkdir, readdir, readFile, rename, rm, stat, writeFile } from "node:fs/p
 import { dirname, relative, resolve, sep } from "node:path";
 import type { ResourceStore } from "../core/resources.js";
 import { estimateTokens, truncateToTokens } from "../core/token.js";
+import { resolveWorkspacePath } from "../core/workspace-path.js";
 
 const IGNORED_DIRS = new Set([".git", "node_modules", "dist", "artifacts", ".tokenhub"]);
 
@@ -33,7 +34,7 @@ export async function applyFilesystemAction(input: FilesystemActionInput): Promi
   summary: string;
   entries?: Array<{ path: string; type: "file" | "directory" }>;
 }> {
-  const root = resolve(input.root);
+  const root = workspacePathOrThrow(input.root, ".");
   if (input.action === "tree") {
     const entries = (await walkEntries(root)).slice(0, input.limit ?? 100);
     return { summary: `listed ${entries.length} entries`, entries };
@@ -42,7 +43,7 @@ export async function applyFilesystemAction(input: FilesystemActionInput): Promi
   if (!input.path) {
     throw new Error(`filesystem ${input.action} requires path.`);
   }
-  const target = safeWorkspacePath(root, input.path);
+  const target = workspacePathOrThrow(root, input.path);
   const relTarget = relative(root, target).split(sep).join("/");
 
   if (input.action === "write") {
@@ -55,7 +56,7 @@ export async function applyFilesystemAction(input: FilesystemActionInput): Promi
     if (!input.destination) {
       throw new Error("filesystem move requires destination.");
     }
-    const destination = safeWorkspacePath(root, input.destination);
+    const destination = workspacePathOrThrow(root, input.destination);
     await mkdir(dirname(destination), { recursive: true });
     await rename(target, destination);
     return {
@@ -72,7 +73,7 @@ export async function searchFiles(input: FileSearchInput): Promise<{
   tokenEstimate: number;
   warnings: string[];
 }> {
-  const root = resolve(input.root);
+  const root = workspacePathOrThrow(input.root, ".");
   const query = input.query?.toLowerCase().trim() ?? "";
   const files = await walk(root);
   const matches: FileSearchMatch[] = [];
@@ -154,12 +155,12 @@ async function walkEntries(root: string, dir = root): Promise<Array<{ path: stri
   return out;
 }
 
-function safeWorkspacePath(root: string, path: string): string {
-  const target = resolve(root, path);
-  if (target !== root && !target.startsWith(root + sep)) {
-    throw new Error(`Refusing filesystem action outside workspace: ${path}`);
+function workspacePathOrThrow(root: string, path: string): string {
+  const result = resolveWorkspacePath(root, path);
+  if (!result.ok) {
+    throw new Error(result.message);
   }
-  return target;
+  return result.path;
 }
 
 function buildSnippet(content: string, matchLine: number, budgetTokens: number): string {
