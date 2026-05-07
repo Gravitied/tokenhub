@@ -110,6 +110,7 @@ describe("public release repository contract", () => {
 
     expect(workflow).toContain("actions/checkout@v6");
     expect(workflow).toContain("actions/setup-node@v6");
+    expect(workflow).toContain("node-version: [20, 22, 24]");
     expect(workflow).toContain("npx playwright install --with-deps chromium");
     expect(workflow).toContain("npx playwright install chromium");
     expect(workflow.indexOf("Install Playwright browsers")).toBeLessThan(workflow.indexOf("run: npm test"));
