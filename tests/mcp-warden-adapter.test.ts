@@ -1,3 +1,4 @@
+import { dirname, join } from "node:path";
 import { describe, expect, test } from "vitest";
 import { appendBoundedOutput, redactSensitiveOutput, resolveWardenCommand } from "../tools/mcp-warden-server/server.mjs";
 
@@ -25,8 +26,8 @@ describe("mcp-warden Codex adapter", () => {
   });
 
   test("resolves npx from the active Node installation instead of a machine-specific path", () => {
-    const execPath = "C:\\Tools\\node\\node.exe";
-    const npxCli = "C:\\Tools\\node\\node_modules\\npm\\bin\\npx-cli.js";
+    const execPath = join("virtual-node", "bin", "node");
+    const npxCli = join(dirname(execPath), "node_modules", "npm", "bin", "npx-cli.js");
 
     const command = resolveWardenCommand({
       execPath,
