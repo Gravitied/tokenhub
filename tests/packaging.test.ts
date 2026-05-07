@@ -64,11 +64,11 @@ describe("npm package contents", () => {
   test("declares production package metadata", async () => {
     const packageJson = await readPackageJson();
 
-    expect(packageJson.bin?.["tokenhub-mcp"]).toBeDefined();
-    expect(packageJson.engines?.node).toBeDefined();
-    expect(packageJson.files).toBeDefined();
-    expect(packageJson.license).toBeDefined();
-    expect(packageJson.description).toBeDefined();
-    expect(packageJson.keywords).toBeDefined();
+    expect(packageJson.bin?.["tokenhub-mcp"]).toBe("dist/cli.js");
+    expect(packageJson.engines?.node).toBe(">=20");
+    expect(packageJson.files).toEqual(["dist", "README.md", "LICENSE", "package.json"]);
+    expect(packageJson.license).toBe("MIT");
+    expect(packageJson.description?.trim().length).toBeGreaterThan(20);
+    expect(packageJson.keywords).toEqual(expect.arrayContaining(["mcp", "model-context-protocol"]));
   });
 });

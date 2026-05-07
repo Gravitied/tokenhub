@@ -1,6 +1,6 @@
 import { execFile } from "node:child_process";
 import { existsSync } from "node:fs";
-import { mkdtemp, rm, unlink } from "node:fs/promises";
+import { mkdtemp, readFile, rm, unlink } from "node:fs/promises";
 import { fileURLToPath } from "node:url";
 import { tmpdir } from "node:os";
 import { dirname, join, resolve } from "node:path";
@@ -43,6 +43,12 @@ async function main() {
   let tarballPath;
 
   try {
+    const packageJson = JSON.parse(await readFile(join(repoRoot, "package.json"), "utf8"));
+    const expectedVersion = packageJson.version;
+    if (typeof expectedVersion !== "string" || expectedVersion.length === 0) {
+      throw new Error("package.json must declare a version for install smoke assertions.");
+    }
+
     await runNpm(["run", "build"]);
 
     tempDir = await mkdtemp(join(tmpdir(), "tokenhub-install-smoke-"));
@@ -57,8 +63,17 @@ async function main() {
     await runNpm(["install", tarballPath, "--ignore-scripts"], tempDir);
 
     const cliPath = join(tempDir, "node_modules", "tokenhub-mcp", "dist", "cli.js");
-    await run(process.execPath, [cliPath, "--help"], { cwd: tempDir });
-    await run(process.execPath, [cliPath, "--version"], { cwd: tempDir });
+    const help = await run(process.execPath, [cliPath, "--help"], { cwd: tempDir });
+    if (!help.stdout.includes("npx tokenhub-mcp --root")) {
+      throw new Error(`Installed CLI help output did not include the expected usage.\n\nstdout:\n${help.stdout}`);
+    }
+
+    const version = await run(process.execPath, [cliPath, "--version"], { cwd: tempDir });
+    if (version.stdout.trim() !== expectedVersion) {
+      throw new Error(
+        `Installed CLI version output did not match package.json version. Expected ${expectedVersion}, got ${version.stdout.trim()}.`
+      );
+    }
   } finally {
     let cleanupError;
     if (tarballPath) {
