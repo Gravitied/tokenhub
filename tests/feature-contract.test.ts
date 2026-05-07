@@ -3,7 +3,6 @@ import { join } from "node:path";
 import { describe, expect, test } from "vitest";
 import {
   advertisedCapabilities,
-  documentedRetrievalSources,
   publicMcpTools,
   readReadme,
   requiredReadmeHeadings
@@ -17,25 +16,11 @@ const evidenceContracts = [
   { capability: "README sections", files: ["tests/docs-contract.test.ts", "README.md"] }
 ] as const;
 
-const documentedWorkflowNames = [
-  "resolve_request",
-  "answer_from_web",
-  "validate",
-  "filesystem_action",
-  "git_action",
-  "project_scan"
-] as const;
-
-const retrievalSourceRuntimeNames: Record<(typeof documentedRetrievalSources)[number], string[]> = {
-  browser: ["browser"],
-  sqlite: ["sqlite"],
-  postgres: ["postgres"],
-  npm: ["docs"],
-  github: ["github"],
-  sentry: ["sentry"],
-  filesystem: ["files"],
-  git: ["git"],
-  web: ["web", "search"]
+const retrievalSourceAliases: Record<string, string> = {
+  filesystem: "files",
+  npm: "docs",
+  web_fetch: "web",
+  web_search: "search"
 };
 
 function readWorkspaceFile(path: string): string {
@@ -54,6 +39,37 @@ function flattenPassedValues(value: unknown): boolean[] {
   const direct = typeof record.passed === "boolean" ? [record.passed] : [];
   const allPassed = typeof record.allPassed === "boolean" ? [record.allPassed] : [];
   return [...direct, ...allPassed, ...Object.values(record).flatMap(flattenPassedValues)];
+}
+
+function markdownSection(markdown: string, heading: string): string {
+  const start = markdown.indexOf(`${heading}\n`);
+  expect(start, `missing markdown section ${heading}`).toBeGreaterThanOrEqual(0);
+  const afterHeading = start + heading.length + 1;
+  const nextHeading = markdown.slice(afterHeading).search(/^## /m);
+  return nextHeading === -1 ? markdown.slice(afterHeading) : markdown.slice(afterHeading, afterHeading + nextHeading);
+}
+
+function markdownTableRows(section: string): string[][] {
+  return section
+    .split(/\r?\n/)
+    .map((line) => line.trim())
+    .filter((line) => line.startsWith("|") && line.endsWith("|"))
+    .filter((line) => !/^\|\s*-/.test(line))
+    .slice(1)
+    .map((line) =>
+      line
+        .slice(1, -1)
+        .split("|")
+        .map((cell) => cell.trim())
+    );
+}
+
+function backtickedValues(text: string): string[] {
+  return [...text.matchAll(/`([^`]+)`/g)].map((match) => match[1]);
+}
+
+function runtimeSourceFor(documentedSource: string): string {
+  return retrievalSourceAliases[documentedSource] ?? documentedSource;
 }
 
 describe("feature evidence contract", () => {
@@ -80,24 +96,61 @@ describe("feature evidence contract", () => {
     }
   });
 
-  test("backs every documented retrieval source with the runtime source enum or schema", () => {
+  test("backs documented resource handles with ResourceStore read and write evidence", () => {
     const readme = readReadme();
+    const resources = readWorkspaceFile("src/core/resources.ts");
+
+    expect(readme, "README should document TokenHub resource handles").toContain("`tokenhub://resource/...`");
+    expect(resources, "ResourceStore class should back documented resource handles").toContain("export class ResourceStore");
+    expect(resources, "ResourceStore should write text resources").toContain("async writeText");
+    expect(resources, "ResourceStore should read stored resources").toContain("async read");
+    expect(resources, "ResourceStore should mint tokenhub resource URIs").toContain("tokenhub://resource/");
+    expect(resources, "ResourceStore should write resource manifests/content").toContain("writeFile");
+    expect(resources, "ResourceStore should read resource manifests/content").toContain("readFile");
+  });
+
+  test("derives retrieval sources from README and backs them with the runtime source schema", () => {
+    const readme = readReadme();
+    const retrievalRows = markdownTableRows(markdownSection(readme, "## Retrieval Sources"));
     const server = readWorkspaceFile("src/server.ts");
 
-    for (const source of documentedRetrievalSources) {
-      expect(readme, `README missing retrieval source ${source}`).toContain(`\`${source}\``);
-      for (const runtimeSource of retrievalSourceRuntimeNames[source]) {
-        expect(server, `runtime source schema missing ${runtimeSource} for documented ${source}`).toContain(`"${runtimeSource}"`);
+    expect(retrievalRows.length, "README Retrieval Sources table should contain source rows").toBeGreaterThan(0);
+
+    for (const row of retrievalRows) {
+      const [documentedSourceCell, runtimeSourceCell] = row;
+      const documentedSources = backtickedValues(documentedSourceCell);
+      const runtimeSources = backtickedValues(runtimeSourceCell);
+
+      expect(documentedSources.length, `row should document source aliases: ${documentedSourceCell}`).toBeGreaterThan(0);
+      expect(runtimeSources.length, `row should document runtime source schema names: ${runtimeSourceCell}`).toBeGreaterThan(0);
+
+      for (const runtimeSource of runtimeSources) {
+        expect(server, `runtime source schema missing ${runtimeSource}`).toContain(`"${runtimeSource}"`);
+      }
+
+      for (const documentedSource of documentedSources) {
+        const expectedRuntimeSource = runtimeSourceFor(documentedSource);
+        expect(
+          runtimeSources,
+          `documented source ${documentedSource} should map explicitly to runtime source ${expectedRuntimeSource}`
+        ).toContain(expectedRuntimeSource);
       }
     }
   });
 
-  test("backs every README workflow with the runtime workflow dispatcher", () => {
+  test("derives workflow names from README and backs each one with the runtime workflow dispatcher", () => {
     const readme = readReadme();
+    const workflowRows = markdownTableRows(markdownSection(readme, "## Workflows"));
     const workflows = readWorkspaceFile("src/workflows/index.ts");
 
-    for (const workflow of documentedWorkflowNames) {
-      expect(readme, `README missing workflow ${workflow}`).toContain(`\`${workflow}\``);
+    expect(workflowRows.length, "README Workflows table should contain workflow rows").toBeGreaterThan(0);
+
+    for (const row of workflowRows) {
+      const [workflowCell] = row;
+      const workflowNames = backtickedValues(workflowCell);
+
+      expect(workflowNames.length, `workflow row should start with a backticked workflow name: ${workflowCell}`).toBe(1);
+      const [workflow] = workflowNames;
       expect(workflows, `workflow dispatcher missing ${workflow}`).toContain(`input.name === "${workflow}"`);
     }
   });

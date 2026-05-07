@@ -142,7 +142,7 @@ Unsupported workflow modes, including `execution: "implement"` and `execution: "
 | `filesystem` | `files` | `--root`; optional `query`, `limit`, `budgetTokens` | Search workspace files, return redacted snippets and resource links | Missing matches return empty results; workspace escape attempts are rejected. |
 | `git` | `git` | `--root` in a git repository | Summarize status, recent commits, diff stats, and raw log resource | Non-repositories return warnings instead of raw git floods. |
 | `web` / `web_fetch` | `web` | `url` | Fetch and scrape one web page with timeout and optional raw resource | Missing `url` errors; HTTP failures include status. |
-| `web` / `web_search` | `search` | `query`; optional `provider` and `apiKey` | Search Brave, Exa, Tavily, SerpAPI, or no-key DuckDuckGo fallback | Provider-specific modes error when the required API key is absent. |
+| `web_search` | `search` | `query`; optional `provider` and `apiKey` | Search Brave, Exa, Tavily, SerpAPI, or no-key DuckDuckGo fallback | Provider-specific modes error when the required API key is absent. |
 | `github` | `github` | `owner` and `repo`; optional `token` | Summarize repo, issues, PRs, and workflow runs | Missing owner/repo errors; private or rate-limited repos need a token. |
 | `sqlite` | `sqlite` | `databaseBase64`; optional read-only `query` | Inspect schema and safe `SELECT` rows | Missing database bytes errors; non-SELECT queries return warnings and no rows. |
 | `postgres` | `postgres` | `connectionString`; optional read-only `query` | Inspect public schema and safe `SELECT` rows | Missing connection string errors; auth/network failures come from `pg`. |
