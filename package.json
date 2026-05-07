@@ -4,12 +4,13 @@
   "description": "A token-disciplined developer MCP hub with a tiny always-loaded surface and deferred internal capabilities.",
   "type": "module",
   "bin": {
-    "tokenhub-mcp": "./dist/cli.js"
+    "tokenhub-mcp": "dist/cli.js"
   },
   "files": [
     "dist",
     "README.md",
-    "LICENSE"
+    "LICENSE",
+    "package.json"
   ],
   "scripts": {
     "clean": "node -e \"require('node:fs').rmSync('dist',{recursive:true,force:true})\"",
@@ -21,7 +22,9 @@
     "eval:resolve-request": "npm run build && node scripts/evaluate-resolve-request.mjs",
     "eval:resolve-request:live": "npm run build && node scripts/evaluate-live-resolve-request.mjs",
     "proof": "node scripts/generate-proof-page.mjs",
-    "prepack": "npm run build"
+    "prepack": "npm run build",
+    "smoke:install": "node scripts/smoke-install.mjs",
+    "verify:release": "npm run lint && npm test && npm run build && npm run eval:resolve-request && npm run eval:resolve-request:live && npm pack --dry-run && npm run smoke:install"
   },
   "keywords": [
     "mcp",
