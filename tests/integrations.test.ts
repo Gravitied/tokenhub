@@ -1,5 +1,5 @@
 import { describe, expect, test } from "vitest";
-import { mkdtemp, rm, writeFile } from "node:fs/promises";
+import { mkdtemp, readFile, rm, symlink, writeFile } from "node:fs/promises";
 import { createServer } from "node:http";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
@@ -67,6 +67,51 @@ describe("filesystem action module", () => {
       );
     } finally {
       await rm(dir, { recursive: true, force: true });
+    }
+  });
+
+  test("rejects writes through an in-workspace symlinked directory", async (context) => {
+    const fixture = await createSymlinkedWorkspace(context);
+    if (!fixture) return;
+    try {
+      await expect(
+        applyFilesystemAction({ root: fixture.root, action: "write", path: "link/file.txt", content: "escaped" })
+      ).rejects.toThrow(/outside workspace/);
+      await expect(readFile(join(fixture.outside, "file.txt"), "utf8")).rejects.toThrow();
+    } finally {
+      await cleanupSymlinkedWorkspace(fixture);
+    }
+  });
+
+  test("rejects deletes through an in-workspace symlinked directory without deleting outside contents", async (context) => {
+    const fixture = await createSymlinkedWorkspace(context);
+    if (!fixture) return;
+    try {
+      await writeFile(join(fixture.outside, "file.txt"), "keep", "utf8");
+
+      await expect(applyFilesystemAction({ root: fixture.root, action: "delete", path: "link/file.txt" })).rejects.toThrow(
+        /outside workspace/
+      );
+      await expect(applyFilesystemAction({ root: fixture.root, action: "delete", path: "link" })).rejects.toThrow(/outside workspace/);
+      await expect(readFile(join(fixture.outside, "file.txt"), "utf8")).resolves.toBe("keep");
+    } finally {
+      await cleanupSymlinkedWorkspace(fixture);
+    }
+  });
+
+  test("rejects move destinations through an in-workspace symlinked directory", async (context) => {
+    const fixture = await createSymlinkedWorkspace(context);
+    if (!fixture) return;
+    try {
+      await writeFile(join(fixture.root, "source.txt"), "move me", "utf8");
+
+      await expect(
+        applyFilesystemAction({ root: fixture.root, action: "move", path: "source.txt", destination: "link/file.txt" })
+      ).rejects.toThrow(/outside workspace/);
+      await expect(readFile(join(fixture.outside, "file.txt"), "utf8")).rejects.toThrow();
+      await expect(readFile(join(fixture.root, "source.txt"), "utf8")).resolves.toBe("move me");
+    } finally {
+      await cleanupSymlinkedWorkspace(fixture);
     }
   });
 });
@@ -214,6 +259,30 @@ function duckDuckGoHtml(count: number): string {
     (_value, index) => `<a class="result__a" href="https://example.com/${index + 1}">Result ${index + 1}</a>
       <a class="result__snippet">Snippet ${index + 1}</a>`
   ).join("\n");
+}
+
+type SymlinkedWorkspace = {
+  root: string;
+  outside: string;
+};
+
+async function createSymlinkedWorkspace(context: { skip: () => void }): Promise<SymlinkedWorkspace | undefined> {
+  const root = await mkdtemp(join(tmpdir(), "tokenhub-fs-symlink-root-"));
+  const outside = await mkdtemp(join(tmpdir(), "tokenhub-fs-symlink-outside-"));
+  try {
+    await symlink(outside, join(root, "link"), process.platform === "win32" ? "junction" : "dir");
+    return { root, outside };
+  } catch {
+    await rm(root, { recursive: true, force: true });
+    await rm(outside, { recursive: true, force: true });
+    context.skip();
+    return undefined;
+  }
+}
+
+async function cleanupSymlinkedWorkspace(fixture: SymlinkedWorkspace): Promise<void> {
+  await rm(fixture.root, { recursive: true, force: true });
+  await rm(fixture.outside, { recursive: true, force: true });
 }
 
 describe("database module", () => {

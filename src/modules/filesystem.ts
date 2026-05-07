@@ -1,5 +1,5 @@
-import { mkdir, readdir, readFile, rename, rm, stat, writeFile } from "node:fs/promises";
-import { dirname, relative, resolve, sep } from "node:path";
+import { mkdir, readdir, readFile, realpath, rename, rm, writeFile } from "node:fs/promises";
+import { dirname, isAbsolute, relative, resolve, sep } from "node:path";
 import type { ResourceStore } from "../core/resources.js";
 import { estimateTokens, truncateToTokens } from "../core/token.js";
 import { resolveWorkspacePath } from "../core/workspace-path.js";
@@ -35,6 +35,7 @@ export async function applyFilesystemAction(input: FilesystemActionInput): Promi
   entries?: Array<{ path: string; type: "file" | "directory" }>;
 }> {
   const root = workspacePathOrThrow(input.root, ".");
+  const realRoot = await realpath(root);
   if (input.action === "tree") {
     const entries = (await walkEntries(root)).slice(0, input.limit ?? 100);
     return { summary: `listed ${entries.length} entries`, entries };
@@ -43,7 +44,7 @@ export async function applyFilesystemAction(input: FilesystemActionInput): Promi
   if (!input.path) {
     throw new Error(`filesystem ${input.action} requires path.`);
   }
-  const target = workspacePathOrThrow(root, input.path);
+  const target = await actionPathOrThrow(root, realRoot, input.path);
   const relTarget = relative(root, target).split(sep).join("/");
 
   if (input.action === "write") {
@@ -56,7 +57,7 @@ export async function applyFilesystemAction(input: FilesystemActionInput): Promi
     if (!input.destination) {
       throw new Error("filesystem move requires destination.");
     }
-    const destination = workspacePathOrThrow(root, input.destination);
+    const destination = await actionPathOrThrow(root, realRoot, input.destination);
     await mkdir(dirname(destination), { recursive: true });
     await rename(target, destination);
     return {
@@ -161,6 +162,48 @@ function workspacePathOrThrow(root: string, path: string): string {
     throw new Error(result.message);
   }
   return result.path;
+}
+
+async function actionPathOrThrow(root: string, realRoot: string, path: string): Promise<string> {
+  const target = workspacePathOrThrow(root, path);
+  const realExistingPath = await realpath(target).catch((error: NodeJS.ErrnoException) => {
+    if (error.code === "ENOENT") {
+      return undefined;
+    }
+    throw error;
+  });
+
+  if (realExistingPath) {
+    assertRealPathInsideWorkspace(realRoot, realExistingPath, path);
+    return target;
+  }
+
+  const parent = await nearestExistingParent(dirname(target));
+  assertRealPathInsideWorkspace(realRoot, parent, path);
+  return target;
+}
+
+async function nearestExistingParent(path: string): Promise<string> {
+  const realParent = await realpath(path).catch((error: NodeJS.ErrnoException) => {
+    if (error.code !== "ENOENT") {
+      throw error;
+    }
+    const parent = dirname(path);
+    if (parent === path) {
+      throw error;
+    }
+    return nearestExistingParent(parent);
+  });
+  return realParent;
+}
+
+function assertRealPathInsideWorkspace(realRoot: string, realPath: string, requestedPath: string): void {
+  const relativeRealPath = relative(realRoot, realPath);
+  const comparable = process.platform === "win32" ? relativeRealPath.toLowerCase() : relativeRealPath;
+  if (comparable === "" || (comparable !== ".." && !comparable.startsWith(`..${sep}`) && !isAbsolute(relativeRealPath))) {
+    return;
+  }
+  throw new Error(`Refusing filesystem action outside workspace: ${requestedPath}`);
 }
 
 function buildSnippet(content: string, matchLine: number, budgetTokens: number): string {
