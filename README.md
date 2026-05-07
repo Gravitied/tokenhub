@@ -53,6 +53,19 @@ Then call the public MCP tool `run_workflow` with an advertised workflow capabil
 
 Large or raw outputs are returned as redacted `tokenhub://resource/...` handles. Use `read_resource` to expand snippets, ranges, or full resource content.
 
+## Documentation
+
+The README is the quick production reference. The full project docs live under `docs/`:
+
+| Document | Purpose |
+| --- | --- |
+| [Docs index](docs/README.md) | Navigation for operators, contributors, and release owners. |
+| [Architecture](docs/architecture.md) | Runtime layout, tool surface, workflows, resources, and package boundaries. |
+| [Configuration](docs/configuration.md) | CLI flags, MCP client setup, provider inputs, and environment variables. |
+| [Operations](docs/operations.md) | Install, run, validate, smoke test, troubleshoot, and maintain the service. |
+| [Security](docs/security.md) | Workspace confinement, mutation opt-in, credential handling, and network boundaries. |
+| [Release](docs/release.md) | Release checklist, verification evidence, npm packaging contract, and rollback notes. |
+
 ## MCP Client Configuration
 
 Local package execution with `npx`:
