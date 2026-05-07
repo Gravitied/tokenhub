@@ -14,6 +14,10 @@ export function resolveWorkspacePath(root: string, requestedPath: string, option
   }
 
   const pathApi = selectPathApi(root, requestedPath, options);
+  if (hasMismatchedAbsolutePath(requestedPath, pathApi)) {
+    return outsideWorkspace(requestedPath);
+  }
+
   const resolvedRoot = pathApi.resolve(root);
   const resolvedTarget = pathApi.resolve(resolvedRoot, requestedPath);
   const relativePath = pathApi.relative(resolvedRoot, resolvedTarget);
@@ -22,11 +26,7 @@ export function resolveWorkspacePath(root: string, requestedPath: string, option
     return { ok: true, path: resolvedTarget };
   }
 
-  return {
-    ok: false,
-    reason: "outside-workspace",
-    message: `Refusing filesystem action outside workspace: ${requestedPath}`
-  };
+  return outsideWorkspace(requestedPath);
 }
 
 function hasInvalidPathInput(value: string): boolean {
@@ -40,24 +40,45 @@ function selectPathApi(root: string, requestedPath: string, options: WorkspacePa
   if (options.platform === "win32") {
     return path.win32;
   }
-  if (hasWindowsShape(root) || hasWindowsShape(requestedPath)) {
+  if (options.platform === "native") {
+    return path;
+  }
+  if (hasWindowsShape(root)) {
     return path.win32;
   }
-  if (hasPosixShape(root) && !hasWindowsShape(requestedPath)) {
+  if (hasPosixShape(root)) {
     return path.posix;
   }
   return path;
 }
 
 function hasWindowsShape(value: string): boolean {
-  return /^[a-zA-Z]:[\\/]/.test(value) || /^\\\\[^\\]+\\[^\\]+/.test(value);
+  return /^[a-zA-Z]:[\\/]/.test(value) || /^[/\\]{2}[^/\\]+[/\\][^/\\]+/.test(value);
 }
 
 function hasPosixShape(value: string): boolean {
   return value.startsWith("/");
 }
 
+function hasMismatchedAbsolutePath(requestedPath: string, pathApi: path.PlatformPath): boolean {
+  if (pathApi === path.posix) {
+    return hasWindowsShape(requestedPath);
+  }
+  if (pathApi === path.win32) {
+    return hasPosixShape(requestedPath) && !hasWindowsShape(requestedPath);
+  }
+  return hasWindowsShape(requestedPath) && !path.isAbsolute(requestedPath);
+}
+
 function isInsideWorkspace(relativePath: string, pathApi: path.PlatformPath, windowsComparison: boolean): boolean {
   const comparable = windowsComparison ? relativePath.toLowerCase() : relativePath;
   return comparable === "" || (!comparable.startsWith("..") && !pathApi.isAbsolute(relativePath));
+}
+
+function outsideWorkspace(requestedPath: string): WorkspacePathResult {
+  return {
+    ok: false,
+    reason: "outside-workspace",
+    message: `Refusing filesystem action outside workspace: ${requestedPath}`
+  };
 }

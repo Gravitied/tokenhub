@@ -14,6 +14,14 @@ describe("resolveWorkspacePath", () => {
     });
   });
 
+  test("rejects Windows absolute requests against a POSIX root", () => {
+    expect(resolveWorkspacePath("/tmp/ws", "C:\\tmp\\ws\\out")).toEqual({
+      ok: false,
+      reason: "outside-workspace",
+      message: expect.any(String)
+    });
+  });
+
   test("resolves Windows paths inside the workspace", () => {
     expect(resolveWorkspacePath("C:\\repo", "src\\a.ts")).toEqual({ ok: true, path: "C:\\repo\\src\\a.ts" });
   });
@@ -31,6 +39,13 @@ describe("resolveWorkspacePath", () => {
       ok: false,
       reason: "outside-workspace",
       message: expect.any(String)
+    });
+  });
+
+  test("resolves forward-slash UNC roots with Windows semantics", () => {
+    expect(resolveWorkspacePath("//server/share/repo", "src/a.ts")).toEqual({
+      ok: true,
+      path: "\\\\server\\share\\repo\\src\\a.ts"
     });
   });
 
