@@ -25,6 +25,7 @@ export type WorkflowInput = {
   path?: string;
   destination?: string;
   content?: string;
+  allowUnsafeMutations?: boolean;
   paths?: string[];
   message?: string;
   ref?: string;
@@ -133,7 +134,8 @@ async function runFilesystemActionWorkflow(input: WorkflowInput) {
     action: parseFilesystemAction(input.action),
     path: input.path,
     destination: input.destination,
-    content: input.content
+    content: input.content,
+    allowUnsafeMutations: input.allowUnsafeMutations
   });
   const telemetry = input.telemetry.record({
     capability: "workflow.filesystem_action",

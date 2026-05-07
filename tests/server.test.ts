@@ -63,21 +63,42 @@ describe("MCP runtime", () => {
     }
   });
 
-  test("routes safe filesystem actions through run_workflow", async () => {
+  test("rejects filesystem mutation workflows by default", async () => {
     const dir = await mkdtemp(join(tmpdir(), "tokenhub-workflow-actions-"));
+    try {
+      const runtime = createTokenHubRuntime({ root: dir });
+
+      await expect(
+        runtime.runWorkflow({
+          name: "filesystem_action",
+          action: "write",
+          path: "notes.txt",
+          content: "hello"
+        })
+      ).rejects.toThrow(
+        "filesystem write is disabled by default; set TOKENHUB_ENABLE_FS_MUTATIONS=true only for trusted local workspaces."
+      );
+    } finally {
+      await rm(dir, { recursive: true, force: true });
+    }
+  });
+
+  test("routes explicitly enabled filesystem actions through run_workflow", async () => {
+    const dir = await mkdtemp(join(tmpdir(), "tokenhub-workflow-actions-enabled-"));
     try {
       const runtime = createTokenHubRuntime({ root: dir });
       const write = await runtime.runWorkflow({
         name: "filesystem_action",
         action: "write",
         path: "notes.txt",
-        content: "hello"
+        content: "hello",
+        allowUnsafeMutations: true
       });
 
       expect(write.summary).toContain("wrote notes.txt");
-      await expect(runtime.runWorkflow({ name: "filesystem_action", action: "write", path: "../escape.txt" })).rejects.toThrow(
-        /outside workspace/
-      );
+      await expect(
+        runtime.runWorkflow({ name: "filesystem_action", action: "write", path: "../escape.txt", allowUnsafeMutations: true })
+      ).rejects.toThrow(/outside workspace/);
     } finally {
       await rm(dir, { recursive: true, force: true });
     }

@@ -58,6 +58,7 @@ export function createTokenHubRuntime(options: RuntimeOptions) {
       path?: string;
       destination?: string;
       content?: string;
+      allowUnsafeMutations?: boolean;
       paths?: string[];
       message?: string;
       ref?: string;
@@ -327,6 +328,10 @@ export function createMcpServer(options: RuntimeOptions): McpServer {
         path: z.string().optional(),
         destination: z.string().optional(),
         content: z.string().optional(),
+        allowUnsafeMutations: z
+          .boolean()
+          .optional()
+          .describe("Enable trusted local filesystem write, move, or delete mutations for this workflow call."),
         paths: z.array(z.string()).optional(),
         message: z.string().optional(),
         ref: z.string().optional(),
