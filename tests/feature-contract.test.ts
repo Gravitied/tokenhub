@@ -42,11 +42,12 @@ function flattenPassedValues(value: unknown): boolean[] {
 }
 
 function markdownSection(markdown: string, heading: string): string {
-  const start = markdown.indexOf(`${heading}\n`);
+  const normalized = markdown.replace(/\r\n/g, "\n");
+  const start = normalized.indexOf(`${heading}\n`);
   expect(start, `missing markdown section ${heading}`).toBeGreaterThanOrEqual(0);
   const afterHeading = start + heading.length + 1;
-  const nextHeading = markdown.slice(afterHeading).search(/^## /m);
-  return nextHeading === -1 ? markdown.slice(afterHeading) : markdown.slice(afterHeading, afterHeading + nextHeading);
+  const nextHeading = normalized.slice(afterHeading).search(/^## /m);
+  return nextHeading === -1 ? normalized.slice(afterHeading) : normalized.slice(afterHeading, afterHeading + nextHeading);
 }
 
 function markdownTableRows(section: string): string[][] {
