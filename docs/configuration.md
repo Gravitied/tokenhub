@@ -67,6 +67,7 @@ On Windows, keep `--root` and the path as separate JSON args, and escape backsla
 | `TAVILY_API_KEY` | Enables Tavily search provider selection. |
 | `SERPAPI_API_KEY` | Enables SerpAPI search provider selection. |
 | `TOKENHUB_ENABLE_FS_MUTATIONS` | Enables trusted-local filesystem write, move, and delete when set to `true`. |
+| `TOKENHUB_ALLOW_PRIVATE_NETWORK` | Allows trusted-local web and browser retrieval of localhost, private LAN, and other non-public network targets when set to `true`. |
 
 ## Per-Request Inputs
 
@@ -83,9 +84,8 @@ Some providers use explicit request fields instead of environment variables:
 
 ## Filesystem Mutation Policy
 
-Filesystem tree listing and search are available by default. Write, move, and delete are disabled unless one of these explicit opt-ins is present:
+Filesystem tree listing and search are available by default. Write, move, and delete are disabled unless this explicit process-level opt-in is present:
 
 - process env: `TOKENHUB_ENABLE_FS_MUTATIONS=true`
-- per-call input: `allowUnsafeMutations: true`
 
 Use mutation opt-in only for trusted local workspaces.

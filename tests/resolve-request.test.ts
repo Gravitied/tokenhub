@@ -19,6 +19,7 @@ describe("resolve_request workflow", () => {
         apiKey: "test-key",
         resourceStore,
         telemetry: new TokenTelemetry({ roiThreshold: 3 }),
+        urlLookup: testUrlLookup,
         fetchImpl: async (url) => {
           const urlText = url.toString();
           if (urlText.includes("api.tavily.com")) {
@@ -63,6 +64,7 @@ describe("resolve_request workflow", () => {
         execution: "plan_only",
         resourceStore,
         telemetry: new TokenTelemetry({ roiThreshold: 3 }),
+        urlLookup: testUrlLookup,
         fetchImpl: async (url) => {
           if (url.toString().includes("duckduckgo.com")) {
             return new Response(
@@ -95,6 +97,7 @@ describe("resolve_request workflow", () => {
         request: "Collect npm package metadata for zod and return a table",
         resourceStore,
         telemetry: new TokenTelemetry({ roiThreshold: 3 }),
+        urlLookup: testUrlLookup,
         fetchImpl: async (url) => {
           const urlText = url.toString();
           if (urlText.includes("registry.npmjs.org")) {
@@ -147,3 +150,7 @@ describe("resolve_request workflow", () => {
     }
   });
 });
+
+async function testUrlLookup() {
+  return [{ address: "93.184.216.34", family: 4 as const }];
+}

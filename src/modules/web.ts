@@ -1,5 +1,6 @@
 import type { ResourceStore } from "../core/resources.js";
 import { estimateTokens, truncateToTokens } from "../core/token.js";
+import { assertAllowedNetworkUrl, type UrlAddressLookup } from "../core/url-policy.js";
 import type { FetchLike } from "./github.js";
 
 export type CleanHtmlResult = {
@@ -13,6 +14,7 @@ export type FetchWebInput = {
   budgetTokens?: number;
   includeRaw?: boolean;
   fetchImpl?: FetchLike;
+  urlLookup?: UrlAddressLookup;
   timeoutMs?: number;
 };
 
@@ -43,7 +45,7 @@ export async function fetchAndScrape(input: FetchWebInput): Promise<{
   warnings: string[];
 }> {
   const fetchImpl = input.fetchImpl ?? fetch;
-  const response = await fetchWithTimeout(
+  const response = await fetchWithAllowedRedirects(
     fetchImpl,
     input.url,
     {
@@ -51,7 +53,8 @@ export async function fetchAndScrape(input: FetchWebInput): Promise<{
       "user-agent": "tokenhub-mcp/0.1 (+https://github.com/tokenhub-mcp/tokenhub-mcp)"
     }
     },
-    input.timeoutMs ?? 5000
+    input.timeoutMs ?? 5000,
+    input.urlLookup
   );
   if (!response.ok) {
     throw new Error(`Fetch failed for ${input.url}: HTTP ${response.status}`);
@@ -73,6 +76,29 @@ export async function fetchAndScrape(input: FetchWebInput): Promise<{
     tokenEstimate: estimateTokens(truncated.text),
     warnings: truncated.truncated ? ["Web content was truncated; read_resource can expand the artifact."] : []
   };
+}
+
+async function fetchWithAllowedRedirects(
+  fetchImpl: FetchLike,
+  initialUrl: string,
+  init: RequestInit,
+  timeoutMs: number,
+  urlLookup?: UrlAddressLookup
+): Promise<Response> {
+  let currentUrl = initialUrl;
+  for (let redirectCount = 0; redirectCount <= 5; redirectCount++) {
+    const checkedUrl = await assertAllowedNetworkUrl(currentUrl, { lookupAddress: urlLookup });
+    const response = await fetchWithTimeout(fetchImpl, checkedUrl.toString(), { ...init, redirect: "manual" }, timeoutMs);
+    if (![301, 302, 303, 307, 308].includes(response.status)) {
+      return response;
+    }
+    const location = response.headers.get("location");
+    if (!location) {
+      return response;
+    }
+    currentUrl = new URL(location, checkedUrl).toString();
+  }
+  throw new Error(`Fetch failed for ${initialUrl}: too many redirects.`);
 }
 
 async function fetchWithTimeout(fetchImpl: FetchLike, url: string, init: RequestInit, timeoutMs: number): Promise<Response> {

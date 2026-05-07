@@ -85,21 +85,27 @@ describe("MCP runtime", () => {
 
   test("routes explicitly enabled filesystem actions through run_workflow", async () => {
     const dir = await mkdtemp(join(tmpdir(), "tokenhub-workflow-actions-enabled-"));
+    const previous = process.env.TOKENHUB_ENABLE_FS_MUTATIONS;
+    process.env.TOKENHUB_ENABLE_FS_MUTATIONS = "true";
     try {
       const runtime = createTokenHubRuntime({ root: dir });
       const write = await runtime.runWorkflow({
         name: "filesystem_action",
         action: "write",
         path: "notes.txt",
-        content: "hello",
-        allowUnsafeMutations: true
+        content: "hello"
       });
 
       expect(write.summary).toContain("wrote notes.txt");
       await expect(
-        runtime.runWorkflow({ name: "filesystem_action", action: "write", path: "../escape.txt", allowUnsafeMutations: true })
+        runtime.runWorkflow({ name: "filesystem_action", action: "write", path: "../escape.txt" })
       ).rejects.toThrow(/outside workspace/);
     } finally {
+      if (previous === undefined) {
+        delete process.env.TOKENHUB_ENABLE_FS_MUTATIONS;
+      } else {
+        process.env.TOKENHUB_ENABLE_FS_MUTATIONS = previous;
+      }
       await rm(dir, { recursive: true, force: true });
     }
   });

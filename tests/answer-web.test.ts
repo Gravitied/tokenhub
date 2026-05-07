@@ -49,6 +49,7 @@ describe("answer from web", () => {
         provider: "tavily",
         apiKey: "test-key",
         resourceStore,
+        urlLookup: testUrlLookup,
         fetchImpl: async (url, init) => {
           const urlText = url.toString();
           if (urlText.includes("api.tavily.com")) {
@@ -107,6 +108,7 @@ describe("answer from web", () => {
         provider: "tavily",
         apiKey: "test-key",
         resourceStore,
+        urlLookup: testUrlLookup,
         fetchImpl: async (url, init) => {
           const urlText = url.toString();
           if (urlText.includes("api.tavily.com")) {
@@ -154,6 +156,7 @@ describe("answer from web", () => {
         apiKey: "test-key",
         resourceStore,
         telemetry: new TokenTelemetry({ roiThreshold: 3 }),
+        urlLookup: testUrlLookup,
         fetchImpl: async (url, init) => {
           const urlText = url.toString();
           if (urlText.includes("api.tavily.com")) {
@@ -225,6 +228,10 @@ function pageHtml(url: string): string {
   return `<!doctype html><html><head><title>${url}</title><script>secret()</script></head><body><main><ol>${lists[url]
     .map((item) => `<li>${item}</li>`)
     .join("")}</ol></main></body></html>`;
+}
+
+async function testUrlLookup() {
+  return [{ address: "93.184.216.34", family: 4 as const }];
 }
 
 function deepSeekPaperHtml(url: string): string {

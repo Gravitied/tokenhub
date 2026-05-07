@@ -1,5 +1,6 @@
 import type { ResourceLink, ResourceStore } from "../core/resources.js";
 import { estimateTokens, truncateToTokens } from "../core/token.js";
+import type { UrlAddressLookup } from "../core/url-policy.js";
 import type { FetchLike } from "./github.js";
 import { searchWeb, type SearchProvider, type SearchResult } from "./search.js";
 import { fetchAndScrape } from "./web.js";
@@ -14,6 +15,7 @@ export type AnswerFromWebInput = {
   apiKey?: string;
   resourceStore: ResourceStore;
   fetchImpl?: FetchLike;
+  urlLookup?: UrlAddressLookup;
 };
 
 export type AnswerFromWebResult = {
@@ -70,7 +72,8 @@ export async function answerFromWeb(input: AnswerFromWebInput): Promise<AnswerFr
         url: fetchUrl,
         resourceStore: input.resourceStore,
         budgetTokens: 4200,
-        fetchImpl: input.fetchImpl
+        fetchImpl: input.fetchImpl,
+        urlLookup: input.urlLookup
       });
       sourceRecords.push({
         searchResult: result,

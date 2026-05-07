@@ -117,8 +117,8 @@ The user-facing advertised capabilities in this README are `resolve_request`, `a
 | --- | --- | --- |
 | `resolve_request` | `run_workflow` | Infers intent, source strategy, output shape, depth, evidence mode, and execution mode from a natural-language request. It supports `answer_only` and `plan_only`; implementation execution modes are rejected instead of faking success. |
 | `answer_from_web` | `run_workflow` | Searches the web, fetches source pages, extracts clean text, and returns cited ranked-list or summary answers with source resource links. |
-| `validate` | `run_workflow` | Runs a command such as `npm test`, redacts secret-looking output, stores the full validation log as a resource, and reports pass/fail warnings. |
-| `filesystem_action` | `run_workflow` | Lists a workspace tree by default. Write, move, and delete require `TOKENHUB_ENABLE_FS_MUTATIONS=true` or per-call `allowUnsafeMutations: true`. |
+| `validate` | `run_workflow` | Runs allowlisted validation commands (`npm test`, `npm run lint`, or `npm run build`), redacts secret-looking output, stores the full validation log as a resource, and reports pass/fail warnings. |
+| `filesystem_action` | `run_workflow` | Lists a workspace tree by default. Write, move, and delete require the service process to be started with `TOKENHUB_ENABLE_FS_MUTATIONS=true`. |
 | `git_action` | `run_workflow` | Runs bounded git status, diff, show, stage, commit, or branch operations inside the configured workspace. |
 | `project_scan` | `run_workflow` | Combines git summary and filesystem search into compact project context. |
 
@@ -172,6 +172,7 @@ Unsupported workflow modes, including `execution: "implement"` and `execution: "
 | `TAVILY_API_KEY` | Selects Tavily as the default search provider when Brave and Exa are not set. |
 | `SERPAPI_API_KEY` | Selects SerpAPI as the default search provider when the other keyed providers are not set. |
 | `TOKENHUB_ENABLE_FS_MUTATIONS` | When set to `true`, enables trusted-local filesystem write, move, and delete workflows. Leave unset for read/list behavior. |
+| `TOKENHUB_ALLOW_PRIVATE_NETWORK` | When set to `true`, allows trusted-local web and browser retrieval of localhost, private LAN, and other non-public network targets. Leave unset for public-network-only retrieval. |
 
 GitHub tokens are supplied as `retrieve_context` input `token`; there is no dedicated GitHub environment variable in the runtime. Sentry tokens are supplied as `token`, Postgres uses `connectionString`, npm registry lookup uses the public registry URL, and browser capture uses local Playwright without a credential variable. Network timeouts are currently fixed in code: web fetch and DuckDuckGo search use 5000ms, browser navigation uses 20000ms, git commands use 10000ms, and validation commands use 120000ms.
 
@@ -179,11 +180,11 @@ GitHub tokens are supplied as `retrieve_context` input `token`; there is no dedi
 
 TokenHub confines filesystem paths to the configured `--root` workspace and rejects path escapes, including symlink-realpath escapes for mutation targets. File snippets and stored file resources redact secret-looking values before model-facing output.
 
-File deletion and mutation are opt-in. `filesystem_action` `tree` is available by default, but write, move, and delete require `TOKENHUB_ENABLE_FS_MUTATIONS=true` or per-call `allowUnsafeMutations: true`; use those only in trusted local workspaces.
+File deletion and mutation are opt-in. `filesystem_action` `tree` is available by default, but write, move, and delete require `TOKENHUB_ENABLE_FS_MUTATIONS=true` on the TokenHub process; use it only in trusted local workspaces.
 
 Git operations run in the workspace and can stage, commit, or branch when explicitly requested through `git_action`. Review paths and messages before allowing agent-driven git changes.
 
-Network fetches, search providers, GitHub, npm, Sentry, Postgres, and browser capture can contact external services. Treat URLs, credentials, connection strings, and returned third-party content as sensitive. Do not place secrets in prompts when they can be passed as tool input, and prefer resource links over copying raw logs into chat.
+Network fetches, search providers, GitHub, npm, Sentry, Postgres, and browser capture can contact external services. Web and browser retrieval reject localhost, private LAN, metadata, and unverified DNS targets by default; set `TOKENHUB_ALLOW_PRIVATE_NETWORK=true` only for trusted local network debugging. Treat URLs, credentials, connection strings, and returned third-party content as sensitive. Do not place secrets in prompts when they can be passed as tool input, and prefer resource links over copying raw logs into chat.
 
 `read_resource` can expand redacted resources; screenshots may still contain visible secrets from the captured page. Share resource URIs only with clients that should have access to the workspace resource store.
 
@@ -197,7 +198,7 @@ Network fetches, search providers, GitHub, npm, Sentry, Postgres, and browser ca
 | Package install issues | Use Node 20 or newer, then retry `npx tokenhub-mcp --root /path/to/workspace` or `npm install -g tokenhub-mcp`. |
 | Windows path quoting | In MCP JSON, write paths as one escaped string such as `"C:\\Users\\you\\workspace"` and keep `--root` and the path as separate args. |
 | Unsupported workflow mode | Use `execution: "answer_only"` or `execution: "plan_only"` for `resolve_request`; direct implementation modes are intentionally rejected. |
-| Filesystem mutation blocked | Set per-call `allowUnsafeMutations: true` or `TOKENHUB_ENABLE_FS_MUTATIONS=true` only for trusted local workspaces. |
+| Filesystem mutation blocked | Restart TokenHub with `TOKENHUB_ENABLE_FS_MUTATIONS=true` only for trusted local workspaces. |
 
 ## Release Verification
 

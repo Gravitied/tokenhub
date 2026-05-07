@@ -11,6 +11,7 @@ import type { SearchProvider } from "../modules/search.js";
 import type { FetchLike } from "../modules/github.js";
 import { runResolveRequestWorkflow } from "./resolve-request.js";
 import type { EvidenceMode, ExecutionMode, OutputShape, RequestDepth } from "../core/request-shape.js";
+import type { UrlAddressLookup } from "../core/url-policy.js";
 
 const execFileAsync = promisify(execFile);
 
@@ -25,7 +26,6 @@ export type WorkflowInput = {
   path?: string;
   destination?: string;
   content?: string;
-  allowUnsafeMutations?: boolean;
   paths?: string[];
   message?: string;
   ref?: string;
@@ -42,6 +42,7 @@ export type WorkflowInput = {
   limit?: number;
   sourceLimit?: number;
   fetchImpl?: FetchLike;
+  urlLookup?: UrlAddressLookup;
   resourceStore: ResourceStore;
   telemetry: TokenTelemetry;
 };
@@ -78,7 +79,8 @@ export async function runWorkflow(input: WorkflowInput): Promise<{
       depth: input.depth,
       outputShape: input.outputShape,
       evidence: input.evidence,
-      execution: input.execution
+      execution: input.execution,
+      urlLookup: input.urlLookup
     });
   }
   if (input.name === "project_scan") {
@@ -107,7 +109,8 @@ async function runAnswerFromWebWorkflow(input: WorkflowInput) {
     provider: input.provider,
     apiKey: input.apiKey,
     resourceStore: input.resourceStore,
-    fetchImpl: input.fetchImpl
+    fetchImpl: input.fetchImpl,
+    urlLookup: input.urlLookup
   });
   const telemetry = input.telemetry.record({
     capability: "workflow.answer_from_web",
@@ -134,8 +137,7 @@ async function runFilesystemActionWorkflow(input: WorkflowInput) {
     action: parseFilesystemAction(input.action),
     path: input.path,
     destination: input.destination,
-    content: input.content,
-    allowUnsafeMutations: input.allowUnsafeMutations
+    content: input.content
   });
   const telemetry = input.telemetry.record({
     capability: "workflow.filesystem_action",
@@ -221,9 +223,8 @@ async function runProjectScan(input: WorkflowInput) {
 }
 
 async function runValidation(input: WorkflowInput) {
-  const command = input.command ?? "npm";
-  const args = input.args ?? ["test"];
-  const result = await execFileAsync(command, args, {
+  const command = parseValidationCommand(input);
+  const result = await execFileAsync(command.executable, command.args, {
     cwd: input.root,
     timeout: 120000,
     maxBuffer: 1024 * 1024 * 4
@@ -237,12 +238,12 @@ async function runValidation(input: WorkflowInput) {
   const redacted = redactSecrets(result.output);
   const link = await input.resourceStore.writeText({
     kind: "log",
-    label: `validation:${command} ${args.join(" ")}`,
+    label: `validation:${command.display}`,
     source: input.root,
     content: redacted
   });
   const summary = truncateToTokens(
-    `Validation ${result.exitCode === 0 ? "passed" : "failed"}: ${command} ${args.join(" ")}\n${redacted}`,
+    `Validation ${result.exitCode === 0 ? "passed" : "failed"}: ${command.display}\n${redacted}`,
     input.budgetTokens ?? 600
   );
   const telemetry = input.telemetry.record({
@@ -258,6 +259,30 @@ async function runValidation(input: WorkflowInput) {
     telemetry,
     warnings: result.exitCode === 0 ? [] : [`Validation command exited with ${result.exitCode}.`]
   };
+}
+
+function parseValidationCommand(input: WorkflowInput): { executable: string; args: string[]; display: string } {
+  const requestedCommand = input.command ?? "npm";
+  const args = input.args ?? ["test"];
+  const normalizedCommand = requestedCommand.toLowerCase().replace(/\.cmd$/, "");
+  const allowedArgs = [
+    ["test"],
+    ["run", "lint"],
+    ["run", "build"]
+  ];
+  const isAllowed = normalizedCommand === "npm" && allowedArgs.some((allowed) => arraysEqual(allowed, args));
+  if (!isAllowed) {
+    throw new Error("validate supports only npm test, npm run lint, or npm run build.");
+  }
+  return {
+    executable: process.platform === "win32" ? "npm.cmd" : "npm",
+    args,
+    display: `npm ${args.join(" ")}`
+  };
+}
+
+function arraysEqual(left: string[], right: string[]): boolean {
+  return left.length === right.length && left.every((value, index) => value === right[index]);
 }
 
 function redactSecrets(text: string): string {

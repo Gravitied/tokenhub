@@ -25,18 +25,6 @@ Enable mutations only in trusted workspaces:
 TOKENHUB_ENABLE_FS_MUTATIONS=true tokenhub-mcp --root /path/to/workspace
 ```
 
-or per request:
-
-```json
-{
-  "name": "filesystem_action",
-  "action": "write",
-  "path": "notes.txt",
-  "content": "hello",
-  "allowUnsafeMutations": true
-}
-```
-
 ## Secrets
 
 TokenHub redacts secret-looking values in file snippets, validation logs, and stored text resources before they are returned to the model-facing client. Do not rely on regex redaction as the only secret-control layer. Prefer passing credentials as request inputs rather than embedding them in natural-language prompts.
@@ -54,6 +42,12 @@ These capabilities may contact external services:
 - browser capture targets
 
 Treat URLs, tokens, connection strings, returned pages, and screenshots as sensitive data. Browser screenshots may contain visible secrets even when text resources are redacted.
+
+Web and browser retrieval validate outbound targets before fetching. By default they allow only verified public `http` and `https` URLs and reject localhost, private LAN, metadata, reserved, and DNS-unverified targets. For trusted local debugging, start the service with:
+
+```bash
+TOKENHUB_ALLOW_PRIVATE_NETWORK=true tokenhub-mcp --root /path/to/workspace
+```
 
 ## Git Actions
 

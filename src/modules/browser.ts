@@ -1,11 +1,13 @@
 import { estimateTokens, truncateToTokens } from "../core/token.js";
 import type { ResourceStore } from "../core/resources.js";
+import { assertAllowedNetworkUrl, type UrlAddressLookup } from "../core/url-policy.js";
 
 export type BrowserCaptureInput = {
   url: string;
   resourceStore: ResourceStore;
   includeScreenshot?: boolean;
   budgetTokens?: number;
+  urlLookup?: UrlAddressLookup;
 };
 
 export async function captureBrowserState(input: BrowserCaptureInput): Promise<{
@@ -24,6 +26,7 @@ export async function captureBrowserState(input: BrowserCaptureInput): Promise<{
   resources: string[];
   tokenEstimate: number;
 }> {
+  await assertAllowedNetworkUrl(input.url, { lookupAddress: input.urlLookup });
   const { chromium } = await import("playwright");
   const browser = await chromium.launch();
   const page = await browser.newPage();
@@ -37,6 +40,14 @@ export async function captureBrowserState(input: BrowserCaptureInput): Promise<{
   page.on("requestfailed", (request) => failedRequests.push(request.url()));
 
   try {
+    await page.route("**/*", async (route) => {
+      try {
+        await assertAllowedNetworkUrl(route.request().url(), { lookupAddress: input.urlLookup });
+        await route.continue();
+      } catch {
+        await route.abort("blockedbyclient");
+      }
+    });
     await page.goto(input.url, { waitUntil: "domcontentloaded", timeout: 20000 });
     const elements = await page.locator("a[href],button,input,textarea,select").evaluateAll((nodes) =>
       nodes.slice(0, 40).map((node, index) => {

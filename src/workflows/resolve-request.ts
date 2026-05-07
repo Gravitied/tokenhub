@@ -7,6 +7,7 @@ import { answerFromWeb } from "../modules/answer-web.js";
 import { searchFiles } from "../modules/filesystem.js";
 import type { FetchLike } from "../modules/github.js";
 import { lookupNpmPackage } from "../modules/docs.js";
+import type { UrlAddressLookup } from "../core/url-policy.js";
 import type { SearchProvider } from "../modules/search.js";
 
 export type ResolveRequestWorkflowInput = {
@@ -18,6 +19,7 @@ export type ResolveRequestWorkflowInput = {
   resourceStore: ResourceStore;
   telemetry: TokenTelemetry;
   fetchImpl?: FetchLike;
+  urlLookup?: UrlAddressLookup;
   depth?: RequestDepth;
   outputShape?: OutputShape;
   evidence?: EvidenceMode;
@@ -78,7 +80,8 @@ export async function runResolveRequestWorkflow(input: ResolveRequestWorkflowInp
       provider: input.provider,
       apiKey: input.apiKey,
       resourceStore: input.resourceStore,
-      fetchImpl: input.fetchImpl
+      fetchImpl: input.fetchImpl,
+      urlLookup: input.urlLookup
     });
     data.web = {
       summary: web.summary,
@@ -104,7 +107,8 @@ export async function runResolveRequestWorkflow(input: ResolveRequestWorkflowInp
       provider: input.provider,
       apiKey: input.apiKey,
       resourceStore: input.resourceStore,
-      fetchImpl: input.fetchImpl
+      fetchImpl: input.fetchImpl,
+      urlLookup: input.urlLookup
     });
     data.githubCode = {
       summary: githubCode.summary,
@@ -126,7 +130,8 @@ export async function runResolveRequestWorkflow(input: ResolveRequestWorkflowInp
       provider: input.provider,
       apiKey: input.apiKey,
       resourceStore: input.resourceStore,
-      fetchImpl: input.fetchImpl
+      fetchImpl: input.fetchImpl,
+      urlLookup: input.urlLookup
     });
     data.docs = {
       summary: docs.summary,

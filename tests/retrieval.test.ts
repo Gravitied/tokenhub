@@ -114,6 +114,7 @@ describe("web cleanup", () => {
           url: "https://example.test/slow",
           resourceStore: store,
           timeoutMs: 5,
+          urlLookup: async () => [{ address: "93.184.216.34", family: 4 }],
           fetchImpl: () => new Promise<Response>(() => undefined)
         })
       ).rejects.toThrow(/timed out/);

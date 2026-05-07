@@ -88,30 +88,35 @@ describe("filesystem action module", () => {
 
   test("writes, moves, and deletes files within the workspace only when mutations are explicitly enabled", async () => {
     const dir = await mkdtemp(join(tmpdir(), "tokenhub-fs-action-"));
+    const previous = process.env.TOKENHUB_ENABLE_FS_MUTATIONS;
+    process.env.TOKENHUB_ENABLE_FS_MUTATIONS = "true";
     try {
       const write = await applyFilesystemAction({
         root: dir,
         action: "write",
         path: "notes/a.txt",
-        content: "hello",
-        allowUnsafeMutations: true
+        content: "hello"
       });
       const move = await applyFilesystemAction({
         root: dir,
         action: "move",
         path: "notes/a.txt",
-        destination: "notes/b.txt",
-        allowUnsafeMutations: true
+        destination: "notes/b.txt"
       });
-      const del = await applyFilesystemAction({ root: dir, action: "delete", path: "notes/b.txt", allowUnsafeMutations: true });
+      const del = await applyFilesystemAction({ root: dir, action: "delete", path: "notes/b.txt" });
 
       expect(write.summary).toContain("wrote notes/a.txt");
       expect(move.summary).toContain("moved notes/a.txt to notes/b.txt");
       expect(del.summary).toContain("deleted notes/b.txt");
       await expect(
-        applyFilesystemAction({ root: dir, action: "write", path: "../escape.txt", content: "no", allowUnsafeMutations: true })
+        applyFilesystemAction({ root: dir, action: "write", path: "../escape.txt", content: "no" })
       ).rejects.toThrow(/outside workspace/);
     } finally {
+      if (previous === undefined) {
+        delete process.env.TOKENHUB_ENABLE_FS_MUTATIONS;
+      } else {
+        process.env.TOKENHUB_ENABLE_FS_MUTATIONS = previous;
+      }
       await rm(dir, { recursive: true, force: true });
     }
   });
@@ -138,18 +143,24 @@ describe("filesystem action module", () => {
   test("rejects writes through an in-workspace symlinked directory", async (context) => {
     const fixture = await createSymlinkedWorkspace(context);
     if (!fixture) return;
+    const previous = process.env.TOKENHUB_ENABLE_FS_MUTATIONS;
+    process.env.TOKENHUB_ENABLE_FS_MUTATIONS = "true";
     try {
       await expect(
         applyFilesystemAction({
           root: fixture.root,
           action: "write",
           path: "link/file.txt",
-          content: "escaped",
-          allowUnsafeMutations: true
+          content: "escaped"
         })
       ).rejects.toThrow(/outside workspace/);
       await expect(readFile(join(fixture.outside, "file.txt"), "utf8")).rejects.toThrow();
     } finally {
+      if (previous === undefined) {
+        delete process.env.TOKENHUB_ENABLE_FS_MUTATIONS;
+      } else {
+        process.env.TOKENHUB_ENABLE_FS_MUTATIONS = previous;
+      }
       await cleanupSymlinkedWorkspace(fixture);
     }
   });
@@ -157,17 +168,24 @@ describe("filesystem action module", () => {
   test("rejects deletes through an in-workspace symlinked directory without deleting outside contents", async (context) => {
     const fixture = await createSymlinkedWorkspace(context);
     if (!fixture) return;
+    const previous = process.env.TOKENHUB_ENABLE_FS_MUTATIONS;
+    process.env.TOKENHUB_ENABLE_FS_MUTATIONS = "true";
     try {
       await writeFile(join(fixture.outside, "file.txt"), "keep", "utf8");
 
       await expect(
-        applyFilesystemAction({ root: fixture.root, action: "delete", path: "link/file.txt", allowUnsafeMutations: true })
+        applyFilesystemAction({ root: fixture.root, action: "delete", path: "link/file.txt" })
       ).rejects.toThrow(/outside workspace/);
       await expect(
-        applyFilesystemAction({ root: fixture.root, action: "delete", path: "link", allowUnsafeMutations: true })
+        applyFilesystemAction({ root: fixture.root, action: "delete", path: "link" })
       ).rejects.toThrow(/outside workspace/);
       await expect(readFile(join(fixture.outside, "file.txt"), "utf8")).resolves.toBe("keep");
     } finally {
+      if (previous === undefined) {
+        delete process.env.TOKENHUB_ENABLE_FS_MUTATIONS;
+      } else {
+        process.env.TOKENHUB_ENABLE_FS_MUTATIONS = previous;
+      }
       await cleanupSymlinkedWorkspace(fixture);
     }
   });
@@ -175,6 +193,8 @@ describe("filesystem action module", () => {
   test("rejects move destinations through an in-workspace symlinked directory", async (context) => {
     const fixture = await createSymlinkedWorkspace(context);
     if (!fixture) return;
+    const previous = process.env.TOKENHUB_ENABLE_FS_MUTATIONS;
+    process.env.TOKENHUB_ENABLE_FS_MUTATIONS = "true";
     try {
       await writeFile(join(fixture.root, "source.txt"), "move me", "utf8");
 
@@ -183,13 +203,17 @@ describe("filesystem action module", () => {
           root: fixture.root,
           action: "move",
           path: "source.txt",
-          destination: "link/file.txt",
-          allowUnsafeMutations: true
+          destination: "link/file.txt"
         })
       ).rejects.toThrow(/outside workspace/);
       await expect(readFile(join(fixture.outside, "file.txt"), "utf8")).rejects.toThrow();
       await expect(readFile(join(fixture.root, "source.txt"), "utf8")).resolves.toBe("move me");
     } finally {
+      if (previous === undefined) {
+        delete process.env.TOKENHUB_ENABLE_FS_MUTATIONS;
+      } else {
+        process.env.TOKENHUB_ENABLE_FS_MUTATIONS = previous;
+      }
       await cleanupSymlinkedWorkspace(fixture);
     }
   });
@@ -457,6 +481,8 @@ describe("browser module", () => {
   test("captures compact Playwright state and stores screenshot as a resource", async () => {
     const dir = await mkdtemp(join(tmpdir(), "tokenhub-browser-"));
     const store = new ResourceStore({ rootDir: join(dir, ".tokenhub", "resources") });
+    const previous = process.env.TOKENHUB_ALLOW_PRIVATE_NETWORK;
+    process.env.TOKENHUB_ALLOW_PRIVATE_NETWORK = "true";
     const server = createServer((_request, response) => {
       response.writeHead(200, { "content-type": "text/html" });
       response.end("<h1>Browser Fixture</h1><a href='/docs'>Docs</a><button>Run</button><script>console.error('fixture error')</script>");
@@ -481,6 +507,11 @@ describe("browser module", () => {
       const screenshot = await store.read(result.resources[0], { mode: "full" });
       expect(screenshot.content).toMatch(/^data:image\/png;base64,/);
     } finally {
+      if (previous === undefined) {
+        delete process.env.TOKENHUB_ALLOW_PRIVATE_NETWORK;
+      } else {
+        process.env.TOKENHUB_ALLOW_PRIVATE_NETWORK = previous;
+      }
       await new Promise<void>((resolve) => server.close(() => resolve()));
       await rm(dir, { recursive: true, force: true });
     }

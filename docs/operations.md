@@ -57,7 +57,8 @@ npm run smoke:install
 | MCP client cannot start server | Bad command/args path | Confirm `--root` and the workspace path are separate args. |
 | Search returns DuckDuckGo warning | No keyed search provider configured | Set a provider key or accept no-key fallback behavior. |
 | Git source returns warnings | Workspace is not a git repo or git command failed | Start with a git repository root and inspect warning text. |
-| Filesystem mutation rejected | Mutations are disabled by default | Set `allowUnsafeMutations: true` per call or `TOKENHUB_ENABLE_FS_MUTATIONS=true` for trusted workspaces. |
+| Filesystem mutation rejected | Mutations are disabled by default | Restart TokenHub with `TOKENHUB_ENABLE_FS_MUTATIONS=true` for trusted workspaces. |
+| Web or browser URL rejected | Target is localhost, private network, metadata, reserved, or DNS-unverified | Use public URLs by default; for trusted local debugging, restart TokenHub with `TOKENHUB_ALLOW_PRIVATE_NETWORK=true`. |
 | Browser capture fails | Playwright/browser dependency or navigation issue | Install Playwright browsers and verify the target URL is reachable. |
 
 ## Maintenance Notes

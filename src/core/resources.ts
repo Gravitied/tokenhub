@@ -1,6 +1,6 @@
 import { createHash, randomUUID } from "node:crypto";
 import { mkdir, readFile, writeFile } from "node:fs/promises";
-import { join } from "node:path";
+import { isAbsolute, join, relative, resolve } from "node:path";
 import { estimateTokens, truncateToTokens } from "./token.js";
 
 export type ResourceKind = "text" | "log" | "screenshot" | "json" | "html";
@@ -76,7 +76,7 @@ export class ResourceStore {
     }
 
     const manifest = JSON.parse(await readFile(join(this.rootDir, `${id}.json`), "utf8")) as ResourceManifest;
-    const rawBytes = await readFile(join(this.rootDir, manifest.contentFile));
+    const rawBytes = await readFile(this.contentPathForManifest(id, manifest, uri));
     if (manifest.kind === "screenshot") {
       const content = `data:image/png;base64,${rawBytes.toString("base64")}`;
       return {
@@ -99,6 +99,19 @@ export class ResourceStore {
       content: truncated.text,
       truncated: truncated.truncated
     };
+  }
+
+  private contentPathForManifest(id: string, manifest: ResourceManifest, uri: string): string {
+    if (manifest.uri !== uri || manifest.contentFile !== `${id}.bin`) {
+      throw new Error(`Invalid resource manifest: ${uri}`);
+    }
+    const root = resolve(this.rootDir);
+    const contentPath = resolve(root, manifest.contentFile);
+    const relativePath = relative(root, contentPath);
+    if (isAbsolute(relativePath) || relativePath === ".." || relativePath.startsWith(`..\\`) || relativePath.startsWith("../")) {
+      throw new Error(`Invalid resource manifest: ${uri}`);
+    }
+    return contentPath;
   }
 }
 
