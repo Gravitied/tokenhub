@@ -1,121 +1,209 @@
 # TokenHub MCP
 
-TokenHub MCP is a single developer MCP server with a tiny always-loaded surface and a deferred internal capability library for common coding-agent work.
+TokenHub MCP is a production-packaged Model Context Protocol server for coding agents. It keeps the always-loaded MCP surface small, then routes larger file, git, web, database, package, browser, GitHub, and Sentry work through token-budgeted tools, workflows, and `tokenhub://resource/...` artifacts.
 
 ## Install
 
+Run without installing:
+
 ```bash
-npx tokenhub-mcp
+npx tokenhub-mcp --root /path/to/workspace
 ```
 
-Local development:
+Install globally:
+
+```bash
+npm install -g tokenhub-mcp
+tokenhub-mcp --root /path/to/workspace
+```
+
+For local development from this repository:
 
 ```bash
 npm install
 npm run build
+node dist/cli.js --root /path/to/workspace
+```
+
+When serving the repository root itself during local development:
+
+```bash
 node dist/cli.js --root .
 ```
 
-## Always-Loaded Tools
+## Quick Start
 
-TokenHub exposes only six public tools:
+Start TokenHub with a workspace root that should bound filesystem and git operations:
 
-- `discover_capabilities`
-- `run_workflow`
-- `retrieve_context`
-- `read_resource`
-- `capture_state`
-- `estimate_cost`
+```bash
+npx tokenhub-mcp --root /path/to/workspace
+```
 
-Internal modules cover filesystem retrieval, Git summaries, GitHub, web fetch/scrape, web search provider hooks, browser state capture, SQLite/Postgres inspection, npm package docs lookup, Sentry issue summaries, validation workflows, resource storage, and token telemetry. Large outputs are stored as `tokenhub://resource/...` handles and can be progressively expanded.
+Then call the public MCP tool `run_workflow` with an advertised workflow capability:
 
-`run_workflow` also includes `answer_from_web`, which searches the web, fetches source pages, scrapes clean text, extracts ranked/list candidates or summary snippets, and returns cited answers with `tokenhub://resource/...` context handles. Examples:
+```json
+{
+  "name": "resolve_request",
+  "request": "Inspect this repository and summarize the main architecture, runtime stack, and entry points.",
+  "depth": "standard",
+  "evidence": "resource_links",
+  "execution": "answer_only"
+}
+```
+
+Large or raw outputs are returned as redacted `tokenhub://resource/...` handles. Use `read_resource` to expand snippets, ranges, or full resource content.
+
+## MCP Client Configuration
+
+Local package execution with `npx`:
+
+```json
+{
+  "mcpServers": {
+    "tokenhub": {
+      "command": "npx",
+      "args": ["tokenhub-mcp", "--root", "/path/to/workspace"]
+    }
+  }
+}
+```
+
+Global install:
+
+```json
+{
+  "mcpServers": {
+    "tokenhub": {
+      "command": "tokenhub-mcp",
+      "args": ["--root", "/path/to/workspace"]
+    }
+  }
+}
+```
+
+On Windows, quote paths in your MCP client JSON as a single JSON string, for example `"C:\\Users\\you\\project"`.
+
+## Tools
+
+TokenHub exposes exactly six public MCP tools:
+
+| Tool | Production status | Purpose |
+| --- | --- | --- |
+| `discover_capabilities` | Production | Finds deferred internal capabilities without loading every schema into the client context. |
+| `run_workflow` | Production | Runs server-side workflows such as `resolve_request`, `answer_from_web`, `validate`, `filesystem_action`, `git_action`, and `project_scan`. |
+| `retrieve_context` | Production | Retrieves token-budgeted context from runtime sources including files, git, web pages, search, databases, GitHub, npm docs, Sentry, and browser state. |
+| `read_resource` | Production | Reads a `tokenhub://resource/...` artifact by snippet, line range, or full content. |
+| `capture_state` | Production | Stores caller-provided logs, snapshots, or state summaries as resource artifacts. |
+| `estimate_cost` | Production | Estimates tool cost, saved tokens, and whether the operation clears the default ROI threshold. |
+
+The user-facing advertised capabilities in this README are `resolve_request`, `answer_from_web`, `web_fetch`, `web_search`, `filesystem`, and `git`. Those are not separate top-level MCP tools; they are workflows or retrieval capabilities reached through the six public tools above.
+
+## Workflows
+
+| Workflow | Invoke through | Behavior |
+| --- | --- | --- |
+| `resolve_request` | `run_workflow` | Infers intent, source strategy, output shape, depth, evidence mode, and execution mode from a natural-language request. It supports `answer_only` and `plan_only`; implementation execution modes are rejected instead of faking success. |
+| `answer_from_web` | `run_workflow` | Searches the web, fetches source pages, extracts clean text, and returns cited ranked-list or summary answers with source resource links. |
+| `validate` | `run_workflow` | Runs a command such as `npm test`, redacts secret-looking output, stores the full validation log as a resource, and reports pass/fail warnings. |
+| `filesystem_action` | `run_workflow` | Lists a workspace tree by default. Write, move, and delete require `TOKENHUB_ENABLE_FS_MUTATIONS=true` or per-call `allowUnsafeMutations: true`. |
+| `git_action` | `run_workflow` | Runs bounded git status, diff, show, stage, commit, or branch operations inside the configured workspace. |
+| `project_scan` | `run_workflow` | Combines git summary and filesystem search into compact project context. |
+
+Example web answer:
 
 ```json
 {
   "name": "answer_from_web",
-  "query": "top 10 most healthy vegetables",
+  "query": "top 10 healthiest vegetables",
   "target": "ranked_list",
   "limit": 10,
   "sourceLimit": 5
 }
 ```
 
-```json
-{
-  "name": "answer_from_web",
-  "query": "1 paragraph summary of the latest DeepSeek research papers",
-  "target": "summary",
-  "sourceLimit": 5,
-  "budgetTokens": 900
-}
-```
-
-`run_workflow` also supports `resolve_request`, a dynamic workflow that infers intent, source strategy, output shape, depth, evidence, and execution mode from a natural-language request.
+Validation example:
 
 ```json
 {
-  "name": "resolve_request",
-  "request": "Give me a 1 paragraph summary of the latest DeepSeek research papers",
-  "depth": "standard",
-  "evidence": "resource_links"
+  "name": "validate",
+  "command": "npm",
+  "args": ["test"]
 }
 ```
 
-For implementation research:
+Unsupported workflow modes, including `execution: "implement"` and `execution: "implement_and_verify"` for `resolve_request`, return explicit errors rather than claiming a mutation happened.
 
-```json
-{
-  "name": "resolve_request",
-  "request": "Look for similar professional optimized implementations of this feature and compare it to this code, then implement the gaps",
-  "depth": "deep",
-  "execution": "plan_only",
-  "outputShape": "patch_plan"
-}
-```
+## Retrieval Sources
 
-## Token ROI Rule
+`retrieve_context.source` uses the runtime names shown below. The docs also name friendly advertised sources where they differ.
 
-Every capability records estimated tool cost, estimated saved tokens, output tokens, and whether it clears the default graduation threshold:
+| Documented source | Runtime source | Required configuration | Supported operations | Optional-provider errors |
+| --- | --- | --- | --- | --- |
+| `filesystem` | `files` | `--root`; optional `query`, `limit`, `budgetTokens` | Search workspace files, return redacted snippets and resource links | Missing matches return empty results; workspace escape attempts are rejected. |
+| `git` | `git` | `--root` in a git repository | Summarize status, recent commits, diff stats, and raw log resource | Non-repositories return warnings instead of raw git floods. |
+| `web` / `web_fetch` | `web` | `url` | Fetch and scrape one web page with timeout and optional raw resource | Missing `url` errors; HTTP failures include status. |
+| `web` / `web_search` | `search` | `query`; optional `provider` and `apiKey` | Search Brave, Exa, Tavily, SerpAPI, or no-key DuckDuckGo fallback | Provider-specific modes error when the required API key is absent. |
+| `github` | `github` | `owner` and `repo`; optional `token` | Summarize repo, issues, PRs, and workflow runs | Missing owner/repo errors; private or rate-limited repos need a token. |
+| `sqlite` | `sqlite` | `databaseBase64`; optional read-only `query` | Inspect schema and safe `SELECT` rows | Missing database bytes errors; non-SELECT queries return warnings and no rows. |
+| `postgres` | `postgres` | `connectionString`; optional read-only `query` | Inspect public schema and safe `SELECT` rows | Missing connection string errors; auth/network failures come from `pg`. |
+| `npm` | `docs` | `packageName` or `query` | Fetch npm registry metadata, latest version, docs, repository, and releases link | Missing package/query errors; registry HTTP failures include status. |
+| `sentry` | `sentry` | `issues` array, or `organization` plus `token`; optional `project` | Summarize and cluster issue impact | Missing issues or organization/token errors; Sentry API HTTP failures include status. |
+| `browser` | `browser` | `url`; Playwright browser dependencies installed | Capture title, headings, links, form controls, console errors, failed requests, and optional screenshot | Missing URL errors; navigation timeout is currently 20000ms. |
 
-```text
-estimated_saved_tokens >= 3 * estimated_tool_cost_tokens
-```
+## Environment Variables
 
-## Optional Providers
+| Variable | Used for |
+| --- | --- |
+| `BRAVE_SEARCH_API_KEY` | Selects Brave as the default `web_search` provider and authenticates Brave Search. |
+| `EXA_API_KEY` | Selects Exa as the default search provider when Brave is not set. |
+| `TAVILY_API_KEY` | Selects Tavily as the default search provider when Brave and Exa are not set. |
+| `SERPAPI_API_KEY` | Selects SerpAPI as the default search provider when the other keyed providers are not set. |
+| `TOKENHUB_ENABLE_FS_MUTATIONS` | When set to `true`, enables trusted-local filesystem write, move, and delete workflows. Leave unset for read/list behavior. |
 
-The local slice runs without provider keys for filesystem, Git, fetch/scrape, SQLite, npm package lookup, browser capture, and fixture-based Sentry summaries. Optional keys unlock richer modes for Brave, Exa, Tavily, SerpAPI, GitHub, Postgres, and Sentry.
+GitHub tokens are supplied as `retrieve_context` input `token`; there is no dedicated GitHub environment variable in the runtime. Sentry tokens are supplied as `token`, Postgres uses `connectionString`, npm registry lookup uses the public registry URL, and browser capture uses local Playwright without a credential variable. Network timeouts are currently fixed in code: web fetch and DuckDuckGo search use 5000ms, browser navigation uses 20000ms, git commands use 10000ms, and validation commands use 120000ms.
 
-## Proof
+## Security Notes
 
-Run:
+TokenHub confines filesystem paths to the configured `--root` workspace and rejects path escapes, including symlink-realpath escapes for mutation targets. File snippets and stored file resources redact secret-looking values before model-facing output.
+
+File deletion and mutation are opt-in. `filesystem_action` `tree` is available by default, but write, move, and delete require `TOKENHUB_ENABLE_FS_MUTATIONS=true` or per-call `allowUnsafeMutations: true`; use those only in trusted local workspaces.
+
+Git operations run in the workspace and can stage, commit, or branch when explicitly requested through `git_action`. Review paths and messages before allowing agent-driven git changes.
+
+Network fetches, search providers, GitHub, npm, Sentry, Postgres, and browser capture can contact external services. Treat URLs, credentials, connection strings, and returned third-party content as sensitive. Do not place secrets in prompts when they can be passed as tool input, and prefer resource links over copying raw logs into chat.
+
+`read_resource` can expand redacted resources; screenshots may still contain visible secrets from the captured page. Share resource URIs only with clients that should have access to the workspace resource store.
+
+## Troubleshooting
+
+| Symptom | Fix |
+| --- | --- |
+| Missing search credentials | Use no-key DuckDuckGo fallback by omitting `provider`, or set `BRAVE_SEARCH_API_KEY`, `EXA_API_KEY`, `TAVILY_API_KEY`, or `SERPAPI_API_KEY`. |
+| GitHub, Sentry, or Postgres credential errors | Pass `token` for GitHub/Sentry or `connectionString` for Postgres in the MCP request. TokenHub does not read dedicated env vars for those providers today. |
+| Blocked network or provider timeout | Check outbound HTTPS access to the provider URL. Web fetch/search timeouts are currently fixed at 5000ms. |
+| Package install issues | Use Node 20 or newer, then retry `npx tokenhub-mcp --root /path/to/workspace` or `npm install -g tokenhub-mcp`. |
+| Windows path quoting | In MCP JSON, write paths as one escaped string such as `"C:\\Users\\you\\workspace"` and keep `--root` and the path as separate args. |
+| Unsupported workflow mode | Use `execution: "answer_only"` or `execution: "plan_only"` for `resolve_request`; direct implementation modes are intentionally rejected. |
+| Filesystem mutation blocked | Set per-call `allowUnsafeMutations: true` or `TOKENHUB_ENABLE_FS_MUTATIONS=true` only for trusted local workspaces. |
+
+## Release Verification
+
+Run the production release gate:
 
 ```bash
+npm run verify:release
+```
+
+The script expands to:
+
+```bash
+npm run lint
 npm test
+npm run build
 npm run eval:resolve-request
 npm run eval:resolve-request:live
-npm run build
-npm run proof
+npm pack --dry-run
+npm run smoke:install
 ```
 
-The proof command writes `artifacts/proof/tokenhub-proof.png`, a PNG screenshot generated from real local verification command results.
-`npm run eval:resolve-request:live` uses live DuckDuckGo search and live page fetches, then scores source count, domain diversity, preferred official domains, context snippets, topic coverage, resource links, and telemetry.
-
-## Competitive Benchmarks
-
-Run:
-
-```bash
-npm run bench
-```
-
-The benchmark downloads or invokes free baselines through `npx`, `uvx`, local Git CLI tools, public APIs, Playwright, SQL.js, and raw provider payloads, then compares TokenHub on expected facts, secret redaction, resource-link behavior, coverage, and estimated token usage. Reports are written to `artifacts/benchmarks/competitive-report.json`.
-
-The report separates:
-
-- `qualityScore`: calculated from expected facts, required patterns, forbidden leakage, and output bloat.
-- `coverageScore`: calculated from declared capability overlap, parity level, and known gaps.
-- `estimatedTokens`: output tokens plus tool overhead. TokenHub uses an amortized one-server session overhead because its six public tools are loaded once across the benchmark suite; standalone MCP/CLI/API baselines are charged per invoked baseline.
-- `baselines`: whether each comparison is a live MCP call, CLI call, raw public API, or fixture-shaped provider payload.
-
-Auth-gated competitors such as GitHub MCP, Sentry MCP, Brave Search MCP, and Postgres MCP are cataloged, but only run live when credentials are available.
+Eval artifacts are written under `artifacts/evals`. The live eval uses live DuckDuckGo search and page fetches, so failures can reflect network or provider volatility.
