@@ -1,11 +1,14 @@
+import { isLogLevel, type DiagnosticLogLevel } from "./core/logger.js";
+
 export type CliArgsResult =
-  | { kind: "start"; root: string }
+  | { kind: "start"; root: string; logLevel?: Exclude<DiagnosticLogLevel, "silent"> }
   | { kind: "help"; text: string }
   | { kind: "version"; text: string }
-  | { kind: "error"; code: "missing-root" | "unknown-argument" };
+  | { kind: "error"; code: "missing-root" | "missing-log-level" | "invalid-log-level" | "unknown-argument" };
 
 export function parseCliArgs(argv: string[], packageVersion: string): CliArgsResult {
   let root = process.cwd();
+  let logLevel: Exclude<DiagnosticLogLevel, "silent"> | undefined;
 
   for (let index = 0; index < argv.length; index += 1) {
     const arg = argv[index];
@@ -28,10 +31,23 @@ export function parseCliArgs(argv: string[], packageVersion: string): CliArgsRes
       continue;
     }
 
+    if (arg === "--log-level") {
+      const value = argv[index + 1];
+      if (!value || value.startsWith("-")) {
+        return { kind: "error", code: "missing-log-level" };
+      }
+      if (!isLogLevel(value)) {
+        return { kind: "error", code: "invalid-log-level" };
+      }
+      logLevel = value;
+      index += 1;
+      continue;
+    }
+
     return { kind: "error", code: "unknown-argument" };
   }
 
-  return { kind: "start", root };
+  return { kind: "start", root, ...(logLevel ? { logLevel } : {}) };
 }
 
 export function buildHelpText(packageVersion: string): string {
@@ -42,8 +58,9 @@ export function buildHelpText(packageVersion: string): string {
     "  npx tokenhub-mcp --root <path>",
     "",
     "Options:",
-    "  --root <path>   Workspace root to serve.",
-    "  -h, --help      Show this help.",
-    "  -v, --version   Show the package version."
+    "  --root <path>                Workspace root to serve.",
+    "  --log-level <error|info|debug>  Emit opt-in structured diagnostics to stderr.",
+    "  -h, --help                   Show this help.",
+    "  -v, --version                Show the package version."
   ].join("\n");
 }

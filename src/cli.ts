@@ -3,6 +3,7 @@ import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js"
 import { createRequire } from "node:module";
 import { parseCliArgs, buildHelpText } from "./cli-options.js";
 import { createMcpServer } from "./server.js";
+import { createDiagnosticLogger, logLevelFromEnv } from "./core/logger.js";
 
 const require = createRequire(import.meta.url);
 const { version } = require("../package.json") as { version: string };
@@ -25,16 +26,24 @@ if (parsed.kind === "error") {
   process.exit(1);
 }
 
-await startServer({ root: parsed.root });
+await startServer({ root: parsed.root, logLevel: parsed.logLevel ?? logLevelFromEnv() });
 
-async function startServer(options: { root: string }): Promise<void> {
-  const server = createMcpServer(options);
+async function startServer(options: { root: string; logLevel: ReturnType<typeof logLevelFromEnv> }): Promise<void> {
+  const logger = createDiagnosticLogger({ level: options.logLevel });
+  logger.info("server.start", { root: options.root, logLevel: options.logLevel });
+  const server = createMcpServer({ root: options.root, logger });
   await server.connect(new StdioServerTransport());
 }
 
-function formatCliError(code: "missing-root" | "unknown-argument"): string {
+function formatCliError(code: "missing-root" | "missing-log-level" | "invalid-log-level" | "unknown-argument"): string {
   if (code === "missing-root") {
     return "Missing value for --root.";
+  }
+  if (code === "missing-log-level") {
+    return "Missing value for --log-level.";
+  }
+  if (code === "invalid-log-level") {
+    return "Invalid --log-level value; use error, info, or debug.";
   }
   return "Unknown argument.";
 }

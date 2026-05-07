@@ -12,8 +12,20 @@ describe("parseCliArgs", () => {
     expect(parseCliArgs(["--root", "C:\\work"], packageVersion)).toEqual({ kind: "start", root: "C:\\work" });
   });
 
+  test("starts with an explicit diagnostic log level", () => {
+    expect(parseCliArgs(["--root", "C:\\work", "--log-level", "debug"], packageVersion)).toEqual({
+      kind: "start",
+      root: "C:\\work",
+      logLevel: "debug"
+    });
+  });
+
   test("returns a structured error when --root is missing its path", () => {
     expect(parseCliArgs(["--root"], packageVersion)).toEqual({ kind: "error", code: "missing-root" });
+  });
+
+  test("returns a structured error when --log-level is invalid", () => {
+    expect(parseCliArgs(["--log-level", "verbose"], packageVersion)).toEqual({ kind: "error", code: "invalid-log-level" });
   });
 
   test("returns help text for --help", () => {

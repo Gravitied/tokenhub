@@ -31,6 +31,13 @@ When serving the repository root itself during local development:
 node dist/cli.js --root .
 ```
 
+Diagnostics are silent by default. For local debugging, emit structured JSON lines to stderr with either a CLI flag or environment variable:
+
+```bash
+TOKENHUB_LOG_LEVEL=debug npx tokenhub-mcp --root /path/to/workspace
+npx tokenhub-mcp --root /path/to/workspace --log-level info
+```
+
 ## Quick Start
 
 Start TokenHub with a workspace root that should bound filesystem and git operations:
@@ -180,6 +187,7 @@ Unsupported workflow modes, including `execution: "implement"` and `execution: "
 | `SERPAPI_API_KEY` | Selects SerpAPI as the default search provider when the other keyed providers are not set. |
 | `TOKENHUB_ENABLE_FS_MUTATIONS` | When set to `true`, enables trusted-local filesystem write, move, and delete workflows. Leave unset for read/list behavior. |
 | `TOKENHUB_ALLOW_PRIVATE_NETWORK` | When set to `true`, allows trusted-local web and browser retrieval of localhost, private LAN, and other non-public network targets. Leave unset for public-network-only retrieval. |
+| `TOKENHUB_LOG_LEVEL` | Optional diagnostic logging level: `error`, `info`, or `debug`. Logs are JSON lines on stderr and are silent when unset. |
 
 GitHub tokens are supplied as `retrieve_context` input `token`; there is no dedicated GitHub environment variable in the runtime. Sentry tokens are supplied as `token`, Postgres uses `connectionString`, npm registry lookup uses the public registry URL, and browser capture uses local Playwright without a credential variable. Network timeouts are currently fixed in code: web fetch and DuckDuckGo search use 5000ms, browser navigation uses 20000ms, git commands use 10000ms, and validation commands use 120000ms.
 
@@ -206,6 +214,7 @@ Network fetches, search providers, GitHub, npm, Sentry, Postgres, and browser ca
 | Windows path quoting | In MCP JSON, write paths as one escaped string such as `"C:\\Users\\you\\workspace"` and keep `--root` and the path as separate args. |
 | Unsupported workflow mode | Use `execution: "answer_only"` or `execution: "plan_only"` for `resolve_request`; direct implementation modes are intentionally rejected. |
 | Filesystem mutation blocked | Restart TokenHub with `TOKENHUB_ENABLE_FS_MUTATIONS=true` only for trusted local workspaces. |
+| Need request-level diagnostics | Restart TokenHub with `--log-level debug` or `TOKENHUB_LOG_LEVEL=debug`. Logs include tool start/end/error events, request IDs, durations, and redacted metadata on stderr. |
 
 ## Release Verification
 

@@ -4,6 +4,7 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { createTokenHubRuntime } from "../src/server.js";
 import { estimateTokens } from "../src/core/token.js";
+import { createDiagnosticLogger } from "../src/core/logger.js";
 
 describe("MCP runtime", () => {
   test("advertises exactly the six always-loaded top-level tools", () => {
@@ -117,5 +118,40 @@ describe("MCP runtime", () => {
 
     expect(JSON.stringify(capabilities)).toContain("resolve");
     expect(runtime.publicToolNames()).toContain("run_workflow");
+  });
+
+  test("emits opt-in structured diagnostics around runtime tool calls", async () => {
+    const lines: string[] = [];
+    const runtime = createTokenHubRuntime({
+      root: process.cwd(),
+      logger: createDiagnosticLogger({ level: "debug", sink: (line) => lines.push(line) })
+    });
+
+    runtime.estimateCost({ operation: "inspect apiKey=secret-value", expectedInputTokens: 100, expectedOutputTokens: 50 });
+
+    expect(lines).toHaveLength(2);
+    expect(lines.map((line) => JSON.parse(line).event)).toEqual(["tool.start", "tool.end"]);
+    expect(lines.map((line) => JSON.parse(line).requestId)).toEqual(["req_1", "req_1"]);
+    expect(lines[0]).toContain("\"tool\":\"estimate_cost\"");
+    expect(lines.join("\n")).not.toContain("secret-value");
+  });
+
+  test("emits opt-in structured diagnostics for runtime tool failures", async () => {
+    const lines: string[] = [];
+    const runtime = createTokenHubRuntime({
+      root: process.cwd(),
+      logger: createDiagnosticLogger({ level: "debug", sink: (line) => lines.push(line) })
+    });
+
+    await expect(runtime.retrieveContext({ source: "web" })).rejects.toThrow("retrieve_context source=web requires url.");
+
+    expect(lines.map((line) => JSON.parse(line).event)).toEqual(["tool.start", "tool.error"]);
+    expect(JSON.parse(lines[1])).toMatchObject({
+      level: "error",
+      event: "tool.error",
+      requestId: "req_1",
+      tool: "retrieve_context",
+      error: "retrieve_context source=web requires url."
+    });
   });
 });

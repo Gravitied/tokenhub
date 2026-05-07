@@ -16,6 +16,7 @@ import { inspectPostgres, inspectSqlite } from "./modules/database.js";
 import { lookupNpmPackage } from "./modules/docs.js";
 import { fetchSentryIssues, summarizeSentryIssues } from "./modules/sentry.js";
 import { captureBrowserState } from "./modules/browser.js";
+import { createDiagnosticLogger, logLevelFromEnv, type DiagnosticLogger, type DiagnosticLogLevel } from "./core/logger.js";
 
 const PUBLIC_TOOLS = [
   "discover_capabilities",
@@ -31,6 +32,8 @@ export type PublicToolName = (typeof PUBLIC_TOOLS)[number];
 export type RuntimeOptions = {
   root: string;
   resourceDir?: string;
+  logLevel?: DiagnosticLogLevel;
+  logger?: DiagnosticLogger;
 };
 
 export function createTokenHubRuntime(options: RuntimeOptions) {
@@ -40,6 +43,8 @@ export function createTokenHubRuntime(options: RuntimeOptions) {
   });
   const telemetry = new TokenTelemetry({ roiThreshold: 3 });
   const registry = createDefaultRegistry();
+  const logger = options.logger ?? createDiagnosticLogger({ level: options.logLevel ?? logLevelFromEnv() });
+  let requestCounter = 0;
 
   return {
     registry,
@@ -47,7 +52,9 @@ export function createTokenHubRuntime(options: RuntimeOptions) {
     telemetry,
     publicToolNames: (): PublicToolName[] => [...PUBLIC_TOOLS],
     discoverCapabilities: (input: { query: string; limit?: number }) =>
-      registry.discover(input.query, { limit: input.limit }),
+      instrumentTool(logger, "discover_capabilities", nextRequestId, input, () =>
+        registry.discover(input.query, { limit: input.limit })
+      ),
     runWorkflow: (input: {
       name: string;
       budgetTokens?: number;
@@ -74,12 +81,14 @@ export function createTokenHubRuntime(options: RuntimeOptions) {
       limit?: number;
       sourceLimit?: number;
     }) =>
-      runWorkflowImpl({
-        ...input,
-        root,
-        resourceStore,
-        telemetry
-      }),
+      instrumentTool(logger, "run_workflow", nextRequestId, input, () =>
+        runWorkflowImpl({
+          ...input,
+          root,
+          resourceStore,
+          telemetry
+        })
+      ),
     retrieveContext: async (input: {
       source:
         | "files"
@@ -109,7 +118,7 @@ export function createTokenHubRuntime(options: RuntimeOptions) {
       limit?: number;
       includeRaw?: boolean;
       returnMode?: "summary" | "compact";
-    }) => {
+    }) => instrumentTool(logger, "retrieve_context", nextRequestId, input, async () => {
       if (input.source === "git") {
         return summarizeGit({ root, resourceStore, budgetTokens: input.budgetTokens });
       }
@@ -245,42 +254,132 @@ export function createTokenHubRuntime(options: RuntimeOptions) {
         };
       }
       return fileResult;
-    },
+    }),
     readResource: (input: {
       uri: string;
       mode?: "snippet" | "range" | "full";
       budgetTokens?: number;
       startLine?: number;
       endLine?: number;
-    }) => resourceStore.read(input.uri, input),
+    }) => instrumentTool(logger, "read_resource", nextRequestId, input, () => resourceStore.read(input.uri, input)),
     captureState: async (input: { label?: string; text?: string }) => {
-      const link = await resourceStore.writeText({
-        kind: "log",
-        label: input.label ?? "captured state",
-        content: input.text ?? "No state text provided.",
-        source: "capture_state"
+      return instrumentTool(logger, "capture_state", nextRequestId, input, async () => {
+        const link = await resourceStore.writeText({
+          kind: "log",
+          label: input.label ?? "captured state",
+          content: input.text ?? "No state text provided.",
+          source: "capture_state"
+        });
+        const record = telemetry.record({
+          capability: "capture_state",
+          estimatedToolCostTokens: 30,
+          estimatedSavedTokens: 120,
+          outputTokens: estimateTokens(JSON.stringify(link))
+        });
+        return { resources: [link], telemetry: record };
       });
-      const record = telemetry.record({
-        capability: "capture_state",
-        estimatedToolCostTokens: 30,
-        estimatedSavedTokens: 120,
-        outputTokens: estimateTokens(JSON.stringify(link))
-      });
-      return { resources: [link], telemetry: record };
     },
     estimateCost: (input: { operation: string; expectedInputTokens?: number; expectedOutputTokens?: number }) => {
-      const inputTokens = input.expectedInputTokens ?? estimateTokens(input.operation);
-      const outputTokens = input.expectedOutputTokens ?? Math.ceil(inputTokens / 2);
-      const estimatedToolCostTokens = 25 + inputTokens + outputTokens;
-      const estimatedSavedTokens = Math.max(0, inputTokens * 3 - outputTokens);
-      return {
-        operation: input.operation,
-        estimatedToolCostTokens,
-        estimatedSavedTokens,
-        clearsRoiThreshold: estimatedSavedTokens >= estimatedToolCostTokens * 3
-      };
+      return instrumentTool(logger, "estimate_cost", nextRequestId, input, () => {
+        const inputTokens = input.expectedInputTokens ?? estimateTokens(input.operation);
+        const outputTokens = input.expectedOutputTokens ?? Math.ceil(inputTokens / 2);
+        const estimatedToolCostTokens = 25 + inputTokens + outputTokens;
+        const estimatedSavedTokens = Math.max(0, inputTokens * 3 - outputTokens);
+        return {
+          operation: input.operation,
+          estimatedToolCostTokens,
+          estimatedSavedTokens,
+          clearsRoiThreshold: estimatedSavedTokens >= estimatedToolCostTokens * 3
+        };
+      });
     }
   };
+
+  function nextRequestId(): string {
+    requestCounter += 1;
+    return `req_${requestCounter}`;
+  }
+}
+
+function instrumentTool<T>(
+  logger: DiagnosticLogger,
+  tool: PublicToolName,
+  nextRequestId: () => string,
+  input: Record<string, unknown>,
+  operation: () => T
+): T {
+  const requestId = nextRequestId();
+  const startedAt = Date.now();
+  logger.info("tool.start", { requestId, tool, ...summarizeToolInput(tool, input) });
+  try {
+    const value = operation();
+    if (isPromiseLike(value)) {
+      return value.then(
+        (result) => {
+          logger.info("tool.end", { requestId, tool, durationMs: Date.now() - startedAt });
+          return result;
+        },
+        (error: unknown) => {
+          logger.error("tool.error", { requestId, tool, durationMs: Date.now() - startedAt, error: errorMessage(error) });
+          throw error;
+        }
+      ) as T;
+    }
+    logger.info("tool.end", { requestId, tool, durationMs: Date.now() - startedAt });
+    return value;
+  } catch (error) {
+    logger.error("tool.error", { requestId, tool, durationMs: Date.now() - startedAt, error: errorMessage(error) });
+    throw error;
+  }
+}
+
+function summarizeToolInput(tool: PublicToolName, input: Record<string, unknown>): Record<string, unknown> {
+  if (tool === "discover_capabilities") {
+    return { queryLength: stringLength(input.query), limit: input.limit };
+  }
+  if (tool === "run_workflow") {
+    return {
+      workflow: input.name,
+      action: input.action,
+      provider: input.provider,
+      limit: input.limit,
+      budgetTokens: input.budgetTokens,
+      includeRaw: input.includeRaw
+    };
+  }
+  if (tool === "retrieve_context") {
+    return {
+      source: input.source,
+      provider: input.provider,
+      limit: input.limit,
+      budgetTokens: input.budgetTokens,
+      includeRaw: input.includeRaw,
+      returnMode: input.returnMode
+    };
+  }
+  if (tool === "read_resource") {
+    return { uri: input.uri, mode: input.mode, budgetTokens: input.budgetTokens };
+  }
+  if (tool === "capture_state") {
+    return { label: input.label, textLength: stringLength(input.text) };
+  }
+  return {
+    operationLength: stringLength(input.operation),
+    expectedInputTokens: input.expectedInputTokens,
+    expectedOutputTokens: input.expectedOutputTokens
+  };
+}
+
+function stringLength(value: unknown): number | undefined {
+  return typeof value === "string" ? value.length : undefined;
+}
+
+function isPromiseLike<T>(value: T | PromiseLike<T>): value is PromiseLike<T> {
+  return Boolean(value && typeof value === "object" && "then" in value && typeof value.then === "function");
+}
+
+function errorMessage(error: unknown): string {
+  return error instanceof Error ? error.message : String(error);
 }
 
 function compactMatchingLine(snippet: string, query?: string): string {
