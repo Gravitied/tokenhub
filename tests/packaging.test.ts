@@ -34,6 +34,10 @@ async function readPackageJson() {
     files?: string[];
     keywords?: string[];
     license?: string;
+    author?: string;
+    repository?: { type?: string; url?: string };
+    homepage?: string;
+    bugs?: { url?: string };
   };
 }
 
@@ -80,6 +84,13 @@ describe("npm package contents", () => {
     expect(packageJson.engines?.node).toBe(">=20");
     expect(packageJson.files).toEqual(["dist", "README.md", "LICENSE", "package.json"]);
     expect(packageJson.license).toBe("MIT");
+    expect(packageJson.author).toBe("Gravitied");
+    expect(packageJson.repository).toEqual({
+      type: "git",
+      url: "git+https://github.com/Gravitied/tokenhub.git"
+    });
+    expect(packageJson.homepage).toBe("https://github.com/Gravitied/tokenhub#readme");
+    expect(packageJson.bugs?.url).toBe("https://github.com/Gravitied/tokenhub/issues");
     expect(packageJson.description).toBe(
       "A token-disciplined developer MCP hub with a tiny always-loaded surface and deferred internal capabilities."
     );

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-05-07T06:50:14.035Z",
+  "generatedAt": "2026-05-07T17:04:57.524Z",
   "mode": "live-network",
   "provider": "duckduckgo",
   "note": "This eval uses live DuckDuckGo search and live page fetches through TokenHub resolve_request; failures may reflect network/provider volatility.",
@@ -11,7 +11,7 @@
       "request": "Find current Vitest official config docs for TypeScript projects and summarize setup",
       "passed": true,
       "reason": "live sources met quality, relevance, resource, and telemetry contracts",
-      "ms": 4461,
+      "ms": 5561,
       "estimatedTokens": 3757,
       "expectedKeywords": [
         "Vitest",
@@ -114,82 +114,82 @@
         {
           "title": "Configuring Vitest | Vitest",
           "url": "https://vitest.dev/config/",
-          "resourceUri": "tokenhub://resource/32c1f556-0747-41db-a28c-fcbbc068e445"
+          "resourceUri": "tokenhub://resource/a8b0d35e-f091-4d75-953c-9b7e15c278be"
         },
         {
           "title": "GitHub - vitest-dev/vitest: Next generation testing framework powered by Vite. · GitHub",
           "url": "https://github.com/vitest-dev/vitest",
-          "resourceUri": "tokenhub://resource/d8a97213-6465-405b-b868-700e18ee67d5"
+          "resourceUri": "tokenhub://resource/e7f6320b-de28-4f33-b6ea-e455bb3f4ac5"
         },
         {
           "title": "React Testing Setup: Vitest + TypeScript + React Testing Library - DEV Community",
           "url": "https://dev.to/kevinccbsg/react-testing-setup-vitest-typescript-react-testing-library-42c8",
-          "resourceUri": "tokenhub://resource/14d5f20e-65a6-4402-922a-250c21d8b658"
+          "resourceUri": "tokenhub://resource/30b4a9a0-2c8d-4fc2-b21e-322c60fed762"
         },
         {
           "title": "Mastering Testing with Vitest and TypeScript — xjavascript.com",
           "url": "https://www.xjavascript.com/blog/vitest-typescript/",
-          "resourceUri": "tokenhub://resource/7be8ba40-3590-4759-9584-c325e578df50"
+          "resourceUri": "tokenhub://resource/bdf19955-f3cd-4dee-bc76-246deb3a565f"
         },
         {
           "title": "Vitest",
           "url": "https://docs4dev.com/docs/vitest/latest/config/index.html",
-          "resourceUri": "tokenhub://resource/274a2625-aa09-4879-bd9c-5ae983fd214d"
+          "resourceUri": "tokenhub://resource/b336aa77-bedb-484e-907d-387cbb4f630f"
         }
       ],
       "contextSnippets": [
         {
           "title": "Vitest",
           "url": "https://docs4dev.com/docs/vitest/latest/config/index.html",
-          "resourceUri": "tokenhub://resource/274a2625-aa09-4879-bd9c-5ae983fd214d",
+          "resourceUri": "tokenhub://resource/b336aa77-bedb-484e-907d-387cbb4f630f",
           "snippet": "environmentOptions Type: Record<'jsdom' | string, unknown> Default: {} These options are passed down to setup method of current environment ."
         },
         {
           "title": "Vitest",
           "url": "https://docs4dev.com/docs/vitest/latest/config/index.html",
-          "resourceUri": "tokenhub://resource/274a2625-aa09-4879-bd9c-5ae983fd214d",
+          "resourceUri": "tokenhub://resource/b336aa77-bedb-484e-907d-387cbb4f630f",
           "snippet": "These options are passed down to setup method of current environment . By default, you can configure only JSDOM options, if you are using it as your test environment."
         },
         {
           "title": "React Testing Setup: Vitest + TypeScript + React Testing Library - DEV Community",
           "url": "https://dev.to/kevinccbsg/react-testing-setup-vitest-typescript-react-testing-library-42c8",
-          "resourceUri": "tokenhub://resource/14d5f20e-65a6-4402-922a-250c21d8b658",
+          "resourceUri": "tokenhub://resource/30b4a9a0-2c8d-4fc2-b21e-322c60fed762",
           "snippet": "Submit Preview Dismiss Collapse Expand Sahitya Aryan Sahitya Aryan Sahitya Aryan Follow I am exploring web dev via MERN stack Education NIT Patna Work Frontend developer Joined Jun 24, 2023 &bull; Nov 15 '25 Dropdown menu Copy link Hide Here you didn't..."
         },
         {
           "title": "React Testing Setup: Vitest + TypeScript + React Testing Library - DEV Community",
           "url": "https://dev.to/kevinccbsg/react-testing-setup-vitest-typescript-react-testing-library-42c8",
-          "resourceUri": "tokenhub://resource/14d5f20e-65a6-4402-922a-250c21d8b658",
+          "resourceUri": "tokenhub://resource/30b4a9a0-2c8d-4fc2-b21e-322c60fed762",
           "snippet": "To enable global test functions, update your vite.config.ts : /// <reference types=\"vitest\" /> import { defineConfig } from ' vite ' import react from ' @vitejs/plugin-react ' export default defineConfig ({ plugins : [ react ()], test : { globals : true ,..."
         },
         {
           "title": "React Testing Setup: Vitest + TypeScript + React Testing Library - DEV Community",
           "url": "https://dev.to/kevinccbsg/react-testing-setup-vitest-typescript-react-testing-library-42c8",
-          "resourceUri": "tokenhub://resource/14d5f20e-65a6-4402-922a-250c21d8b658",
+          "resourceUri": "tokenhub://resource/30b4a9a0-2c8d-4fc2-b21e-322c60fed762",
           "snippet": "It needs vitest.config.ts import { defineConfig } from 'vitest/config'; export default defineConfig({ test: { globals: true, // this allows me to use describe, it, expect anywhere within the project without importing them setupFiles: './tests/setup.ts',..."
         },
         {
           "title": "GitHub - vitest-dev/vitest: Next generation testing framework powered by Vite. · GitHub",
           "url": "https://github.com/vitest-dev/vitest",
-          "resourceUri": "tokenhub://resource/d8a97213-6465-405b-b868-700e18ee67d5",
+          "resourceUri": "tokenhub://resource/e7f6320b-de28-4f33-b6ea-e455bb3f4ac5",
           "snippet": "Benchmarking support with Tinybench Projects support expect-type for type-level testing ESM first, top level await Out-of-box TypeScript / JSX support Filtering, timeouts, concurrent for suite and tests Sharding support Reporting Uncaught Errors Run your..."
         },
         {
           "title": "Vitest",
           "url": "https://docs4dev.com/docs/vitest/latest/config/index.html",
-          "resourceUri": "tokenhub://resource/274a2625-aa09-4879-bd9c-5ae983fd214d",
+          "resourceUri": "tokenhub://resource/b336aa77-bedb-484e-907d-387cbb4f630f",
           "snippet": "ts // vitest.config.ts import { defineConfig } from 'vitest/config' export default defineConfig({ test: { globals: true, }, }) To get TypeScript working with the global APIs, add vitest/globals to the types field in your tsconfig.json json // tsconfig.json..."
         },
         {
           "title": "Configuring Vitest | Vitest",
           "url": "https://vitest.dev/config/",
-          "resourceUri": "tokenhub://resource/32c1f556-0747-41db-a28c-fcbbc068e445",
+          "resourceUri": "tokenhub://resource/a8b0d35e-f091-4d75-953c-9b7e15c278be",
           "snippet": "You can read better optimized documentation at /config.md for this page in Markdown format Configuring Vitest ​ If you are using Vite and have a vite.config file, Vitest will read it to match with the plugins and setup as your Vite app."
         }
       ],
       "resourceUris": [
-        "tokenhub://resource/81bc4966-054b-4eed-898f-81238f82e859",
-        "tokenhub://resource/dc9f3f9c-454f-48fa-ac6a-93a7a038aeef"
+        "tokenhub://resource/5f939535-f74c-44b7-b98b-e90c11999c9f",
+        "tokenhub://resource/e5c67aea-8211-4082-8c24-7ea546bb61fd"
       ],
       "telemetry": {
         "capability": "workflow.resolve_request",
@@ -197,7 +197,7 @@
         "estimatedSavedTokens": 3717,
         "outputTokens": 337,
         "id": "tel_1",
-        "createdAt": "2026-05-07T06:49:55.712Z",
+        "createdAt": "2026-05-07T17:04:33.845Z",
         "roi": 11.029673590504451,
         "graduated": true
       },
@@ -212,7 +212,7 @@
       "request": "Summarize current Node.js LTS release notes for backend developers",
       "passed": true,
       "reason": "live sources met quality, relevance, resource, and telemetry contracts",
-      "ms": 2900,
+      "ms": 3118,
       "estimatedTokens": 3292,
       "expectedKeywords": [
         "Node",
@@ -316,82 +316,82 @@
         {
           "title": "Node.js — Node.js 24.11.0 (LTS)",
           "url": "https://nodejs.org/en/blog/release/v24.11.0",
-          "resourceUri": "tokenhub://resource/290c0ec0-1b0d-41c5-a52f-eb5267afa5cd"
+          "resourceUri": "tokenhub://resource/1f41a27b-1fc3-4f50-817a-e774e2a1e31a"
         },
         {
           "title": "GitHub - nodejs/Release: Node.js Release Working Group · GitHub",
           "url": "https://github.com/nodejs/Release",
-          "resourceUri": "tokenhub://resource/f3604f21-02a1-4577-a25c-8b63e35b0a8f"
+          "resourceUri": "tokenhub://resource/8485038f-7750-4f95-8b5d-52a165c10953"
         },
         {
           "title": "Node.js 24 Becomes LTS: What You Need to Know",
           "url": "https://nodesource.com/blog/nodejs-24-becomes-lts/",
-          "resourceUri": "tokenhub://resource/fb8647d3-4265-45f2-a88c-94f54064ce6f"
+          "resourceUri": "tokenhub://resource/198eea9a-f706-41d9-aa67-0a24f23fc6e2"
         },
         {
           "title": "Node.js 24 - What's New, Release History & EOL",
           "url": "https://versionlog.com/nodejs/24/",
-          "resourceUri": "tokenhub://resource/6c4e6e2b-5aa0-42aa-b79d-eb23967b6339"
+          "resourceUri": "tokenhub://resource/25c6e03f-8c4b-44c5-86a1-fe54b80fb063"
         },
         {
           "title": "Node.js 22 LTS 2026: Native TypeScript & New Features Guide",
           "url": "https://softaims.com/blog/nodejs-22-lts-features-typescript-guide-2026",
-          "resourceUri": "tokenhub://resource/8515945d-0010-4174-af9b-66d4212b45c0"
+          "resourceUri": "tokenhub://resource/e1e8505b-8569-431f-9be2-ad1023e0f61e"
         }
       ],
       "contextSnippets": [
         {
           "title": "Node.js 22 LTS 2026: Native TypeScript & New Features Guide",
           "url": "https://softaims.com/blog/nodejs-22-lts-features-typescript-guide-2026",
-          "resourceUri": "tokenhub://resource/8515945d-0010-4174-af9b-66d4212b45c0",
+          "resourceUri": "tokenhub://resource/e1e8505b-8569-431f-9be2-ad1023e0f61e",
           "snippet": "Node.js 22 LTS 2026: Native TypeScript & New Features Guide Softaims logo Services Find Talent Question & Answers Blog Job Templates Hire Developer Services Find Talent Question & Answers Blog Job Templates Hire Developer Home › Blog › Backend Development..."
         },
         {
           "title": "Node.js 24 - What's New, Release History & EOL",
           "url": "https://versionlog.com/nodejs/24/",
-          "resourceUri": "tokenhub://resource/6c4e6e2b-5aa0-42aa-b79d-eb23967b6339",
+          "resourceUri": "tokenhub://resource/25c6e03f-8c4b-44c5-86a1-fe54b80fb063",
           "snippet": "const pattern = new URLPattern({ pathname: '/api/:version/users/:id' }); const match = pattern.exec('https://example.com/api/v2/users/42'); console.log(match?.pathname.groups); // { version: 'v2', id: '42' } AsyncLocalStorage and AsyncContextFrame..."
         },
         {
           "title": "Node.js — Node.js 24.11.0 (LTS)",
           "url": "https://nodejs.org/en/blog/release/v24.11.0",
-          "resourceUri": "tokenhub://resource/290c0ec0-1b0d-41c5-a52f-eb5267afa5cd",
+          "resourceUri": "tokenhub://resource/1f41a27b-1fc3-4f50-817a-e774e2a1e31a",
           "snippet": "Node.js ® is a free, open-source, cross-platform JavaScript runtime environment that lets developers create servers, web apps, command line tools and scripts."
         },
         {
           "title": "Node.js 24 - What's New, Release History & EOL",
           "url": "https://versionlog.com/nodejs/24/",
-          "resourceUri": "tokenhub://resource/6c4e6e2b-5aa0-42aa-b79d-eb23967b6339",
+          "resourceUri": "tokenhub://resource/25c6e03f-8c4b-44c5-86a1-fe54b80fb063",
           "snippet": "Until then it is the \"Current\" release."
         },
         {
           "title": "Node.js 24 - What's New, Release History & EOL",
           "url": "https://versionlog.com/nodejs/24/",
-          "resourceUri": "tokenhub://resource/6c4e6e2b-5aa0-42aa-b79d-eb23967b6339",
+          "resourceUri": "tokenhub://resource/25c6e03f-8c4b-44c5-86a1-fe54b80fb063",
           "snippet": "The internal backend switch to AsyncContextFrame is designed to be transparent."
         },
         {
           "title": "GitHub - nodejs/Release: Node.js Release Working Group · GitHub",
           "url": "https://github.com/nodejs/Release",
-          "resourceUri": "tokenhub://resource/f3604f21-02a1-4577-a25c-8b63e35b0a8f",
+          "resourceUri": "tokenhub://resource/8485038f-7750-4f95-8b5d-52a165c10953",
           "snippet": "Release Phases There are three phases that a Node.js release can be in: 'Current', 'Active Long Term Support (LTS)', and 'Maintenance'."
         },
         {
           "title": "GitHub - nodejs/Release: Node.js Release Working Group · GitHub",
           "url": "https://github.com/nodejs/Release",
-          "resourceUri": "tokenhub://resource/f3604f21-02a1-4577-a25c-8b63e35b0a8f",
+          "resourceUri": "tokenhub://resource/8485038f-7750-4f95-8b5d-52a165c10953",
           "snippet": "Current - Should incorporate most of the non-major (non-breaking) changes that land on nodejs/node main branch."
         },
         {
           "title": "GitHub - nodejs/Release: Node.js Release Working Group · GitHub",
           "url": "https://github.com/nodejs/Release",
-          "resourceUri": "tokenhub://resource/f3604f21-02a1-4577-a25c-8b63e35b0a8f",
+          "resourceUri": "tokenhub://resource/8485038f-7750-4f95-8b5d-52a165c10953",
           "snippet": "Manage the LTS and Current branches including backporting changes to these branches."
         }
       ],
       "resourceUris": [
-        "tokenhub://resource/37c53b97-4b07-4386-9dcc-5357b00ec1e9",
-        "tokenhub://resource/9b2778b2-c492-43c7-9911-1ce34311fcce"
+        "tokenhub://resource/4befca37-e85d-44b9-85ff-617116e76f21",
+        "tokenhub://resource/57dcf3ea-9b8a-43f5-ba8a-875a12df5cb5"
       ],
       "telemetry": {
         "capability": "workflow.resolve_request",
@@ -399,7 +399,7 @@
         "estimatedSavedTokens": 3240,
         "outputTokens": 332,
         "id": "tel_2",
-        "createdAt": "2026-05-07T06:49:58.613Z",
+        "createdAt": "2026-05-07T17:04:36.964Z",
         "roi": 9.759036144578314,
         "graduated": true
       },
@@ -415,8 +415,8 @@
       "request": "Find official Docker Compose Watch documentation and list setup commands",
       "passed": true,
       "reason": "live sources met quality, relevance, resource, and telemetry contracts",
-      "ms": 1837,
-      "estimatedTokens": 3531,
+      "ms": 2235,
+      "estimatedTokens": 3221,
       "expectedKeywords": [
         "Docker",
         "Compose",
@@ -465,7 +465,7 @@
           {
             "name": "unique_domains",
             "ok": true,
-            "reason": "expected at least 2 unique domains, got 5",
+            "reason": "expected at least 2 unique domains, got 4",
             "weight": 14
           },
           {
@@ -509,7 +509,6 @@
           "docs.docker.com",
           "github.com",
           "deepwiki.com",
-          "devhints.io",
           "fsck.sh"
         ],
         "keywordCoverage": 1
@@ -518,107 +517,106 @@
         {
           "title": "Use Compose Watch | Docker Docs",
           "url": "https://docs.docker.com/compose/how-tos/file-watch/",
-          "resourceUri": "tokenhub://resource/b34bc766-7003-4f0d-b706-2eedf62ebf54"
+          "resourceUri": "tokenhub://resource/a4156d1b-343e-4892-9308-e094f6724b71"
         },
         {
           "title": "compose/docs/reference/compose_watch.md at main · docker/compose · GitHub",
           "url": "https://github.com/docker/compose/blob/main/docs/reference/compose_watch.md",
-          "resourceUri": "tokenhub://resource/1d88c53b-3482-47c4-89ed-317c68c1af80"
+          "resourceUri": "tokenhub://resource/dded5d6f-0902-414e-9f1b-d8545a426115"
         },
         {
-          "title": "Watch System | docker/compose | DeepWiki",
-          "url": "https://deepwiki.com/docker/compose/6.1-watch-system",
-          "resourceUri": "tokenhub://resource/8dab8556-efc8-4641-ad58-8c3dbb08ccd2"
-        },
-        {
-          "title": "docker-compose cheatsheet",
-          "url": "https://devhints.io/docker-compose",
-          "resourceUri": "tokenhub://resource/a6ad51db-ddd8-4242-ae72-ac424cce3a00"
+          "title": "Plugin Architecture | docker/compose | DeepWiki",
+          "url": "https://deepwiki.com/docker/compose/7.1-watch-system",
+          "resourceUri": "tokenhub://resource/a7a27219-6049-4f9d-ba89-c854c60377cd"
         },
         {
           "title": "Docker Compose Watch: The End of Container Rebuild Hell - fsck.sh",
           "url": "https://fsck.sh/en/blog/docker-compose-watch-modern-workflows/",
-          "resourceUri": "tokenhub://resource/03b40f62-c67e-49a1-acae-9c6ea0204c86"
+          "resourceUri": "tokenhub://resource/c635bc48-72f7-49d7-89e1-6536a093c6e2"
+        },
+        {
+          "title": "Docker Compose | Docker Docs",
+          "url": "https://docs.docker.com/compose/",
+          "resourceUri": "tokenhub://resource/b6bd8423-1cbc-408d-a569-40b68aa4c4b8"
         }
       ],
       "contextSnippets": [
         {
+          "title": "Plugin Architecture | docker/compose | DeepWiki",
+          "url": "https://deepwiki.com/docker/compose/7.1-watch-system",
+          "resourceUri": "tokenhub://resource/a7a27219-6049-4f9d-ba89-c854c60377cd",
+          "snippet": "Listing : Calls mdlAPI.ListModels(ctx) (executes docker-model ls --json )."
+        },
+        {
+          "title": "Plugin Architecture | docker/compose | DeepWiki",
+          "url": "https://deepwiki.com/docker/compose/7.1-watch-system",
+          "resourceUri": "tokenhub://resource/a7a27219-6049-4f9d-ba89-c854c60377cd",
+          "snippet": "Environment Setup : SetModelVariables retrieves the model server endpoint via docker-model status --json and injects _MODEL and _URL variables into referencing services."
+        },
+        {
           "title": "Use Compose Watch | Docker Docs",
           "url": "https://docs.docker.com/compose/how-tos/file-watch/",
-          "resourceUri": "tokenhub://resource/b34bc766-7003-4f0d-b706-2eedf62ebf54",
+          "resourceUri": "tokenhub://resource/a4156d1b-343e-4892-9308-e094f6724b71",
           "snippet": "'dark' : 'light'; }; mql.addEventListener('change', handler); $watch('theme', val => applyTheme(val)); return () => mql.removeEventListener('change', handler); \" @click=\"theme = (theme === 'light' ?"
         },
         {
           "title": "Use Compose Watch | Docker Docs",
           "url": "https://docs.docker.com/compose/how-tos/file-watch/",
-          "resourceUri": "tokenhub://resource/b34bc766-7003-4f0d-b706-2eedf62ebf54",
+          "resourceUri": "tokenhub://resource/a4156d1b-343e-4892-9308-e094f6724b71",
           "snippet": "I'm Gordon, your AI assistant for Docker and documentation questions."
         },
         {
           "title": "Use Compose Watch | Docker Docs",
           "url": "https://docs.docker.com/compose/how-tos/file-watch/",
-          "resourceUri": "tokenhub://resource/b34bc766-7003-4f0d-b706-2eedf62ebf54",
+          "resourceUri": "tokenhub://resource/a4156d1b-343e-4892-9308-e094f6724b71",
           "snippet": "Share feedback Answers are generated based on the documentation."
         },
         {
           "title": "compose/docs/reference/compose_watch.md at main · docker/compose · GitHub",
           "url": "https://github.com/docker/compose/blob/main/docs/reference/compose_watch.md",
-          "resourceUri": "tokenhub://resource/1d88c53b-3482-47c4-89ed-317c68c1af80",
+          "resourceUri": "tokenhub://resource/dded5d6f-0902-414e-9f1b-d8545a426115",
           "snippet": "Include my email address so I can be contacted Cancel Submit feedback Saved searches Use saved searches to filter your results more quickly --> Name Query To see all available qualifiers, see our documentation ."
         },
         {
           "title": "compose/docs/reference/compose_watch.md at main · docker/compose · GitHub",
           "url": "https://github.com/docker/compose/blob/main/docs/reference/compose_watch.md",
-          "resourceUri": "tokenhub://resource/1d88c53b-3482-47c4-89ed-317c68c1af80",
+          "resourceUri": "tokenhub://resource/dded5d6f-0902-414e-9f1b-d8545a426115",
           "snippet": "To see all available qualifiers, see our documentation ."
         },
         {
-          "title": "Watch System | docker/compose | DeepWiki",
-          "url": "https://deepwiki.com/docker/compose/6.1-watch-system",
-          "resourceUri": "tokenhub://resource/8dab8556-efc8-4641-ad58-8c3dbb08ccd2",
-          "snippet": "Sources: pkg/compose/watch.go 560-573 Sync+Exec Action The sync+exec action (represented as types.WatchActionSyncExec ) combines sync with command execution pkg/compose/watch.go 575-611 Files are synced first, then commands are executed across all..."
-        },
-        {
-          "title": "Watch System | docker/compose | DeepWiki",
-          "url": "https://deepwiki.com/docker/compose/6.1-watch-system",
-          "resourceUri": "tokenhub://resource/8dab8556-efc8-4641-ad58-8c3dbb08ccd2",
-          "snippet": "Restart calls the standard composeService.restart() method with the accumulated service list and project configuration pkg/compose/watch.go 560-573 The restart respects dependencies by default ( NoDeps: false )."
-        },
-        {
-          "title": "Watch System | docker/compose | DeepWiki",
-          "url": "https://deepwiki.com/docker/compose/6.1-watch-system",
-          "resourceUri": "tokenhub://resource/8dab8556-efc8-4641-ad58-8c3dbb08ccd2",
-          "snippet": "The Watch System provides hot-reload development workflows by monitoring file system changes and automatically syncing files, rebuilding images, restarting containers, or executing commands in response to changes. This system enables rapid iteration during..."
+          "title": "Docker Compose Watch: The End of Container Rebuild Hell - fsck.sh",
+          "url": "https://fsck.sh/en/blog/docker-compose-watch-modern-workflows/",
+          "resourceUri": "tokenhub://resource/c635bc48-72f7-49d7-89e1-6536a093c6e2",
+          "snippet": "The Quick Win Permalink to \"The Quick Win\" # Here’s the minimal setup that’ll save your sanity: services : web : build : ."
         }
       ],
       "resourceUris": [
-        "tokenhub://resource/6f2f2c5f-6530-4c83-8be6-d144119ed321",
-        "tokenhub://resource/4c109354-9261-412d-8182-fa594810d0eb"
+        "tokenhub://resource/07dcf1d0-256b-4e16-a301-de1d70e9da7b",
+        "tokenhub://resource/c603cc67-e5f0-4450-8216-3b919782799c"
       ],
       "telemetry": {
         "capability": "workflow.resolve_request",
-        "estimatedToolCostTokens": 345,
-        "estimatedSavedTokens": 3434,
-        "outputTokens": 345,
+        "estimatedToolCostTokens": 312,
+        "estimatedSavedTokens": 3220,
+        "outputTokens": 312,
         "id": "tel_3",
-        "createdAt": "2026-05-07T06:50:00.450Z",
-        "roi": 9.953623188405798,
+        "createdAt": "2026-05-07T17:04:39.199Z",
+        "roi": 10.320512820512821,
         "graduated": true
       },
       "warnings": [
         "Using no-key DuckDuckGo HTML fallback; provider freshness metadata is limited.",
-        "Could not fetch https://linuxconfig.org/introduction-to-docker-compose-watch: Fetch failed for https://linuxconfig.org/introduction-to-docker-compose-watch: HTTP 403",
-        "Could not fetch https://medium.com/@rosgluk/docker-compose-cheatsheet-most-useful-commands-with-examples-4fbc3d2b5deb: Fetch failed for https://medium.com/@rosgluk/docker-compose-cheatsheet-most-useful-commands-with-examples-4fbc3d2b5deb: HTTP 403"
+        "Could not fetch https://linuxconfig.org/introduction-to-docker-compose-watch: Fetch failed for https://linuxconfig.org/introduction-to-docker-compose-watch: HTTP 403"
       ],
-      "summaryPreview": "Web context\nRecent official docker compose surfaced by the workflow emphasizes 'dark' : 'light'; }; mql.addEventListener('change', handler); $watch('theme', val => applyTheme(val)); return () => mql.removeEventListener('change', handler); \" @click=\"theme = (theme === 'light'; Include my email address so I can be contacted Cancel Submit feedback Saved searches Use saved searches to filter your results more quickly --> Name Query To see all available qualifiers, see our documentation; and Sources: pkg/compose/watch.go 560-573 Sync+Exec Action The sync+exec action (represented as types.WatchActionSyncExec ) combines sync with command execution pkg/compose/watch.go 575-611 Files are synced first, then.\n\nSources:\n\n[1] Use Compose Watch | Docker Docs - https://docs.docker.com/compose/how-tos/file-watch/\n[2] compose/docs/reference/compose_watch.md at main · docker/compose · GitHub - https://git"
+      "summaryPreview": "Web context\nRecent official docker compose surfaced by the workflow emphasizes Listing : Calls mdlAPI.ListModels(ctx) (executes docker-model ls --json ); 'dark' : 'light'; }; mql.addEventListener('change', handler); $watch('theme', val => applyTheme(val)); return () => mql.removeEventListener('change', handler); \" @click=\"theme = (theme === 'light'; and Include my email address so I can be contacted Cancel Submit feedback Saved searches Use saved searches to filter your results more quickly --> Name Query To see all available qualifiers, see our documentation.\n\nSources:\n\n[1] Use Compose Watch | Docker Docs - https://docs.docker.com/compose/how-tos/file-watch/\n[2] compose/docs/reference/compose_watch.md at main · docker/compose · GitHub - https://github.com/docker/compose/blob/main/docs/reference/compose_watch.md\n[3] Plugin Architecture | docker/compose | DeepWiki - https://deepwiki.com/d"
     },
     {
       "id": "owasp-api-key-storage",
       "request": "Research current OWASP guidance for storing API keys in frontend and backend apps",
       "passed": true,
       "reason": "live sources met quality, relevance, resource, and telemetry contracts",
-      "ms": 1726,
-      "estimatedTokens": 4011,
+      "ms": 1734,
+      "estimatedTokens": 3957,
       "expectedKeywords": [
         "OWASP",
         "API",
@@ -709,118 +707,118 @@
           }
         ],
         "uniqueDomains": [
-          "cheatsheetseries.owasp.org",
+          "devguide.owasp.org",
           "dev.to",
           "offensive360.com",
-          "approov.io",
-          "openappsec.io"
+          "zuplo.com",
+          "owasp.org"
         ],
         "keywordCoverage": 1
       },
       "sources": [
         {
-          "title": "Secrets Management - OWASP Cheat Sheet Series",
-          "url": "https://cheatsheetseries.owasp.org/cheatsheets/Secrets_Management_Cheat_Sheet.html",
-          "resourceUri": "tokenhub://resource/ed6606a8-290c-43ca-82b9-d001d8faf87b"
+          "title": "Protect Data Everywhere - OWASP Developer Guide",
+          "url": "https://devguide.owasp.org/en/04-design/02-web-app-checklist/08-protect-data/",
+          "resourceUri": "tokenhub://resource/9fa5d72c-e145-488b-909a-4891fb96880f"
         },
         {
           "title": "API Keys: The Complete 2025 Guide to Security, Management, and Best Practices - DEV Community",
           "url": "https://dev.to/hamd_writer_8c77d9c88c188/api-keys-the-complete-2025-guide-to-security-management-and-best-practices-3980",
-          "resourceUri": "tokenhub://resource/d1c6a2c9-20af-433c-a04e-7015b9e619c2"
+          "resourceUri": "tokenhub://resource/76f972a5-f06c-4e00-b047-18536c2ef05b"
         },
         {
           "title": "OWASP API Security Top 10: Complete Guide & Code Examples (2026) | Offensive360",
           "url": "https://offensive360.com/blog/api-security-best-practices-guide/",
-          "resourceUri": "tokenhub://resource/f872aa2f-d3d3-4fd6-80fd-ffb772cc32b5"
+          "resourceUri": "tokenhub://resource/d9551915-b05d-42f1-96f8-ee7986bc0586"
         },
         {
-          "title": "Securing API Keys: Why It Should Be Your Top Priority Now",
-          "url": "https://approov.io/blog/now-is-the-time-to-get-serious-about-securing-api-keys",
-          "resourceUri": "tokenhub://resource/b164e816-5d38-4961-bceb-91953fcf6031"
+          "title": "The Ultimate Guide to the OWASP API Security Cheat Sheet - Zuplo",
+          "url": "https://zuplo.com/learning-center/owasp-cheat-sheet-guide",
+          "resourceUri": "tokenhub://resource/a5f1cb01-73d3-4634-a2bc-944aa3f23fac"
         },
         {
-          "title": "The Developer's Guide to OWASP API Security",
-          "url": "https://www.openappsec.io/post/the-developer-s-guide-to-owasp-api-security",
-          "resourceUri": "tokenhub://resource/ac538d29-b94e-4966-b870-dab873f1e16e"
+          "title": "OWASP API Security Project | OWASP Foundation",
+          "url": "https://owasp.org/www-project-api-security/",
+          "resourceUri": "tokenhub://resource/6d5c1b06-2e06-43fe-ae35-f00c0a9375c9"
         }
       ],
       "contextSnippets": [
         {
-          "title": "Securing API Keys: Why It Should Be Your Top Priority Now",
-          "url": "https://approov.io/blog/now-is-the-time-to-get-serious-about-securing-api-keys",
-          "resourceUri": "tokenhub://resource/b164e816-5d38-4961-bceb-91953fcf6031",
-          "snippet": "A wave of recent breaches show just how exposed mobile apps are to API key abuse. This blog explains how to make a plan to fix the issue right now. OWASP recently emphasized that secrets security is the most critical issue for mobile applications in their..."
-        },
-        {
-          "title": "Securing API Keys: Why It Should Be Your Top Priority Now",
-          "url": "https://approov.io/blog/now-is-the-time-to-get-serious-about-securing-api-keys",
-          "resourceUri": "tokenhub://resource/b164e816-5d38-4961-bceb-91953fcf6031",
-          "snippet": "The most notable points OWASP highlights include: Client-Side Secrecy is Nearly Impossible : No matter how well secrets are obfuscated or encrypted, attackers with enough skill and resources can extract them from mobile apps."
-        },
-        {
-          "title": "Securing API Keys: Why It Should Be Your Top Priority Now",
-          "url": "https://approov.io/blog/now-is-the-time-to-get-serious-about-securing-api-keys",
-          "resourceUri": "tokenhub://resource/b164e816-5d38-4961-bceb-91953fcf6031",
-          "snippet": "Mitigating Secrets Exposure: Best practices to minimize this risk include moving secrets to the backend, using secure storage APIs like iOS Keychain or Android Keystore for user credentials, and implementing certificate pinning to secure communications..."
-        },
-        {
-          "title": "The Developer's Guide to OWASP API Security",
-          "url": "https://www.openappsec.io/post/the-developer-s-guide-to-owasp-api-security",
-          "resourceUri": "tokenhub://resource/ac538d29-b94e-4966-b870-dab873f1e16e",
-          "snippet": "Clearly, the current level of awareness and API security is not enough."
-        },
-        {
-          "title": "The Developer's Guide to OWASP API Security",
-          "url": "https://www.openappsec.io/post/the-developer-s-guide-to-owasp-api-security",
-          "resourceUri": "tokenhub://resource/ac538d29-b94e-4966-b870-dab873f1e16e",
-          "snippet": "It provides examples of the potential impact of these risks and offers guidance on mitigating them."
-        },
-        {
-          "title": "The Developer's Guide to OWASP API Security",
-          "url": "https://www.openappsec.io/post/the-developer-s-guide-to-owasp-api-security",
-          "resourceUri": "tokenhub://resource/ac538d29-b94e-4966-b870-dab873f1e16e",
-          "snippet": "​ Product & Tech ​ Features ​ Architecture ​ Agents ​ Machine Learning ​ Management Resources ​ Blogs ​ Tutorials ​ Documentation ​ GitHub ​ Playground ​ White Paper ​ Ambassador Program ​ Additional ​ Support &copy; 2022-2026 Check Point Software..."
-        },
-        {
           "title": "API Keys: The Complete 2025 Guide to Security, Management, and Best Practices - DEV Community",
           "url": "https://dev.to/hamd_writer_8c77d9c88c188/api-keys-the-complete-2025-guide-to-security-management-and-best-practices-3980",
-          "resourceUri": "tokenhub://resource/d1c6a2c9-20af-433c-a04e-7015b9e619c2",
+          "resourceUri": "tokenhub://resource/76f972a5-f06c-4e00-b047-18536c2ef05b",
           "snippet": "This comprehensive guide explores the current state of API key management in 2025, covering critical security practices, emerging threats, and effective solutions for keeping your credentials safe."
         },
         {
           "title": "API Keys: The Complete 2025 Guide to Security, Management, and Best Practices - DEV Community",
           "url": "https://dev.to/hamd_writer_8c77d9c88c188/api-keys-the-complete-2025-guide-to-security-management-and-best-practices-3980",
-          "resourceUri": "tokenhub://resource/d1c6a2c9-20af-433c-a04e-7015b9e619c2",
+          "resourceUri": "tokenhub://resource/76f972a5-f06c-4e00-b047-18536c2ef05b",
           "snippet": "Exposing your API key in client-side environments like browsers or mobile apps allows malicious users to take that key and make requests on your behalf, which may lead to unexpected charges or compromise of certain account data."
+        },
+        {
+          "title": "API Keys: The Complete 2025 Guide to Security, Management, and Best Practices - DEV Community",
+          "url": "https://dev.to/hamd_writer_8c77d9c88c188/api-keys-the-complete-2025-guide-to-security-management-and-best-practices-3980",
+          "resourceUri": "tokenhub://resource/76f972a5-f06c-4e00-b047-18536c2ef05b",
+          "snippet": "Cloud-based key vaults, like Azure Key Vault, are ideal for storing API keys."
+        },
+        {
+          "title": "Protect Data Everywhere - OWASP Developer Guide",
+          "url": "https://devguide.owasp.org/en/04-design/02-web-app-checklist/08-protect-data/",
+          "resourceUri": "tokenhub://resource/9fa5d72c-e145-488b-909a-4891fb96880f",
+          "snippet": "Data protection (DP) Classify data according to the level of sensitivity Implement appropriate access controls for sensitive data Avoid storing sensitive data when at all possible Implement least privilege, restricting access to functionality, data and..."
+        },
+        {
+          "title": "OWASP API Security Top 10: Complete Guide & Code Examples (2026) | Offensive360",
+          "url": "https://offensive360.com/blog/api-security-best-practices-guide/",
+          "resourceUri": "tokenhub://resource/d9551915-b05d-42f1-96f8-ee7986bc0586",
+          "snippet": "use ( cors ({ origin : ( origin , callback ) => { // Allow requests with no origin (server-to-server, mobile apps) if ( !"
+        },
+        {
+          "title": "Protect Data Everywhere - OWASP Developer Guide",
+          "url": "https://devguide.owasp.org/en/04-design/02-web-app-checklist/08-protect-data/",
+          "resourceUri": "tokenhub://resource/9fa5d72c-e145-488b-909a-4891fb96880f",
+          "snippet": "Avoid storing sensitive data when at all possible Implement least privilege, restricting access to functionality, data and system information Do not include sensitive information in the URL or query string, such as an API key or session token Disable..."
+        },
+        {
+          "title": "OWASP API Security Top 10: Complete Guide & Code Examples (2026) | Offensive360",
+          "url": "https://offensive360.com/blog/api-security-best-practices-guide/",
+          "resourceUri": "tokenhub://resource/d9551915-b05d-42f1-96f8-ee7986bc0586",
+          "snippet": "The OWASP API Security Top 10 was created precisely because standard web application guidance is insufficient for modern APIs."
+        },
+        {
+          "title": "OWASP API Security Project | OWASP Foundation",
+          "url": "https://owasp.org/www-project-api-security/",
+          "resourceUri": "tokenhub://resource/6d5c1b06-2e06-43fe-ae35-f00c0a9375c9",
+          "snippet": "Jun 28th, 2024 OWASP API Security Project - Past Present and Future @ OWASP Global AppSec Lisbon 2024 ( YouTube ) Jun 3rd, 2024 OWASP API Security Top 10 2023 French translation release."
         }
       ],
       "resourceUris": [
-        "tokenhub://resource/e46aa5ef-d8a7-4387-ab8a-d16c10b7f57e",
-        "tokenhub://resource/1199be1d-b79b-4e38-9ab3-706a2ba0329d"
+        "tokenhub://resource/c973e0d5-d2b9-4fa5-9df8-7672c18f3d09",
+        "tokenhub://resource/de2ce14c-ba96-4375-beba-58f34bb2be29"
       ],
       "telemetry": {
         "capability": "workflow.resolve_request",
-        "estimatedToolCostTokens": 373,
-        "estimatedSavedTokens": 3924,
-        "outputTokens": 373,
+        "estimatedToolCostTokens": 371,
+        "estimatedSavedTokens": 3867,
+        "outputTokens": 371,
         "id": "tel_4",
-        "createdAt": "2026-05-07T06:50:02.176Z",
-        "roi": 10.520107238605899,
+        "createdAt": "2026-05-07T17:04:40.933Z",
+        "roi": 10.423180592991914,
         "graduated": true
       },
       "warnings": [
         "Using no-key DuckDuckGo HTML fallback; provider freshness metadata is limited.",
-        "Could not fetch https://securityonline.info/api-security-in-2025-top-best-practices-every-security-team-must-know/: Fetch failed for https://securityonline.info/api-security-in-2025-top-best-practices-every-security-team-must-know/: HTTP 403"
+        "Could not fetch https://securityboulevard.com/2026/01/stop-leaking-api-keys-the-backend-for-frontend-bff-pattern-explained/: Fetch failed for https://securityboulevard.com/2026/01/stop-leaking-api-keys-the-backend-for-frontend-bff-pattern-explained/: HTTP 403"
       ],
-      "summaryPreview": "Web context\nRecent current owasp guidance surfaced by the workflow emphasizes A wave of recent breaches show just how exposed mobile apps are to API key abuse. This blog explains how to make a plan to fix the issue right now. OWASP recently emphasized that secrets security is the most critical; Clearly, the current level of awareness and API security is not enough; and This comprehensive guide explores the current state of API key management in 2025, covering critical security practices, emerging threats, and effective solutions for keeping your credentials safe.\n\nSources:\n\n[1] Secrets Management - OWASP Cheat Sheet Series - https://cheatsheetseries.owasp.org/cheatsheets/Secrets_Management_Cheat_Sheet.html\n[2] API Keys: The Complete 2025 Guide to Security, Management, and Best Practices - DEV Community - https://dev.to/hamd_writer_8c77d9c88c188/api-keys-the-complete-2025-guide-to-securit"
+      "summaryPreview": "Web context\nRecent current owasp guidance surfaced by the workflow emphasizes This comprehensive guide explores the current state of API key management in 2025, covering critical security practices, emerging threats, and effective solutions for keeping your credentials safe; Data protection (DP) Classify data according to the level of sensitivity Implement appropriate access controls for sensitive data Avoid storing sensitive data when at all possible Implement least privilege,; and use ( cors ({ origin : ( origin , callback ) => { // Allow requests with no origin (server-to-server, mobile apps) if (.\n\nSources:\n\n[1] Protect Data Everywhere - OWASP Developer Guide - https://devguide.owasp.org/en/04-design/02-web-app-checklist/08-protect-data/\n[2] API Keys: The Complete 2025 Guide to Security, Management, and Best Practices - DEV Community - https://dev.to/hamd_writer_8c77d9c88c188/api-key"
     },
     {
       "id": "github-actions-artifact-v4-migration",
       "request": "Find current GitHub Actions artifact upload v4 migration notes",
       "passed": true,
       "reason": "live sources met quality, relevance, resource, and telemetry contracts",
-      "ms": 2552,
-      "estimatedTokens": 3589,
+      "ms": 4398,
+      "estimatedTokens": 3647,
       "expectedKeywords": [
         "GitHub",
         "Actions",
@@ -925,8 +923,8 @@
           "github.com",
           "deepwiki.com",
           "shadynagy.com",
-          "github.blog",
-          "gitea.com"
+          "gitea.com",
+          "git.auper01.vroc.ai"
         ],
         "keywordCoverage": 1
       },
@@ -934,104 +932,105 @@
         {
           "title": "upload-artifact/docs/MIGRATION.md at main · actions/upload-artifact · GitHub",
           "url": "https://github.com/actions/upload-artifact/blob/main/docs/MIGRATION.md",
-          "resourceUri": "tokenhub://resource/32a6d3da-e847-4899-94af-25e8076b7c6c"
+          "resourceUri": "tokenhub://resource/899b3ace-173a-46d4-b2e2-9fc0c20a565a"
         },
         {
           "title": "Migration from v3 to v4 | actions/upload-artifact | DeepWiki",
           "url": "https://deepwiki.com/actions/upload-artifact/4-migration-from-v3-to-v4",
-          "resourceUri": "tokenhub://resource/ae96fa33-fee3-4383-84e7-bcd5e1d4b1a0"
+          "resourceUri": "tokenhub://resource/6cd56f7a-2213-4052-a2f5-a9b6ed87c4da"
         },
         {
           "title": "Upgrading GitHub Actions Artifacts from V3 to V4 A Comprehensive Guide | Shady Nagy",
           "url": "https://www.shadynagy.com/upgrading-github-actions-artifacts-v3-to-v4-comprehensive-guide/",
-          "resourceUri": "tokenhub://resource/f487c5f0-4b9b-4bd2-9472-7e0f17272ce8"
-        },
-        {
-          "title": "Get started with v4 of GitHub Actions Artifacts - The GitHub Blog",
-          "url": "https://github.blog/news-insights/product-news/get-started-with-v4-of-github-actions-artifacts/",
-          "resourceUri": "tokenhub://resource/9d89967f-b526-414e-af78-046b0adc3986"
+          "resourceUri": "tokenhub://resource/f5393868-f793-4b48-af2d-028083bda81a"
         },
         {
           "title": "upload-artifact/docs/MIGRATION.md at main - upload-artifact - Gitea: Git with a cup of tea",
           "url": "https://gitea.com/actions/upload-artifact/src/branch/main/docs/MIGRATION.md",
-          "resourceUri": "tokenhub://resource/f044b9dd-5b03-462e-8b48-7d17fb21f8de"
+          "resourceUri": "tokenhub://resource/e7e75181-7230-4f8e-8ed1-90d348789733"
+        },
+        {
+          "title": "upload-artifact/docs/MIGRATION.md at main - forgejo_actions/upload-artifact - vroc.ai: Forgejo repository",
+          "url": "https://git.auper01.vroc.ai/forgejo_actions/upload-artifact/src/branch/main/docs/MIGRATION.md",
+          "resourceUri": "tokenhub://resource/23bfdaf7-dd63-4c96-aa60-0968eb9a31bf"
         }
       ],
       "contextSnippets": [
         {
           "title": "upload-artifact/docs/MIGRATION.md at main · actions/upload-artifact · GitHub",
           "url": "https://github.com/actions/upload-artifact/blob/main/docs/MIGRATION.md",
-          "resourceUri": "tokenhub://resource/32a6d3da-e847-4899-94af-25e8076b7c6c",
+          "resourceUri": "tokenhub://resource/899b3ace-173a-46d4-b2e2-9fc0c20a565a",
           "snippet": "The new merge-multiple: input will support downloading multiple Artifacts to the same directory."
         },
         {
           "title": "upload-artifact/docs/MIGRATION.md at main · actions/upload-artifact · GitHub",
           "url": "https://github.com/actions/upload-artifact/blob/main/docs/MIGRATION.md",
-          "resourceUri": "tokenhub://resource/32a6d3da-e847-4899-94af-25e8076b7c6c",
+          "resourceUri": "tokenhub://resource/899b3ace-173a-46d4-b2e2-9fc0c20a565a",
           "snippet": "jobs : upload : strategy : matrix : runs-on : [ubuntu-latest, macos-latest, windows-latest] runs-on : ${{ matrix.runs-on }} steps : - name : Create a File run : echo \"hello from ${{ matrix.runs-on }}\" > file-${{ matrix.runs-on }}.txt - name : Upload..."
         },
         {
           "title": "upload-artifact/docs/MIGRATION.md at main · actions/upload-artifact · GitHub",
           "url": "https://github.com/actions/upload-artifact/blob/main/docs/MIGRATION.md",
-          "resourceUri": "tokenhub://resource/32a6d3da-e847-4899-94af-25e8076b7c6c",
+          "resourceUri": "tokenhub://resource/899b3ace-173a-46d4-b2e2-9fc0c20a565a",
           "snippet": "Note that this will create an entirely new Artifact, with a different ID from the previous."
         },
         {
           "title": "Migration from v3 to v4 | actions/upload-artifact | DeepWiki",
           "url": "https://deepwiki.com/actions/upload-artifact/4-migration-from-v3-to-v4",
-          "resourceUri": "tokenhub://resource/ae96fa33-fee3-4383-84e7-bcd5e1d4b1a0",
+          "resourceUri": "tokenhub://resource/6cd56f7a-2213-4052-a2f5-a9b6ed87c4da",
           "snippet": "For detailed breaking changes and new features, see Key Changes ."
-        },
-        {
-          "title": "Get started with v4 of GitHub Actions Artifacts - The GitHub Blog",
-          "url": "https://github.blog/news-insights/product-news/get-started-with-v4-of-github-actions-artifacts/",
-          "resourceUri": "tokenhub://resource/9d89967f-b526-414e-af78-046b0adc3986",
-          "snippet": "File &ldquo;stomping&rdquo; and corrupted artifacts In the previous upload-artifact versions, it&rsquo;s possible to upload from the same named artifact multiple times, in multiple jobs, concurrently."
         },
         {
           "title": "Migration from v3 to v4 | actions/upload-artifact | DeepWiki",
           "url": "https://deepwiki.com/actions/upload-artifact/4-migration-from-v3-to-v4",
-          "resourceUri": "tokenhub://resource/ae96fa33-fee3-4383-84e7-bcd5e1d4b1a0",
+          "resourceUri": "tokenhub://resource/6cd56f7a-2213-4052-a2f5-a9b6ed87c4da",
           "snippet": "For complete details and new features, see Key Changes ."
         },
         {
           "title": "Migration from v3 to v4 | actions/upload-artifact | DeepWiki",
           "url": "https://deepwiki.com/actions/upload-artifact/4-migration-from-v3-to-v4",
-          "resourceUri": "tokenhub://resource/ae96fa33-fee3-4383-84e7-bcd5e1d4b1a0",
+          "resourceUri": "tokenhub://resource/6cd56f7a-2213-4052-a2f5-a9b6ed87c4da",
           "snippet": "Migrating to v4 requires understanding several breaking changes. For complete details and new features, see Key Changes ."
         },
         {
-          "title": "Get started with v4 of GitHub Actions Artifacts - The GitHub Blog",
-          "url": "https://github.blog/news-insights/product-news/get-started-with-v4-of-github-actions-artifacts/",
-          "resourceUri": "tokenhub://resource/9d89967f-b526-414e-af78-046b0adc3986",
-          "snippet": "Programming languages & frameworks Stay current on what’s new (or new again)."
+          "title": "upload-artifact/docs/MIGRATION.md at main - upload-artifact - Gitea: Git with a cup of tea",
+          "url": "https://gitea.com/actions/upload-artifact/src/branch/main/docs/MIGRATION.md",
+          "resourceUri": "tokenhub://resource/e7e75181-7230-4f8e-8ed1-90d348789733",
+          "snippet": "The new merge-multiple: input will support downloading multiple Artifacts to the same directory."
+        },
+        {
+          "title": "upload-artifact/docs/MIGRATION.md at main - upload-artifact - Gitea: Git with a cup of tea",
+          "url": "https://gitea.com/actions/upload-artifact/src/branch/main/docs/MIGRATION.md",
+          "resourceUri": "tokenhub://resource/e7e75181-7230-4f8e-8ed1-90d348789733",
+          "snippet": "jobs : upload : strategy : matrix : runs-on : [ ubuntu-latest, macos-latest, windows-latest] runs-on : ${{ matrix.runs-on }} steps : - name : Create a File run : echo &#34;hello from ${{ matrix.runs-on }}&#34; > file-${{ matrix.runs-on }}.txt - name :..."
         }
       ],
       "resourceUris": [
-        "tokenhub://resource/d7983ed6-41cd-4deb-babb-4f78231467b0",
-        "tokenhub://resource/75fb6b96-6e8f-40fa-90ad-704bbc6859f0"
+        "tokenhub://resource/31f9b8c8-8c32-461b-ba37-e39061d76355",
+        "tokenhub://resource/9ae5694b-a68f-48db-a22d-31aa55772902"
       ],
       "telemetry": {
         "capability": "workflow.resolve_request",
-        "estimatedToolCostTokens": 363,
-        "estimatedSavedTokens": 3583,
-        "outputTokens": 363,
+        "estimatedToolCostTokens": 347,
+        "estimatedSavedTokens": 3610,
+        "outputTokens": 347,
         "id": "tel_5",
-        "createdAt": "2026-05-07T06:50:04.728Z",
-        "roi": 9.870523415977962,
+        "createdAt": "2026-05-07T17:04:45.331Z",
+        "roi": 10.403458213256485,
         "graduated": true
       },
       "warnings": [
-        "Using no-key DuckDuckGo HTML fallback; provider freshness metadata is limited."
+        "Using no-key DuckDuckGo HTML fallback; provider freshness metadata is limited.",
+        "Could not fetch https://github.blog/news-insights/product-news/get-started-with-v4-of-github-actions-artifacts/: URL is not allowed: github.blog resolves to private address 192.0.66.2."
       ],
-      "summaryPreview": "Local context\nNo matching local files found.\n\nWeb context\nRecent current github actions surfaced by the workflow emphasizes The new merge-multiple: input will support downloading multiple Artifacts to the same directory; For detailed breaking changes and new features, see Key Changes; and File &ldquo;stomping&rdquo; and corrupted artifacts In the previous upload-artifact versions, it&rsquo;s possible to upload from the same named artifact multiple times, in multiple jobs, concurrently.\n\nSources:\n\n[1] upload-artifact/docs/MIGRATION.md at main · actions/upload-artifact · GitHub - https://github.com/actions/upload-artifact/blob/main/docs/MIGRATION.md\n[2] Migration from v3 to v4 | actions/upload-artifact | DeepWiki - https://deepwiki.com/actions/upload-artifact/4-migration-from-v3-to-v4\n[3] Upgrading GitHub Actions Artifacts from V3 to V4 A Comprehensive Guide | Shady Nagy - https://www.shad"
+      "summaryPreview": "Local context\nNo matching local files found.\n\nWeb context\nRecent current github actions surfaced by the workflow emphasizes The new merge-multiple: input will support downloading multiple Artifacts to the same directory; For detailed breaking changes and new features, see Key Changes; and The new merge-multiple: input will support downloading multiple Artifacts to the same directory.\n\nSources:\n\n[1] upload-artifact/docs/MIGRATION.md at main · actions/upload-artifact · GitHub - https://github.com/actions/upload-artifact/blob/main/docs/MIGRATION.md\n[2] Migration from v3 to v4 | actions/upload-artifact | DeepWiki - https://deepwiki.com/actions/upload-artifact/4-migration-from-v3-to-v4\n[3] Upgrading GitHub Actions Artifacts from V3 to V4 A Comprehensive Guide | Shady Nagy - https://www.shadynagy.com/upgrading-github-actions-artifacts-v3-to-v4-comprehensive-guide/\n[4] upload-artifact/docs/MIGR"
     },
     {
       "id": "vite-env-variables-docs",
       "request": "Find current Vite environment variables docs and summarize env usage",
       "passed": true,
       "reason": "live sources met quality, relevance, resource, and telemetry contracts",
-      "ms": 2315,
+      "ms": 2578,
       "estimatedTokens": 3589,
       "expectedKeywords": [
         "Vite",
@@ -1134,82 +1133,82 @@
         {
           "title": "Env Variables and Modes | Vite",
           "url": "https://vite.dev/guide/env-and-mode",
-          "resourceUri": "tokenhub://resource/6d44fa89-e05c-46c0-8165-617484970e95"
+          "resourceUri": "tokenhub://resource/55e2978a-f013-4e81-822d-2d7b41af68be"
         },
         {
           "title": "vite/docs/guide/env-and-mode.md at main · vitejs/vite · GitHub",
           "url": "https://github.com/vitejs/vite/blob/main/docs/guide/env-and-mode.md",
-          "resourceUri": "tokenhub://resource/fc032554-e242-431c-a561-10a9ce44584c"
+          "resourceUri": "tokenhub://resource/7fbf1d69-2ba5-47c2-98a9-be43a71ec73d"
         },
         {
           "title": "How to Use Environment Variables in Vite? - GeeksforGeeks",
           "url": "https://www.geeksforgeeks.org/reactjs/how-to-use-environment-variables-in-vite/",
-          "resourceUri": "tokenhub://resource/d8174429-6628-4f50-a500-3b50111e5806"
+          "resourceUri": "tokenhub://resource/7a97e8ce-ac27-4863-a59a-b0b28de457f6"
         },
         {
           "title": "How to Use Environment Variables in Vite the Right Way - ThatSoftwareDude.com",
           "url": "https://www.thatsoftwaredude.com/content/14129/working-with-vite-env",
-          "resourceUri": "tokenhub://resource/511e6cde-991c-4f00-8ade-964227be4d03"
+          "resourceUri": "tokenhub://resource/293469f4-2b22-4953-b8de-efd4a4feabf8"
         },
         {
           "title": "Vite Environment Variables: Master .env & import.meta.env - DEV Community",
           "url": "https://dev.to/maanu07/vite-environment-variables-master-env-importmetaenv-1j1m",
-          "resourceUri": "tokenhub://resource/dd4bc8fa-2cc3-4bf6-b59f-4811aafcdf8a"
+          "resourceUri": "tokenhub://resource/04696ae5-2045-425f-82ea-cf3a2e712975"
         }
       ],
       "contextSnippets": [
         {
           "title": "How to Use Environment Variables in Vite? - GeeksforGeeks",
           "url": "https://www.geeksforgeeks.org/reactjs/how-to-use-environment-variables-in-vite/",
-          "resourceUri": "tokenhub://resource/d8174429-6628-4f50-a500-3b50111e5806",
+          "resourceUri": "tokenhub://resource/7a97e8ce-ac27-4863-a59a-b0b28de457f6",
           "snippet": "Syntax: VITE_KEY_NAME = value Example: VITE_API_URL = https://api.example.com VITE_APP_NAME = MyApp .env Approach 2: Directly in the Vite Configuration FIle The Vite Configuration file (vite.config.js) supports direct usage of the environmental variables."
         },
         {
           "title": "vite/docs/guide/env-and-mode.md at main · vitejs/vite · GitHub",
           "url": "https://github.com/vitejs/vite/blob/main/docs/guide/env-and-mode.md",
-          "resourceUri": "tokenhub://resource/fc032554-e242-431c-a561-10a9ce44584c",
+          "resourceUri": "tokenhub://resource/7fbf1d69-2ba5-47c2-98a9-be43a71ec73d",
           "snippet": "::: .env Files Vite uses dotenv to load additional environment variables from the following files in your environment directory : .env # loaded in all cases .env.local # loaded in all cases, ignored by git .env.[mode] # only loaded in specified mode..."
         },
         {
           "title": "How to Use Environment Variables in Vite the Right Way - ThatSoftwareDude.com",
           "url": "https://www.thatsoftwaredude.com/content/14129/working-with-vite-env",
-          "resourceUri": "tokenhub://resource/511e6cde-991c-4f00-8ade-964227be4d03",
+          "resourceUri": "tokenhub://resource/293469f4-2b22-4953-b8de-efd4a4feabf8",
           "snippet": "Vite will automatically load env files based on the current mode."
         },
         {
           "title": "vite/docs/guide/env-and-mode.md at main · vitejs/vite · GitHub",
           "url": "https://github.com/vitejs/vite/blob/main/docs/guide/env-and-mode.md",
-          "resourceUri": "tokenhub://resource/fc032554-e242-431c-a561-10a9ce44584c",
+          "resourceUri": "tokenhub://resource/7fbf1d69-2ba5-47c2-98a9-be43a71ec73d",
           "snippet": "Variables declared in mode-specific files will take precedence over those in generic files, but variables defined only in .env or .env.local will still be available in the environment."
         },
         {
           "title": "vite/docs/guide/env-and-mode.md at main · vitejs/vite · GitHub",
           "url": "https://github.com/vitejs/vite/blob/main/docs/guide/env-and-mode.md",
-          "resourceUri": "tokenhub://resource/fc032554-e242-431c-a561-10a9ce44584c",
+          "resourceUri": "tokenhub://resource/7fbf1d69-2ba5-47c2-98a9-be43a71ec73d",
           "snippet": "In addition, environment variables that already exist when Vite is executed have the highest priority and will not be overwritten by .env files."
         },
         {
           "title": "How to Use Environment Variables in Vite? - GeeksforGeeks",
           "url": "https://www.geeksforgeeks.org/reactjs/how-to-use-environment-variables-in-vite/",
-          "resourceUri": "tokenhub://resource/d8174429-6628-4f50-a500-3b50111e5806",
+          "resourceUri": "tokenhub://resource/7a97e8ce-ac27-4863-a59a-b0b28de457f6",
           "snippet": "The Vite Configuration file (vite.config.js) supports direct usage of the environmental variables. This method helps to define variable specific to configuration."
         },
         {
           "title": "Vite Environment Variables: Master .env & import.meta.env - DEV Community",
           "url": "https://dev.to/maanu07/vite-environment-variables-master-env-importmetaenv-1j1m",
-          "resourceUri": "tokenhub://resource/dd4bc8fa-2cc3-4bf6-b59f-4811aafcdf8a",
+          "resourceUri": "tokenhub://resource/04696ae5-2045-425f-82ea-cf3a2e712975",
           "snippet": "Vite automatically loads .env files based on the current mode, with .env.[mode] taking precedence over the generic .env ."
         },
         {
           "title": "Vite Environment Variables: Master .env & import.meta.env - DEV Community",
           "url": "https://dev.to/maanu07/vite-environment-variables-master-env-importmetaenv-1j1m",
-          "resourceUri": "tokenhub://resource/dd4bc8fa-2cc3-4bf6-b59f-4811aafcdf8a",
+          "resourceUri": "tokenhub://resource/04696ae5-2045-425f-82ea-cf3a2e712975",
           "snippet": "log ( \" Running in production mode \" ); } // Accessing the current mode string console ."
         }
       ],
       "resourceUris": [
-        "tokenhub://resource/56ed5a80-cbd4-4431-99b5-1836013a1ef3",
-        "tokenhub://resource/1fcef074-41c0-488c-8f31-6161123e56ff"
+        "tokenhub://resource/31659e27-4004-4a6f-a134-c8dc3e0907ba",
+        "tokenhub://resource/16fb635a-728b-4e9b-8a14-a71e6e6d7578"
       ],
       "telemetry": {
         "capability": "workflow.resolve_request",
@@ -1217,7 +1216,7 @@
         "estimatedSavedTokens": 3603,
         "outputTokens": 341,
         "id": "tel_6",
-        "createdAt": "2026-05-07T06:50:07.043Z",
+        "createdAt": "2026-05-07T17:04:47.909Z",
         "roi": 10.565982404692082,
         "graduated": true
       },
@@ -1231,8 +1230,8 @@
       "request": "Find current Cloudflare Workers Node.js compatibility guidance",
       "passed": true,
       "reason": "live sources met quality, relevance, resource, and telemetry contracts",
-      "ms": 1771,
-      "estimatedTokens": 3736,
+      "ms": 1789,
+      "estimatedTokens": 3551,
       "expectedKeywords": [
         "Cloudflare",
         "Workers",
@@ -1323,10 +1322,10 @@
         ],
         "uniqueDomains": [
           "developers.cloudflare.com",
-          "w3tutorials.net",
+          "dev.to",
           "deepwiki.com",
           "stratusclear.org",
-          "gixtools.net"
+          "w3tutorials.net"
         ],
         "keywordCoverage": 1
       },
@@ -1334,104 +1333,104 @@
         {
           "title": "Node.js compatibility · Cloudflare Workers docs",
           "url": "https://developers.cloudflare.com/workers/runtime-apis/nodejs/",
-          "resourceUri": "tokenhub://resource/7642e26b-2556-4604-b479-4744470dd767"
+          "resourceUri": "tokenhub://resource/c6b74686-9bcd-47df-9dfc-1e1c75d7f6e8"
         },
         {
-          "title": "Cloudflare Workers with Node.js: A Comprehensive Guide — w3tutorials.net",
-          "url": "https://www.w3tutorials.net/blog/cloudflare-workers-nodejs/",
-          "resourceUri": "tokenhub://resource/f22a7fc0-ee88-41d9-8d3e-d7041e55e645"
+          "title": "Cloudflare Pages vs Workers in 2026: Migration Guide - DEV Community",
+          "url": "https://dev.to/rickcogley/cloudflare-pages-vs-workers-in-2026-migration-guide-ka7",
+          "resourceUri": "tokenhub://resource/c5b319f6-38e9-40f7-8819-f68dcd3e0d3e"
         },
         {
           "title": "Node.js Compatibility | cloudflare/workers-sdk | DeepWiki",
           "url": "https://deepwiki.com/cloudflare/workers-sdk/8-node.js-compatibility",
-          "resourceUri": "tokenhub://resource/4b2ac383-f5aa-4849-8b0d-f13b69dc4f7c"
+          "resourceUri": "tokenhub://resource/46d939c4-7178-48f7-a4e6-ef2eab9087d9"
         },
         {
           "title": "Bringing Node.js HTTP servers to Cloudflare Workers | Stratusclear.org",
           "url": "https://stratusclear.org/bringing-node-js-http-servers-to-cloudflare-workers/",
-          "resourceUri": "tokenhub://resource/29ded0f5-67b8-469b-8b0b-b48a09b41937"
+          "resourceUri": "tokenhub://resource/5d98a74d-d796-45d0-a88c-629ba8ca136c"
         },
         {
-          "title": "A year of improving Node.js compatibility in Cloudflare Workers – GIXtools",
-          "url": "https://gixtools.net/2025/09/a-year-of-improving-node-js-compatibility-in-cloudflare-workers/",
-          "resourceUri": "tokenhub://resource/8680f826-04b2-4728-8105-0fb4e1b387c9"
+          "title": "Cloudflare Workers with Node.js: A Comprehensive Guide — w3tutorials.net",
+          "url": "https://www.w3tutorials.net/blog/cloudflare-workers-nodejs/",
+          "resourceUri": "tokenhub://resource/6781528e-4210-4f8a-98bd-86a001a681a8"
         }
       ],
       "contextSnippets": [
         {
           "title": "Node.js compatibility · Cloudflare Workers docs",
           "url": "https://developers.cloudflare.com/workers/runtime-apis/nodejs/",
-          "resourceUri": "tokenhub://resource/7642e26b-2556-4604-b479-4744470dd767",
+          "resourceUri": "tokenhub://resource/c6b74686-9bcd-47df-9dfc-1e1c75d7f6e8",
           "snippet": "wrangler.jsonc wrangler.toml JSONC { \" compatibility_flags \" : [ \"nodejs_compat\" ], // Set this to today's date \" compatibility_date \" : \"2026-05-07\" } TOML compatibility_flags = [ \"nodejs_compat\" ] # Set this to today's date compatibility_date =..."
         },
         {
           "title": "Node.js compatibility · Cloudflare Workers docs",
           "url": "https://developers.cloudflare.com/workers/runtime-apis/nodejs/",
-          "resourceUri": "tokenhub://resource/7642e26b-2556-4604-b479-4744470dd767",
+          "resourceUri": "tokenhub://resource/c6b74686-9bcd-47df-9dfc-1e1c75d7f6e8",
           "snippet": "Unless otherwise specified, native implementations of Node.js APIs in Workers are intended to match the implementation in the Current release of Node.js ↗ ."
-        },
-        {
-          "title": "A year of improving Node.js compatibility in Cloudflare Workers – GIXtools",
-          "url": "https://gixtools.net/2025/09/a-year-of-improving-node-js-compatibility-in-cloudflare-workers/",
-          "resourceUri": "tokenhub://resource/8680f826-04b2-4728-8105-0fb4e1b387c9",
-          "snippet": "While the current implementation of the virtual file system is in-memory only, we are exploring options for adding persistent storage in the future that would link to existing Cloudflare storage solutions like R2 or Durable Objects."
-        },
-        {
-          "title": "A year of improving Node.js compatibility in Cloudflare Workers – GIXtools",
-          "url": "https://gixtools.net/2025/09/a-year-of-improving-node-js-compatibility-in-cloudflare-workers/",
-          "resourceUri": "tokenhub://resource/8680f826-04b2-4728-8105-0fb4e1b387c9",
-          "snippet": "It includes properties and methods for accessing environment variables, command-line arguments, the current working directory, and more."
-        },
-        {
-          "title": "A year of improving Node.js compatibility in Cloudflare Workers – GIXtools",
-          "url": "https://gixtools.net/2025/09/a-year-of-improving-node-js-compatibility-in-cloudflare-workers/",
-          "resourceUri": "tokenhub://resource/8680f826-04b2-4728-8105-0fb4e1b387c9",
-          "snippet": "Whereas our earlier Node.js compatibility efforts relied heavily on polyfills and shims injected at deployment time by developer tooling such as Wrangler , we are moving towards a model where future Workers will have these APIs available natively, without..."
         },
         {
           "title": "Node.js compatibility · Cloudflare Workers docs",
           "url": "https://developers.cloudflare.com/workers/runtime-apis/nodejs/",
-          "resourceUri": "tokenhub://resource/7642e26b-2556-4604-b479-4744470dd767",
+          "resourceUri": "tokenhub://resource/c6b74686-9bcd-47df-9dfc-1e1c75d7f6e8",
           "snippet": "Get Started To enable built-in Node.js APIs and add polyfills, add the nodejs_compat compatibility flag to your Wrangler configuration file , and ensure that your Worker's compatibility date is 2024-09-23 or later."
         },
         {
           "title": "Node.js Compatibility | cloudflare/workers-sdk | DeepWiki",
           "url": "https://deepwiki.com/cloudflare/workers-sdk/8-node.js-compatibility",
-          "resourceUri": "tokenhub://resource/4b2ac383-f5aa-4849-8b0d-f13b69dc4f7c",
+          "resourceUri": "tokenhub://resource/46d939c4-7178-48f7-a4e6-ef2eab9087d9",
           "snippet": "Node.js Compatibility | cloudflare/workers-sdk | DeepWiki Loading..."
         },
         {
           "title": "Node.js Compatibility | cloudflare/workers-sdk | DeepWiki",
           "url": "https://deepwiki.com/cloudflare/workers-sdk/8-node.js-compatibility",
-          "resourceUri": "tokenhub://resource/4b2ac383-f5aa-4849-8b0d-f13b69dc4f7c",
+          "resourceUri": "tokenhub://resource/46d939c4-7178-48f7-a4e6-ef2eab9087d9",
           "snippet": "Index your code with Devin DeepWiki DeepWiki cloudflare/workers-sdk Index your code with Devin Edit Wiki Share Loading..."
+        },
+        {
+          "title": "Bringing Node.js HTTP servers to Cloudflare Workers | Stratusclear.org",
+          "url": "https://stratusclear.org/bringing-node-js-http-servers-to-cloudflare-workers/",
+          "resourceUri": "tokenhub://resource/5d98a74d-d796-45d0-a88c-629ba8ca136c",
+          "snippet": "The node:http and node:https APIs are available in Workers with Node.js compatibility enabled using the nodejs_compat compatibility flag with a compatibility date later than 08-15-2025."
+        },
+        {
+          "title": "Node.js Compatibility | cloudflare/workers-sdk | DeepWiki",
+          "url": "https://deepwiki.com/cloudflare/workers-sdk/8-node.js-compatibility",
+          "resourceUri": "tokenhub://resource/46d939c4-7178-48f7-a4e6-ef2eab9087d9",
+          "snippet": "The preset determines which Node.js modules are available in Workers and whether they use native workerd implementations, polyfills, or hybrid approaches."
+        },
+        {
+          "title": "Cloudflare Pages vs Workers in 2026: Migration Guide - DEV Community",
+          "url": "https://dev.to/rickcogley/cloudflare-pages-vs-workers-in-2026-migration-guide-ka7",
+          "resourceUri": "tokenhub://resource/c5b319f6-38e9-40f7-8819-f68dcd3e0d3e",
+          "snippet": "Node.js API Compatibility Workers run on workerd , Cloudflare's open-source C++ runtime."
         }
       ],
       "resourceUris": [
-        "tokenhub://resource/04815de8-e47c-4b06-9f54-382cd0559f1d",
-        "tokenhub://resource/251cb137-5a53-4e92-875b-92850b3ccf65"
+        "tokenhub://resource/11f657e3-11b6-4a34-ac3c-fb6bd7d84004",
+        "tokenhub://resource/b03178ea-b521-4efb-9c65-b1fbed0c9565"
       ],
       "telemetry": {
         "capability": "workflow.resolve_request",
-        "estimatedToolCostTokens": 358,
-        "estimatedSavedTokens": 3733,
-        "outputTokens": 358,
+        "estimatedToolCostTokens": 346,
+        "estimatedSavedTokens": 3560,
+        "outputTokens": 346,
         "id": "tel_7",
-        "createdAt": "2026-05-07T06:50:08.814Z",
-        "roi": 10.427374301675977,
+        "createdAt": "2026-05-07T17:04:49.698Z",
+        "roi": 10.289017341040463,
         "graduated": true
       },
       "warnings": [
         "Using no-key DuckDuckGo HTML fallback; provider freshness metadata is limited."
       ],
-      "summaryPreview": "Web context\nRecent current cloudflare workers surfaced by the workflow emphasizes wrangler.jsonc wrangler.toml JSONC { \" compatibility_flags \" : [ \"nodejs_compat\" ], // Set this to today's date \" compatibility_date \" : \"2026-05-07\" } TOML compatibility_flags = [ \"nodejs_compat\" ] # Set this to; While the current implementation of the virtual file system is in-memory only, we are exploring options for adding persistent storage in the future that would link to existing Cloudflare storage solutions like R2 or; and Node.js Compatibility | cloudflare/workers-sdk | DeepWiki Loading.\n\nSources:\n\n[1] Node.js compatibility · Cloudflare Workers docs - https://developers.cloudflare.com/workers/runtime-apis/nodejs/\n[2] Cloudflare Workers with Node.js: A Comprehensive Guide — w3tutorials.net - https://www.w3tutorials.net/blog/cloudflare-workers-nodejs/\n[3] Node.js Compatibility | cloudflare/workers-sd"
+      "summaryPreview": "Web context\nRecent current cloudflare workers surfaced by the workflow emphasizes wrangler.jsonc wrangler.toml JSONC { \" compatibility_flags \" : [ \"nodejs_compat\" ], // Set this to today's date \" compatibility_date \" : \"2026-05-07\" } TOML compatibility_flags = [ \"nodejs_compat\" ] # Set this to; Node.js Compatibility | cloudflare/workers-sdk | DeepWiki Loading; and The node:http and node:https APIs are available in Workers with Node.js compatibility enabled using the nodejs_compat compatibility flag with a compatibility date later than 08-15-2025.\n\nSources:\n\n[1] Node.js compatibility · Cloudflare Workers docs - https://developers.cloudflare.com/workers/runtime-apis/nodejs/\n[2] Cloudflare Pages vs Workers in 2026: Migration Guide - DEV Community - https://dev.to/rickcogley/cloudflare-pages-vs-workers-in-2026-migration-guide-ka7\n[3] Node.js Compatibility | cloudflare/workers-sdk | DeepWiki "
     },
     {
       "id": "sveltekit-routing-load-best-practices",
       "request": "Summarize current SvelteKit load and routing docs best practices",
       "passed": true,
       "reason": "live sources met quality, relevance, resource, and telemetry contracts",
-      "ms": 1527,
+      "ms": 2533,
       "estimatedTokens": 4030,
       "expectedKeywords": [
         "SvelteKit",
@@ -1535,82 +1534,82 @@
         {
           "title": "Routing • SvelteKit Docs",
           "url": "https://svelte.dev/docs/kit/routing",
-          "resourceUri": "tokenhub://resource/c4ae93b7-bb0d-4dc0-8675-5b460c1fd480"
+          "resourceUri": "tokenhub://resource/6482ead1-0dbb-4995-9f57-3a6ce491da96"
         },
         {
           "title": "SvelteKit Routing Tutorial: Layouts, Nested Routes & Multi-Page Apps - DEV Community",
           "url": "https://dev.to/a1guy/sveltekit-routing-tutorial-layouts-nested-routes-multi-page-apps-4bfm",
-          "resourceUri": "tokenhub://resource/3d504b09-b4f5-4e0a-ac06-965f3430cde1"
+          "resourceUri": "tokenhub://resource/932931eb-b56b-4907-85ef-65bc45eb1f48"
         },
         {
           "title": "kit/documentation/docs/20-core-concepts/10-routing.md at main · sveltejs/kit · GitHub",
           "url": "https://github.com/sveltejs/kit/blob/main/documentation/docs/20-core-concepts/10-routing.md",
-          "resourceUri": "tokenhub://resource/b780e4b5-291c-4e4b-907b-de4e20f5a19d"
+          "resourceUri": "tokenhub://resource/20761d46-bb14-4ff5-8e9d-065f7ecafdaf"
         },
         {
           "title": "PDF Mastering SvelteKit: A Comprehensive Guide",
           "url": "https://assets.offlinedocs.ai/samples/svelte/comprehensive-guide/book.pdf",
-          "resourceUri": "tokenhub://resource/6fd0f7ed-dec8-4bca-b300-c1be78b13b72"
+          "resourceUri": "tokenhub://resource/6f52fe2c-0239-4b07-b367-41092a6a74f5"
         },
         {
           "title": "SvelteKit Explained: Full-Stack Framework Guide 2025",
           "url": "https://strapi.io/blog/sveltekit-explained-full-stack-framework-guide",
-          "resourceUri": "tokenhub://resource/73ae9f91-39e9-4f24-a62a-a40850652f7c"
+          "resourceUri": "tokenhub://resource/904c52af-8a39-49cc-9c15-7a0b0f08ccc3"
         }
       ],
       "contextSnippets": [
         {
           "title": "Routing • SvelteKit Docs",
           "url": "https://svelte.dev/docs/kit/routing",
-          "resourceUri": "tokenhub://resource/c4ae93b7-bb0d-4dc0-8675-5b460c1fd480",
+          "resourceUri": "tokenhub://resource/6482ead1-0dbb-4995-9f57-3a6ce491da96",
           "snippet": "reference error } from '@sveltejs/kit' ; /** @type {import('./$types').PageLoad} */ export function function load (event : LoadEvent &#x3C; Record &#x3C; string , any > , Record &#x3C; string , any > | null , Record &#x3C; string , any > , string | null >)..."
         },
         {
           "title": "Routing • SvelteKit Docs",
           "url": "https://svelte.dev/docs/kit/routing",
-          "resourceUri": "tokenhub://resource/c4ae93b7-bb0d-4dc0-8675-5b460c1fd480",
+          "resourceUri": "tokenhub://resource/6482ead1-0dbb-4995-9f57-3a6ce491da96",
           "snippet": "reference error } from '@sveltejs/kit' ; /** @type {import('./$types').PageServerLoad} */ export async function function load (event : ServerLoadEvent &#x3C; Record &#x3C; string , any > , Record &#x3C; string , any > , string | null >) : MaybePromise..."
         },
         {
           "title": "Routing • SvelteKit Docs",
           "url": "https://svelte.dev/docs/kit/routing",
-          "resourceUri": "tokenhub://resource/c4ae93b7-bb0d-4dc0-8675-5b460c1fd480",
+          "resourceUri": "tokenhub://resource/6482ead1-0dbb-4995-9f57-3a6ce491da96",
           "snippet": "the URL paths that users can access — are defined by the directories in your codebase: src/routes is the root route src/routes/about creates an /about route src/routes/blog/[slug] creates a route with a parameter , slug , that can be used to load data..."
         },
         {
           "title": "PDF Mastering SvelteKit: A Comprehensive Guide",
           "url": "https://assets.offlinedocs.ai/samples/svelte/comprehensive-guide/book.pdf",
-          "resourceUri": "tokenhub://resource/6fd0f7ed-dec8-4bca-b300-c1be78b13b72",
+          "resourceUri": "tokenhub://resource/6f52fe2c-0239-4b07-b367-41092a6a74f5",
           "snippet": "Mastering SvelteKit : A Comprehensive Guide This book provides an in-depth exploration of SvelteKit , a powerful framework for building fast, dynamic web applications. Covering core concepts, advanced techniques, and best practices , it is designed to help..."
         },
         {
           "title": "kit/documentation/docs/20-core-concepts/10-routing.md at main · sveltejs/kit · GitHub",
           "url": "https://github.com/sveltejs/kit/blob/main/documentation/docs/20-core-concepts/10-routing.md",
-          "resourceUri": "tokenhub://resource/b780e4b5-291c-4e4b-907b-de4e20f5a19d",
+          "resourceUri": "tokenhub://resource/20761d46-bb14-4ff5-8e9d-065f7ecafdaf",
           "snippet": "slug ) ; if ( post ) { return post ; } error ( 404 , 'Not found' ) ; } During client-side navigation, SvelteKit will load this data from the server, which means that the returned value must be serializable using devalue ."
         },
         {
           "title": "kit/documentation/docs/20-core-concepts/10-routing.md at main · sveltejs/kit · GitHub",
           "url": "https://github.com/sveltejs/kit/blob/main/documentation/docs/20-core-concepts/10-routing.md",
-          "resourceUri": "tokenhub://resource/b780e4b5-291c-4e4b-907b-de4e20f5a19d",
+          "resourceUri": "tokenhub://resource/20761d46-bb14-4ff5-8e9d-065f7ecafdaf",
           "snippet": "+error If an error occurs during load , SvelteKit will render a default error page."
         },
         {
           "title": "kit/documentation/docs/20-core-concepts/10-routing.md at main · sveltejs/kit · GitHub",
           "url": "https://github.com/sveltejs/kit/blob/main/documentation/docs/20-core-concepts/10-routing.md",
-          "resourceUri": "tokenhub://resource/b780e4b5-291c-4e4b-907b-de4e20f5a19d",
+          "resourceUri": "tokenhub://resource/20761d46-bb14-4ff5-8e9d-065f7ecafdaf",
           "snippet": "If that fails (or if the error was thrown from the load function of the root +layout , which sits 'above' the root +error ), SvelteKit will bail out and render a static fallback error page, which you can customise by creating a src/error.html file."
         },
         {
           "title": "SvelteKit Explained: Full-Stack Framework Guide 2025",
           "url": "https://strapi.io/blog/sveltekit-explained-full-stack-framework-guide",
-          "resourceUri": "tokenhub://resource/73ae9f91-39e9-4f24-a62a-a40850652f7c",
+          "resourceUri": "tokenhub://resource/904c52af-8a39-49cc-9c15-7a0b0f08ccc3",
           "snippet": "The framework provides thoughtful defaults: file-based routing, automatic code splitting, hot module replacement, and unified load functions for data fetching."
         }
       ],
       "resourceUris": [
-        "tokenhub://resource/349811a2-4562-48ee-84e8-24fc46a749b8",
-        "tokenhub://resource/584ef078-5984-4762-aed5-7e2fd2ecbf84"
+        "tokenhub://resource/ed800534-63a3-4ba5-94da-45b8329662cc",
+        "tokenhub://resource/912e2df5-7f0c-4664-a58d-d86efd53c79c"
       ],
       "telemetry": {
         "capability": "workflow.resolve_request",
@@ -1618,7 +1617,7 @@
         "estimatedSavedTokens": 3860,
         "outputTokens": 390,
         "id": "tel_8",
-        "createdAt": "2026-05-07T06:50:10.341Z",
+        "createdAt": "2026-05-07T17:04:52.231Z",
         "roi": 9.897435897435898,
         "graduated": true
       },
@@ -1634,7 +1633,7 @@
       "request": "Find current pnpm workspaces docs and summarize monorepo setup",
       "passed": true,
       "reason": "live sources met quality, relevance, resource, and telemetry contracts",
-      "ms": 1914,
+      "ms": 2701,
       "estimatedTokens": 3926,
       "expectedKeywords": [
         "pnpm",
@@ -1737,82 +1736,82 @@
         {
           "title": "Mastering pnpm Workspaces: A Complete Guide to Monorepo Management - Glen Thomas",
           "url": "https://blog.glen-thomas.com/software%20engineering/2025/10/02/mastering-pnpm-workspaces-complete-guide-to-monorepo-management.html",
-          "resourceUri": "tokenhub://resource/dc8e7517-85a1-48f1-86b0-b1a0b92382fe"
+          "resourceUri": "tokenhub://resource/6c6e5354-d97a-482d-a760-127ee8dbfd37"
         },
         {
           "title": "Complete Monorepo Guide: pnpm + Workspace + Changesets (2025)",
           "url": "https://jsdev.space/complete-monorepo-guide/",
-          "resourceUri": "tokenhub://resource/a45589e4-bef4-4cce-a6fd-b9b7e150db82"
+          "resourceUri": "tokenhub://resource/2bd27c96-6ee4-4c40-b8b4-b07a209dc574"
         },
         {
           "title": "Workspace | pnpm",
           "url": "https://pnpm.io/workspaces",
-          "resourceUri": "tokenhub://resource/08158ec2-6c0f-4849-ba2a-301a72a320c1"
+          "resourceUri": "tokenhub://resource/dff7afc8-1865-4136-a0eb-35065e7e5f8d"
         },
         {
           "title": "Set up a monorepo using pnpm workspace - DEV Community",
           "url": "https://dev.to/aimes/set-up-a-monorepo-using-pnpm-workspace-d2a",
-          "resourceUri": "tokenhub://resource/61fc7cc0-a597-4ad1-b179-424ad3b31841"
+          "resourceUri": "tokenhub://resource/9e5ea2bf-5076-4a82-8134-28cf96c6e8b3"
         },
         {
           "title": "Mastering Modern Monorepo Development with pnpm, Workspaces",
           "url": "https://www.linkedin.com/pulse/mastering-modern-monorepo-development-pnpm-workspaces-logunov--wbqwe",
-          "resourceUri": "tokenhub://resource/5615f48c-7fa2-46ee-83b3-614578e2be43"
+          "resourceUri": "tokenhub://resource/40d07d53-ca16-44d9-a12f-3d81c49ae995"
         }
       ],
       "contextSnippets": [
         {
           "title": "Complete Monorepo Guide: pnpm + Workspace + Changesets (2025)",
           "url": "https://jsdev.space/complete-monorepo-guide/",
-          "resourceUri": "tokenhub://resource/a45589e4-bef4-4cce-a6fd-b9b7e150db82",
+          "resourceUri": "tokenhub://resource/2bd27c96-6ee4-4c40-b8b4-b07a209dc574",
           "snippet": "Resources pnpm changesets project references monorepo tools Related articles Mastering Bun for Maximum Developer Productivity Get All Files and Folders in Node.js Directories Master Code Testing Quality with F.I.R.S.T Methodology nodejs monorepo pnpm..."
         },
         {
           "title": "Complete Monorepo Guide: pnpm + Workspace + Changesets (2025)",
           "url": "https://jsdev.space/complete-monorepo-guide/",
-          "resourceUri": "tokenhub://resource/a45589e4-bef4-4cce-a6fd-b9b7e150db82",
+          "resourceUri": "tokenhub://resource/2bd27c96-6ee4-4c40-b8b4-b07a209dc574",
           "snippet": "Maintenance uncertainty Slower installs vs pnpm pnpm has native monorepo support Modern storage and linking model Project Setup and Configuration Prerequisites bash Copy Copied!"
         },
         {
           "title": "Workspace | pnpm",
           "url": "https://pnpm.io/workspaces",
-          "resourceUri": "tokenhub://resource/08158ec2-6c0f-4849-ba2a-301a72a320c1",
+          "resourceUri": "tokenhub://resource/dff7afc8-1865-4136-a0eb-35065e7e5f8d",
           "snippet": "If you are looking into monorepo management, you might also want to look into Bit. Bit uses pnpm under the hood but automates a lot of the things that are currently done manually in a traditional workspace managed by pnpm /npm/Yarn. There's an article..."
         },
         {
           "title": "Mastering pnpm Workspaces: A Complete Guide to Monorepo Management - Glen Thomas",
           "url": "https://blog.glen-thomas.com/software%20engineering/2025/10/02/mastering-pnpm-workspaces-complete-guide-to-monorepo-management.html",
-          "resourceUri": "tokenhub://resource/dc8e7517-85a1-48f1-86b0-b1a0b92382fe",
+          "resourceUri": "tokenhub://resource/6c6e5354-d97a-482d-a760-127ee8dbfd37",
           "snippet": "Key Benefits of pnpm Workspaces Why Choose pnpm Over npm/Yarn Workspaces?"
         },
         {
           "title": "Mastering pnpm Workspaces: A Complete Guide to Monorepo Management - Glen Thomas",
           "url": "https://blog.glen-thomas.com/software%20engineering/2025/10/02/mastering-pnpm-workspaces-complete-guide-to-monorepo-management.html",
-          "resourceUri": "tokenhub://resource/dc8e7517-85a1-48f1-86b0-b1a0b92382fe",
+          "resourceUri": "tokenhub://resource/6c6e5354-d97a-482d-a760-127ee8dbfd37",
           "snippet": "CI/CD Optimisation Troubleshooting Common Issues Phantom Dependencies Hoisting Issues Version Conflicts Conclusion Managing multiple related packages and applications can quickly become a nightmare with traditional package managers."
         },
         {
           "title": "Mastering pnpm Workspaces: A Complete Guide to Monorepo Management - Glen Thomas",
           "url": "https://blog.glen-thomas.com/software%20engineering/2025/10/02/mastering-pnpm-workspaces-complete-guide-to-monorepo-management.html",
-          "resourceUri": "tokenhub://resource/dc8e7517-85a1-48f1-86b0-b1a0b92382fe",
+          "resourceUri": "tokenhub://resource/6c6e5354-d97a-482d-a760-127ee8dbfd37",
           "snippet": "Enter pnpm workspaces – a powerful feature that transforms how we handle monorepos, offering superior performance, disk efficiency, and dependency management compared to npm or Yarn workspaces."
         },
         {
           "title": "Complete Monorepo Guide: pnpm + Workspace + Changesets (2025)",
           "url": "https://jsdev.space/complete-monorepo-guide/",
-          "resourceUri": "tokenhub://resource/a45589e4-bef4-4cce-a6fd-b9b7e150db82",
+          "resourceUri": "tokenhub://resource/2bd27c96-6ee4-4c40-b8b4-b07a209dc574",
           "snippet": "Ctrl+K Ctrl+K Quick Access All Posts Browse our latest articles How-to Guides Step-by-step tutorials Code Snippets Reusable code examples Friday Links Weekly curated content No results found Try different keywords or check the spelling Home › Categories ›..."
         },
         {
           "title": "Set up a monorepo using pnpm workspace - DEV Community",
           "url": "https://dev.to/aimes/set-up-a-monorepo-using-pnpm-workspace-d2a",
-          "resourceUri": "tokenhub://resource/61fc7cc0-a597-4ad1-b179-424ad3b31841",
+          "resourceUri": "tokenhub://resource/9e5ea2bf-5076-4a82-8134-28cf96c6e8b3",
           "snippet": "## install pnpm npm install -g pnpm # install pnpm globally Enter fullscreen mode Exit fullscreen mode Create a new directory or clone an existing repository mkdir monorepo # creates a new folder or git clone repository-link # clones a git repository..."
         }
       ],
       "resourceUris": [
-        "tokenhub://resource/0315a6bb-d407-4498-8677-851dfa5c2cc0",
-        "tokenhub://resource/4e6ca978-834a-45fd-8cb9-f504f6fb1dce"
+        "tokenhub://resource/e890b92f-8ce1-452b-a34d-2df16a365275",
+        "tokenhub://resource/750cb971-2e94-4b79-980b-f4b642eb21ad"
       ],
       "telemetry": {
         "capability": "workflow.resolve_request",
@@ -1820,7 +1819,7 @@
         "estimatedSavedTokens": 3823,
         "outputTokens": 347,
         "id": "tel_9",
-        "createdAt": "2026-05-07T06:50:12.254Z",
+        "createdAt": "2026-05-07T17:04:54.932Z",
         "roi": 11.017291066282421,
         "graduated": true
       },
@@ -1836,8 +1835,8 @@
       "request": "Compare Turborepo and Nx for JavaScript monorepos using current docs",
       "passed": true,
       "reason": "live sources met quality, relevance, resource, and telemetry contracts",
-      "ms": 1769,
-      "estimatedTokens": 3956,
+      "ms": 2580,
+      "estimatedTokens": 4533,
       "expectedKeywords": [
         "Turborepo",
         "Nx",
@@ -1931,8 +1930,8 @@
         ],
         "uniqueDomains": [
           "nx.dev",
+          "jsgurujobs.com",
           "dasroot.net",
-          "devtoolreviews.com",
           "linkedin.com",
           "dev.to"
         ],
@@ -1942,97 +1941,97 @@
         {
           "title": "Nx vs Turborepo | Nx",
           "url": "https://nx.dev/docs/guides/adopting-nx/nx-vs-turborepo",
-          "resourceUri": "tokenhub://resource/7fe815b8-7295-4716-868f-4a256d3c1c50"
+          "resourceUri": "tokenhub://resource/79de9d77-cf34-48c4-a93a-fafe6a8283a1"
+        },
+        {
+          "title": "Turborepo and Nx Monorepo Guide for JavaScript Teams in 2026 and Why Single-Repo Projects Are Costing You Hours Every Week - JavaScript Jobs Hub",
+          "url": "https://jsgurujobs.com/blog/turborepo-and-nx-monorepo-guide-for-javascript-teams-in-2026-and-why-single-repo-projects-are-costing-you-hours-every-week",
+          "resourceUri": "tokenhub://resource/a45744de-197d-4562-9136-10bfc9c1fd32"
         },
         {
           "title": "Monorepo Management: Nx, Turborepo, and Best Practices &middot; Technical news about AI, coding and all",
           "url": "https://dasroot.net/posts/2026/03/monorepo-management-nx-turborepo-best-practices/",
-          "resourceUri": "tokenhub://resource/12bbc646-6ac0-4413-bf38-43c4110423d9"
-        },
-        {
-          "title": "Turborepo vs Nx 2026: Which Monorepo Tool Wins | DevToolReviews",
-          "url": "https://www.devtoolreviews.com/reviews/turborepo-vs-nx-vs-lerna",
-          "resourceUri": "tokenhub://resource/90372862-de06-4f33-ba6e-178f40f5447e"
+          "resourceUri": "tokenhub://resource/bd805200-108b-466b-80a2-f42d41687857"
         },
         {
           "title": "Turborepo vs Nx vs Other Monorepo Tools (2025 Comparison)",
           "url": "https://www.linkedin.com/pulse/turborepo-vs-nx-other-monorepo-tools-2025-comparison-fernand-soualo-qr1ae",
-          "resourceUri": "tokenhub://resource/fc9f1eb5-4957-44cd-9e62-93ad5fc93eed"
+          "resourceUri": "tokenhub://resource/99c8db4e-2ffb-42d7-ad98-800203ca6715"
         },
         {
           "title": "Nx vs. Turborepo: Integrated Ecosystem or High-Speed Task Runner? The Key Decision for Your Monorepo - DEV Community",
           "url": "https://dev.to/thedavestack/nx-vs-turborepo-integrated-ecosystem-or-high-speed-task-runner-the-key-decision-for-your-monorepo-279",
-          "resourceUri": "tokenhub://resource/1b9597f2-a12c-4f1f-bee2-dac04c8ba3d8"
+          "resourceUri": "tokenhub://resource/31c0cbd5-aa57-424c-8236-c1e77eab98e8"
         }
       ],
       "contextSnippets": [
         {
+          "title": "Turborepo and Nx Monorepo Guide for JavaScript Teams in 2026 and Why Single-Repo Projects Are Costing You Hours Every Week - JavaScript Jobs Hub",
+          "url": "https://jsgurujobs.com/blog/turborepo-and-nx-monorepo-guide-for-javascript-teams-in-2026-and-why-single-repo-projects-are-costing-you-hours-every-week",
+          "resourceUri": "tokenhub://resource/a45744de-197d-4562-9136-10bfc9c1fd32",
+          "snippet": "The folder structure looks like this: my-project/ apps/ web/ # Next.js app docs/ # Documentation app packages/ ui/ # Shared React components config/ # Shared ESLint, TypeScript configs tsconfig/ # Shared TypeScript configs turbo.json package.json The root..."
+        },
+        {
           "title": "Monorepo Management: Nx, Turborepo, and Best Practices &middot; Technical news about AI, coding and all",
           "url": "https://dasroot.net/posts/2026/03/monorepo-management-nx-turborepo-best-practices/",
-          "resourceUri": "tokenhub://resource/12bbc646-6ac0-4413-bf38-43c4110423d9",
+          "resourceUri": "tokenhub://resource/bd805200-108b-466b-80a2-f42d41687857",
           "snippet": "This post examines Nx and Turborepo’s features, compares their performance and integration capabilities, and outlines best practices for structuring, building, and maintaining monorepos."
         },
         {
           "title": "Monorepo Management: Nx, Turborepo, and Best Practices &middot; Technical news about AI, coding and all",
           "url": "https://dasroot.net/posts/2026/03/monorepo-management-nx-turborepo-best-practices/",
-          "resourceUri": "tokenhub://resource/12bbc646-6ac0-4413-bf38-43c4110423d9",
+          "resourceUri": "tokenhub://resource/bd805200-108b-466b-80a2-f42d41687857",
           "snippet": "Official Tools and Integrations # [Tool Category 1] : Monitoring Tools Lerna : A package manager for JavaScript monorepos, version 8.3.0 in 2026."
         },
         {
           "title": "Monorepo Management: Nx, Turborepo, and Best Practices &middot; Technical news about AI, coding and all",
           "url": "https://dasroot.net/posts/2026/03/monorepo-management-nx-turborepo-best-practices/",
-          "resourceUri": "tokenhub://resource/12bbc646-6ac0-4413-bf38-43c4110423d9",
+          "resourceUri": "tokenhub://resource/bd805200-108b-466b-80a2-f42d41687857",
           "snippet": "Performance Benchmarks and Real-World Use Cases # In a benchmark study conducted in 2026, Nx demonstrated 7x faster build times compared to Turborepo in large-scale monorepos."
+        },
+        {
+          "title": "Turborepo and Nx Monorepo Guide for JavaScript Teams in 2026 and Why Single-Repo Projects Are Costing You Hours Every Week - JavaScript Jobs Hub",
+          "url": "https://jsgurujobs.com/blog/turborepo-and-nx-monorepo-guide-for-javascript-teams-in-2026-and-why-single-repo-projects-are-costing-you-hours-every-week",
+          "resourceUri": "tokenhub://resource/a45744de-197d-4562-9136-10bfc9c1fd32",
+          "snippet": "Why JavaScript Monorepos Matter More in 2026 Than Ever Before The shift toward monorepos in the JavaScript ecosystem accelerated in 2025 and is now the default for teams with more than two packages."
+        },
+        {
+          "title": "Turborepo and Nx Monorepo Guide for JavaScript Teams in 2026 and Why Single-Repo Projects Are Costing You Hours Every Week - JavaScript Jobs Hub",
+          "url": "https://jsgurujobs.com/blog/turborepo-and-nx-monorepo-guide-for-javascript-teams-in-2026-and-why-single-repo-projects-are-costing-you-hours-every-week",
+          "resourceUri": "tokenhub://resource/a45744de-197d-4562-9136-10bfc9c1fd32",
+          "snippet": "Second, AI coding tools like Copilot and Cursor work dramatically better in monorepos."
         },
         {
           "title": "Nx vs Turborepo | Nx",
           "url": "https://nx.dev/docs/guides/adopting-nx/nx-vs-turborepo",
-          "resourceUri": "tokenhub://resource/7fe815b8-7295-4716-868f-4a256d3c1c50",
+          "resourceUri": "tokenhub://resource/79de9d77-cf34-48c4-a93a-fafe6a8283a1",
           "snippet": "Looking at the raw impact on a repository using the same pnpm workspace migrated with both tools: Setup Config written Net impact on codebase Nx (minimal) 3 lines +3 lines Nx (guided) 85 lines -15 lines Turborepo 122 lines (manual) +144 lines For a full..."
-        },
-        {
-          "title": "Turborepo vs Nx 2026: Which Monorepo Tool Wins | DevToolReviews",
-          "url": "https://www.devtoolreviews.com/reviews/turborepo-vs-nx-vs-lerna",
-          "resourceUri": "tokenhub://resource/90372862-de06-4f33-ba6e-178f40f5447e",
-          "snippet": "# Ratings avg 8.0 Turborepo 8.6 Nx 8.8 Lerna 6.5 Why Monorepos Need Tooling A monorepo without tooling is just a large repository."
-        },
-        {
-          "title": "Turborepo vs Nx 2026: Which Monorepo Tool Wins | DevToolReviews",
-          "url": "https://www.devtoolreviews.com/reviews/turborepo-vs-nx-vs-lerna",
-          "resourceUri": "tokenhub://resource/90372862-de06-4f33-ba6e-178f40f5447e",
-          "snippet": "Turborepo, Nx, and Lerna represent three generations of monorepo tooling for the JavaScript ecosystem."
         },
         {
           "title": "Turborepo vs Nx vs Other Monorepo Tools (2025 Comparison)",
           "url": "https://www.linkedin.com/pulse/turborepo-vs-nx-other-monorepo-tools-2025-comparison-fernand-soualo-qr1ae",
-          "resourceUri": "tokenhub://resource/fc9f1eb5-4957-44cd-9e62-93ad5fc93eed",
-          "snippet": "Nx (Nx Team) Strengths: Performance : Benchmarks show 7x faster builds than Turborepo in large monorepos due to smarter computation caching and distributed task execution."
-        },
-        {
-          "title": "Nx vs Turborepo | Nx",
-          "url": "https://nx.dev/docs/guides/adopting-nx/nx-vs-turborepo",
-          "resourceUri": "tokenhub://resource/7fe815b8-7295-4716-868f-4a256d3c1c50",
-          "snippet": "Contact Login On this page Overview Onboarding Running tasks Caching Task sandboxing Code generation Module boundary rules Polyglot support AI integration Running Nx vs Turbo on CI Single-machine CI performance Distributed CI CI throughput Observability..."
+          "resourceUri": "tokenhub://resource/99c8db4e-2ffb-42d7-ad98-800203ca6715",
+          "snippet": "Unmatched performance in large-scale monorepos . Multi-language support beyond JavaScript (Rust, Go, etc.). Enterprise-grade CI/CD with Nx Cloud (free tier available)."
         }
       ],
       "resourceUris": [
-        "tokenhub://resource/acdb214d-3886-48d9-9138-9c16ec91b1b4",
-        "tokenhub://resource/d195cb79-ef05-4e26-a591-6cf240f700aa"
+        "tokenhub://resource/6c58b2ee-38d0-4377-a451-cd141764b466",
+        "tokenhub://resource/4948bf5f-0488-467d-9064-58c897acee00"
       ],
       "telemetry": {
         "capability": "workflow.resolve_request",
-        "estimatedToolCostTokens": 415,
-        "estimatedSavedTokens": 3894,
-        "outputTokens": 415,
+        "estimatedToolCostTokens": 479,
+        "estimatedSavedTokens": 4407,
+        "outputTokens": 479,
         "id": "tel_10",
-        "createdAt": "2026-05-07T06:50:14.024Z",
-        "roi": 9.383132530120482,
+        "createdAt": "2026-05-07T17:04:57.512Z",
+        "roi": 9.200417536534447,
         "graduated": true
       },
       "warnings": [
         "Using no-key DuckDuckGo HTML fallback; provider freshness metadata is limited."
       ],
-      "summaryPreview": "Local context\nNo matching local files found.\n\nWeb context\nRecent compare turborepo javascript surfaced by the workflow emphasizes This post examines Nx and Turborepo’s features, compares their performance and integration capabilities, and outlines best practices for structuring, building, and maintaining monorepos; Looking at the raw impact on a repository using the same pnpm workspace migrated with both tools: Setup Config written Net impact on codebase Nx (minimal) 3 lines +3 lines Nx (guided) 85 lines -15 lines Turborepo 122; and # Ratings avg 8.0 Turborepo 8.6 Nx 8.8 Lerna 6.5 Why Monorepos Need Tooling A monorepo without tooling is just a large repository.\n\nSources:\n\n[1] Nx vs Turborepo | Nx - https://nx.dev/docs/guides/adopting-nx/nx-vs-turborepo\n[2] Monorepo Management: Nx, Turborepo, and Best Practices &middot; Technical news about AI, coding and all - https://dasroot.net/posts/2"
+      "summaryPreview": "Local context\nNo matching local files found.\n\nWeb context\nRecent compare turborepo javascript surfaced by the workflow emphasizes The folder structure looks like this: my-project/ apps/ web/ # Next.js app docs/ # Documentation app packages/ ui/ # Shared React components config/ # Shared ESLint, TypeScript configs tsconfig/ # Shared TypeScript; This post examines Nx and Turborepo’s features, compares their performance and integration capabilities, and outlines best practices for structuring, building, and maintaining monorepos; and Looking at the raw impact on a repository using the same pnpm workspace migrated with both tools: Setup Config written Net impact on codebase Nx (minimal) 3 lines +3 lines Nx (guided) 85 lines -15 lines Turborepo 122.\n\nSources:\n\n[1] Nx vs Turborepo | Nx - https://nx.dev/docs/guides/adopting-nx/nx-vs-turborepo\n[2] Turborepo and Nx Monorepo Guide for JavaScript T"
     }
   ]
 }

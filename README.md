@@ -66,6 +66,13 @@ The README is the quick production reference. The full project docs live under `
 | [Security](docs/security.md) | Workspace confinement, mutation opt-in, credential handling, and network boundaries. |
 | [Release](docs/release.md) | Release checklist, verification evidence, npm packaging contract, and rollback notes. |
 
+Public release support files:
+
+- [CHANGELOG.md](CHANGELOG.md) records user-facing changes by version.
+- [CONTRIBUTING.md](CONTRIBUTING.md) explains local setup, testing, and contribution expectations.
+- [SECURITY.md](SECURITY.md) explains how to report vulnerabilities and what versions are supported.
+- [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md) sets the baseline for community behavior.
+
 ## MCP Client Configuration
 
 Local package execution with `npx`:

@@ -12,6 +12,13 @@ This directory is the operator and contributor manual for TokenHub MCP. The root
 | [Security](security.md) | Security reviewers and operators | Workspace boundaries, filesystem mutation risk, secrets, network calls, Git actions, resource access. |
 | [Release](release.md) | Release owners | Verification gate, npm pack contract, smoke install, eval evidence, rollback checklist. |
 
+Root-level public release files:
+
+- [CHANGELOG.md](../CHANGELOG.md)
+- [CONTRIBUTING.md](../CONTRIBUTING.md)
+- [SECURITY.md](../SECURITY.md)
+- [CODE_OF_CONDUCT.md](../CODE_OF_CONDUCT.md)
+
 ## Production Contract
 
 TokenHub is distributed as the `tokenhub-mcp` npm package and starts with:

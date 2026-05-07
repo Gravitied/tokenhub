@@ -226,6 +226,7 @@ async function runCase(runtime, testCase) {
     request: testCase.request,
     budgetTokens: 1800,
     provider: "duckduckgo",
+    urlLookup: evalUrlLookup,
     execution: testCase.request.includes("implement the gaps") ? "plan_only" : undefined
   });
   const requestPlan = result.data?.requestPlan;
@@ -304,6 +305,10 @@ async function fakeFetch(url) {
     return new Response(`<html><body>${results}</body></html>`, { status: 200, headers: { "content-type": "text/html" } });
   }
   return new Response(pageFor(urlText), { status: 200, headers: { "content-type": "text/html" } });
+}
+
+async function evalUrlLookup() {
+  return [{ address: "93.184.216.34", family: 4 }];
 }
 
 function classify(query) {

@@ -75,9 +75,10 @@ The local eval should pass all fixture prompts. The live eval uses DuckDuckGo an
 2. Run `npm run verify:release`.
 3. Confirm no `tokenhub-mcp-*.tgz` tarball remains in the repo root.
 4. Review `npm pack --dry-run --json` contents.
-5. Tag the release commit.
-6. Publish to npm from the verified commit.
-7. Confirm `npx tokenhub-mcp --version` resolves to the published version.
+5. Confirm `CHANGELOG.md`, `SECURITY.md`, `CONTRIBUTING.md`, `CODE_OF_CONDUCT.md`, and `.github/workflows/ci.yml` are present and current.
+6. Tag the release commit.
+7. Publish to npm from the verified commit.
+8. Confirm `npx tokenhub-mcp --version` resolves to the published version.
 
 ## Rollback
 

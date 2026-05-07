@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-05-07T06:49:48.623Z",
+  "generatedAt": "2026-05-07T17:04:25.522Z",
   "batches": [
     {
       "batch": 1,
@@ -10,7 +10,7 @@
           "request": "Give me a 1 paragraph summary of the latest DeepSeek research papers",
           "passed": true,
           "reason": "matched expected route, format, evidence, and resource contract",
-          "ms": 23,
+          "ms": 28,
           "estimatedTokens": 1340,
           "actual": {
             "intent": "research",
@@ -21,8 +21,8 @@
               "web_pages"
             ],
             "resourceUris": [
-              "tokenhub://resource/bcb14bba-61a1-4866-8332-041f1d28945c",
-              "tokenhub://resource/796fac2f-f5ce-4ba2-9399-a657b8853e8d"
+              "tokenhub://resource/875788e6-5e19-4712-b438-beea91a24e58",
+              "tokenhub://resource/161685b3-1182-4fb6-9f0e-c48c6216df47"
             ],
             "telemetryCapability": "workflow.resolve_request",
             "telemetry": {
@@ -31,7 +31,7 @@
               "estimatedSavedTokens": 1517,
               "outputTokens": 185,
               "id": "tel_1",
-              "createdAt": "2026-05-07T06:49:48.647Z",
+              "createdAt": "2026-05-07T17:04:25.551Z",
               "roi": 8.2,
               "graduated": true
             },
@@ -56,8 +56,8 @@
               "web_search"
             ],
             "resourceUris": [
-              "tokenhub://resource/7aa57579-67a5-4d06-b4d9-c237e385ba64",
-              "tokenhub://resource/6361c332-2fd0-452f-9b3e-75dbc4438f4e"
+              "tokenhub://resource/84991af5-d1e4-4353-af5e-0c9578b65338",
+              "tokenhub://resource/f7298552-433a-49bc-bb90-4e001e12b588"
             ],
             "telemetryCapability": "workflow.resolve_request",
             "telemetry": {
@@ -66,7 +66,7 @@
               "estimatedSavedTokens": 2751,
               "outputTokens": 148,
               "id": "tel_2",
-              "createdAt": "2026-05-07T06:49:48.655Z",
+              "createdAt": "2026-05-07T17:04:25.559Z",
               "roi": 18.58783783783784,
               "graduated": true
             },
@@ -94,8 +94,8 @@
               "docs"
             ],
             "resourceUris": [
-              "tokenhub://resource/f7189e17-6a84-49ac-913b-6d4736abe32b",
-              "tokenhub://resource/c43bed91-da65-40f0-80d0-7f34a7930636"
+              "tokenhub://resource/c81c4279-c127-4cdd-8f37-ee008936c79f",
+              "tokenhub://resource/dba3f752-8464-4636-bb02-7d00bcafa429"
             ],
             "telemetryCapability": "workflow.resolve_request",
             "telemetry": {
@@ -104,7 +104,7 @@
               "estimatedSavedTokens": 2099,
               "outputTokens": 185,
               "id": "tel_3",
-              "createdAt": "2026-05-07T06:49:48.664Z",
+              "createdAt": "2026-05-07T17:04:25.568Z",
               "roi": 11.345945945945946,
               "graduated": true
             },
@@ -119,7 +119,7 @@
           "request": "Look up the latest Stripe Checkout API docs and give implementation context for subscriptions",
           "passed": true,
           "reason": "matched expected route, format, evidence, and resource contract",
-          "ms": 6,
+          "ms": 7,
           "estimatedTokens": 2159,
           "actual": {
             "intent": "research",
@@ -131,8 +131,8 @@
               "docs"
             ],
             "resourceUris": [
-              "tokenhub://resource/7a390052-9fcb-4490-9964-73640c554763",
-              "tokenhub://resource/ad1c81d4-7325-419f-9c83-4caef617e85a"
+              "tokenhub://resource/954163e5-c04e-4329-acbf-0efb0f520547",
+              "tokenhub://resource/e019542a-04a5-41f4-bddd-9eba33bd1619"
             ],
             "telemetryCapability": "workflow.resolve_request",
             "telemetry": {
@@ -141,7 +141,7 @@
               "estimatedSavedTokens": 2316,
               "outputTokens": 186,
               "id": "tel_4",
-              "createdAt": "2026-05-07T06:49:48.670Z",
+              "createdAt": "2026-05-07T17:04:25.575Z",
               "roi": 12.451612903225806,
               "graduated": true
             },
@@ -156,7 +156,7 @@
           "request": "Debug TypeError fetch failed in Node undici ECONNRESET",
           "passed": true,
           "reason": "matched expected route, format, evidence, and resource contract",
-          "ms": 6,
+          "ms": 7,
           "estimatedTokens": 1386,
           "actual": {
             "intent": "debug",
@@ -166,8 +166,8 @@
               "web_search"
             ],
             "resourceUris": [
-              "tokenhub://resource/8fb8928d-eda6-4c0d-a24f-79e19f8c4e0b",
-              "tokenhub://resource/2d0342e5-cc6a-4c93-829e-1f6965fde2ba"
+              "tokenhub://resource/2af60a24-d720-4126-a927-35431c2241b4",
+              "tokenhub://resource/6774ef78-312f-4c1d-a931-e94a43d1e9a0"
             ],
             "telemetryCapability": "workflow.resolve_request",
             "telemetry": {
@@ -176,7 +176,7 @@
               "estimatedSavedTokens": 1526,
               "outputTokens": 222,
               "id": "tel_5",
-              "createdAt": "2026-05-07T06:49:48.676Z",
+              "createdAt": "2026-05-07T17:04:25.582Z",
               "roi": 6.873873873873874,
               "graduated": true
             },
@@ -191,7 +191,7 @@
           "request": "Extract a pricing table for GitHub Actions minutes",
           "passed": true,
           "reason": "matched expected route, format, evidence, and resource contract",
-          "ms": 5,
+          "ms": 8,
           "estimatedTokens": 1385,
           "actual": {
             "intent": "extract",
@@ -201,8 +201,8 @@
               "web_search"
             ],
             "resourceUris": [
-              "tokenhub://resource/c4474c53-c93e-4d9e-880a-b9fe11634bdc",
-              "tokenhub://resource/afa464c3-80a8-4541-8c05-5a66db677972"
+              "tokenhub://resource/ad98d842-4cb6-4d27-8858-070f14db4d21",
+              "tokenhub://resource/c6f769ea-0055-42d4-ba29-2e1cf9c0dccf"
             ],
             "telemetryCapability": "workflow.resolve_request",
             "telemetry": {
@@ -211,7 +211,7 @@
               "estimatedSavedTokens": 1530,
               "outputTokens": 219,
               "id": "tel_6",
-              "createdAt": "2026-05-07T06:49:48.681Z",
+              "createdAt": "2026-05-07T17:04:25.590Z",
               "roi": 6.986301369863014,
               "graduated": true
             },
@@ -226,7 +226,7 @@
           "request": "Make a plan to migrate an Express app to Fastify using the latest docs",
           "passed": true,
           "reason": "matched expected route, format, evidence, and resource contract",
-          "ms": 6,
+          "ms": 8,
           "estimatedTokens": 2274,
           "actual": {
             "intent": "plan",
@@ -238,8 +238,8 @@
               "docs"
             ],
             "resourceUris": [
-              "tokenhub://resource/d8370b7a-da2b-4fbd-af0a-87666b703482",
-              "tokenhub://resource/c4a4a3cd-990e-40a3-bae8-efa9119442da"
+              "tokenhub://resource/57ba9167-5e10-4f91-b8fe-1dbd0981b940",
+              "tokenhub://resource/20818aa5-8c5e-4fde-89cf-766d192e1dc9"
             ],
             "telemetryCapability": "workflow.resolve_request",
             "telemetry": {
@@ -248,7 +248,7 @@
               "estimatedSavedTokens": 2394,
               "outputTokens": 237,
               "id": "tel_7",
-              "createdAt": "2026-05-07T06:49:48.687Z",
+              "createdAt": "2026-05-07T17:04:25.598Z",
               "roi": 10.10126582278481,
               "graduated": true
             },
@@ -263,7 +263,7 @@
           "request": "Use the latest React Query package changelog to update caching code",
           "passed": true,
           "reason": "matched expected route, format, evidence, and resource contract",
-          "ms": 6,
+          "ms": 9,
           "estimatedTokens": 2292,
           "actual": {
             "intent": "research",
@@ -276,8 +276,8 @@
               "docs"
             ],
             "resourceUris": [
-              "tokenhub://resource/1346d651-e2b4-4cbd-88df-1d677f7cbf99",
-              "tokenhub://resource/69f6f041-18f8-4d8e-b1e5-0bfbd93db24c"
+              "tokenhub://resource/72557425-3b75-451a-99a1-6088c1c2bc92",
+              "tokenhub://resource/e6a8966d-c3d6-490f-af7c-7d6c927a6bc0"
             ],
             "telemetryCapability": "workflow.resolve_request",
             "telemetry": {
@@ -286,7 +286,7 @@
               "estimatedSavedTokens": 2378,
               "outputTokens": 239,
               "id": "tel_8",
-              "createdAt": "2026-05-07T06:49:48.694Z",
+              "createdAt": "2026-05-07T17:04:25.606Z",
               "roi": 9.94979079497908,
               "graduated": true
             },
@@ -302,7 +302,7 @@
           "request": "Find similar professional optimized implementations of retry backoff in TypeScript and compare them to this code",
           "passed": true,
           "reason": "matched expected route, format, evidence, and resource contract",
-          "ms": 10,
+          "ms": 14,
           "estimatedTokens": 2692,
           "actual": {
             "intent": "compare",
@@ -315,8 +315,8 @@
               "docs"
             ],
             "resourceUris": [
-              "tokenhub://resource/1613e5e2-7ae3-41ad-b200-2a791f3e41b2",
-              "tokenhub://resource/67d7aae7-dd20-497a-99ad-0dfec7e137ce"
+              "tokenhub://resource/ae73bf15-a58d-45d6-934c-d001513e1d68",
+              "tokenhub://resource/53db1e50-c936-4b5d-aae1-3279dded2ee3"
             ],
             "telemetryCapability": "workflow.resolve_request",
             "telemetry": {
@@ -325,7 +325,7 @@
               "estimatedSavedTokens": 2715,
               "outputTokens": 303,
               "id": "tel_9",
-              "createdAt": "2026-05-07T06:49:48.704Z",
+              "createdAt": "2026-05-07T17:04:25.621Z",
               "roi": 8.96039603960396,
               "graduated": true
             },
@@ -340,7 +340,7 @@
           "request": "Who is the current CEO of Nvidia and cite sources",
           "passed": true,
           "reason": "matched expected route, format, evidence, and resource contract",
-          "ms": 6,
+          "ms": 8,
           "estimatedTokens": 1201,
           "actual": {
             "intent": "research",
@@ -350,8 +350,8 @@
               "web_search"
             ],
             "resourceUris": [
-              "tokenhub://resource/ea04ab5e-4cc5-489b-8a15-4accd749e607",
-              "tokenhub://resource/284ec1ec-e50c-426d-8eb5-b955ed0f79bd"
+              "tokenhub://resource/9438b880-e40b-4b13-a084-d1ce417b8948",
+              "tokenhub://resource/c24e035a-9ddd-4add-8a5c-bc04b3edb2a5"
             ],
             "telemetryCapability": "workflow.resolve_request",
             "telemetry": {
@@ -360,7 +360,7 @@
               "estimatedSavedTokens": 1412,
               "outputTokens": 155,
               "id": "tel_10",
-              "createdAt": "2026-05-07T06:49:48.710Z",
+              "createdAt": "2026-05-07T17:04:25.629Z",
               "roi": 9.109677419354838,
               "graduated": true
             },
@@ -381,7 +381,7 @@
           "request": "Show me a TypeScript example for the latest OpenAI Responses API from official docs",
           "passed": true,
           "reason": "matched expected route, format, evidence, and resource contract",
-          "ms": 5,
+          "ms": 8,
           "estimatedTokens": 2258,
           "actual": {
             "intent": "research",
@@ -393,8 +393,8 @@
               "docs"
             ],
             "resourceUris": [
-              "tokenhub://resource/36c197b9-56c7-4667-9a0f-8c9f4f5d2129",
-              "tokenhub://resource/8f6a883b-73a3-4cef-8fd9-9ff9f7ae86fc"
+              "tokenhub://resource/5ff4c3ba-449f-4785-b7ff-10b17db34724",
+              "tokenhub://resource/f38726bb-647d-47fd-b727-95437f6fec8b"
             ],
             "telemetryCapability": "workflow.resolve_request",
             "telemetry": {
@@ -403,7 +403,7 @@
               "estimatedSavedTokens": 2378,
               "outputTokens": 231,
               "id": "tel_11",
-              "createdAt": "2026-05-07T06:49:48.715Z",
+              "createdAt": "2026-05-07T17:04:25.637Z",
               "roi": 10.294372294372295,
               "graduated": true
             },
@@ -418,7 +418,7 @@
           "request": "Compare Postgres and SQLite for a local-first SaaS prototype",
           "passed": true,
           "reason": "matched expected route, format, evidence, and resource contract",
-          "ms": 7,
+          "ms": 8,
           "estimatedTokens": 2251,
           "actual": {
             "intent": "compare",
@@ -431,8 +431,8 @@
               "docs"
             ],
             "resourceUris": [
-              "tokenhub://resource/efb75795-8c1b-4529-aaf8-71662d7077ad",
-              "tokenhub://resource/5f71b3ae-064a-4bee-8af9-b6d3f73b7a64"
+              "tokenhub://resource/1614db04-f897-4705-9d37-5ad4acfedcfa",
+              "tokenhub://resource/a7d028ee-9f45-4425-9054-c32b22f739b2"
             ],
             "telemetryCapability": "workflow.resolve_request",
             "telemetry": {
@@ -441,7 +441,7 @@
               "estimatedSavedTokens": 2362,
               "outputTokens": 250,
               "id": "tel_12",
-              "createdAt": "2026-05-07T06:49:48.722Z",
+              "createdAt": "2026-05-07T17:04:25.645Z",
               "roi": 9.448,
               "graduated": true
             },
@@ -456,7 +456,7 @@
           "request": "Extract the required environment variables from the deployment docs into structured data",
           "passed": true,
           "reason": "matched expected route, format, evidence, and resource contract",
-          "ms": 6,
+          "ms": 7,
           "estimatedTokens": 2233,
           "actual": {
             "intent": "extract",
@@ -467,8 +467,8 @@
               "web_search"
             ],
             "resourceUris": [
-              "tokenhub://resource/d87a4474-4ed4-4dd3-9af3-0d0f1d504c3b",
-              "tokenhub://resource/3c03c3f9-8fff-4e0f-9e67-c42909008a19"
+              "tokenhub://resource/d19064cc-9b9a-47f9-823a-6323f0db84e0",
+              "tokenhub://resource/bfc3846d-ec4b-4678-9e3f-b21b1888789a"
             ],
             "telemetryCapability": "workflow.resolve_request",
             "telemetry": {
@@ -477,7 +477,7 @@
               "estimatedSavedTokens": 2356,
               "outputTokens": 224,
               "id": "tel_13",
-              "createdAt": "2026-05-07T06:49:48.728Z",
+              "createdAt": "2026-05-07T17:04:25.652Z",
               "roi": 10.517857142857142,
               "graduated": true
             },
@@ -492,7 +492,7 @@
           "request": "Research the latest Playwright MCP token efficiency guidance",
           "passed": true,
           "reason": "matched expected route, format, evidence, and resource contract",
-          "ms": 5,
+          "ms": 8,
           "estimatedTokens": 2182,
           "actual": {
             "intent": "research",
@@ -504,8 +504,8 @@
               "docs"
             ],
             "resourceUris": [
-              "tokenhub://resource/ba928286-4e2a-4b5c-ab51-c2111e71caea",
-              "tokenhub://resource/08318902-8b9f-45de-b962-28e7941684d0"
+              "tokenhub://resource/46d438a1-a262-49fd-a397-604dcc0b8faa",
+              "tokenhub://resource/b6570627-2526-4e0b-b944-886a5dbaf897"
             ],
             "telemetryCapability": "workflow.resolve_request",
             "telemetry": {
@@ -514,7 +514,7 @@
               "estimatedSavedTokens": 2320,
               "outputTokens": 222,
               "id": "tel_14",
-              "createdAt": "2026-05-07T06:49:48.733Z",
+              "createdAt": "2026-05-07T17:04:25.660Z",
               "roi": 10.45045045045045,
               "graduated": true
             },
@@ -529,7 +529,7 @@
           "request": "Fix a GitHub Actions node setup cache failure and cite likely causes",
           "passed": true,
           "reason": "matched expected route, format, evidence, and resource contract",
-          "ms": 7,
+          "ms": 8,
           "estimatedTokens": 2232,
           "actual": {
             "intent": "implement",
@@ -542,8 +542,8 @@
               "docs"
             ],
             "resourceUris": [
-              "tokenhub://resource/7e9050fa-686e-410f-b4fe-9e2da953644d",
-              "tokenhub://resource/0ebc413f-979a-4d9d-92b2-1ded87300a29"
+              "tokenhub://resource/80238193-868c-46d4-baa9-b3100111a7b5",
+              "tokenhub://resource/335c2ed2-db53-4283-968a-c2cbe3362e87"
             ],
             "telemetryCapability": "workflow.resolve_request",
             "telemetry": {
@@ -552,7 +552,7 @@
               "estimatedSavedTokens": 2372,
               "outputTokens": 214,
               "id": "tel_15",
-              "createdAt": "2026-05-07T06:49:48.740Z",
+              "createdAt": "2026-05-07T17:04:25.668Z",
               "roi": 11.08411214953271,
               "graduated": true
             },
@@ -567,7 +567,7 @@
           "request": "Find the latest Next.js changelog and make an upgrade plan",
           "passed": true,
           "reason": "matched expected route, format, evidence, and resource contract",
-          "ms": 5,
+          "ms": 9,
           "estimatedTokens": 2157,
           "actual": {
             "intent": "plan",
@@ -580,8 +580,8 @@
               "docs"
             ],
             "resourceUris": [
-              "tokenhub://resource/187c5536-1e58-4633-91a6-661614df5a38",
-              "tokenhub://resource/2a2a4891-526c-408d-9663-5479a7fee1ce"
+              "tokenhub://resource/cd702fc9-ed0f-4be1-90d6-d48d74db6f8b",
+              "tokenhub://resource/d08a5139-70c0-485c-910e-ea04e3b24845"
             ],
             "telemetryCapability": "workflow.resolve_request",
             "telemetry": {
@@ -590,7 +590,7 @@
               "estimatedSavedTokens": 2269,
               "outputTokens": 222,
               "id": "tel_16",
-              "createdAt": "2026-05-07T06:49:48.745Z",
+              "createdAt": "2026-05-07T17:04:25.677Z",
               "roi": 10.22072072072072,
               "graduated": true
             },
@@ -606,7 +606,7 @@
           "request": "Collect npm package metadata for zod and return a table",
           "passed": true,
           "reason": "matched expected route, format, evidence, and resource contract",
-          "ms": 6,
+          "ms": 8,
           "estimatedTokens": 2094,
           "actual": {
             "intent": "extract",
@@ -618,8 +618,8 @@
               "docs"
             ],
             "resourceUris": [
-              "tokenhub://resource/2dc0ca6c-87ff-493f-87ec-2203830036a8",
-              "tokenhub://resource/966a4b19-8e36-4f09-b446-ffadc065c80e"
+              "tokenhub://resource/b85ac52b-aef0-4fa2-8946-a3a88f8861c1",
+              "tokenhub://resource/50072ac1-060b-481f-9c5a-4196ad43a751"
             ],
             "telemetryCapability": "workflow.resolve_request",
             "telemetry": {
@@ -628,7 +628,7 @@
               "estimatedSavedTokens": 2214,
               "outputTokens": 214,
               "id": "tel_17",
-              "createdAt": "2026-05-07T06:49:48.751Z",
+              "createdAt": "2026-05-07T17:04:25.685Z",
               "roi": 10.345794392523365,
               "graduated": true
             },
@@ -644,7 +644,7 @@
           "request": "Summarize the latest Sentry JavaScript SDK release notes",
           "passed": true,
           "reason": "matched expected route, format, evidence, and resource contract",
-          "ms": 6,
+          "ms": 9,
           "estimatedTokens": 2277,
           "actual": {
             "intent": "research",
@@ -657,8 +657,8 @@
               "docs"
             ],
             "resourceUris": [
-              "tokenhub://resource/d3c677b8-4aea-42df-8896-1c06155965ee",
-              "tokenhub://resource/6392bd7c-baa2-485d-ae63-8efef82a5371"
+              "tokenhub://resource/a31fb9c0-7025-42a7-a9a2-12c5cb4e7322",
+              "tokenhub://resource/5cbf7aee-2817-4b62-901a-193281972703"
             ],
             "telemetryCapability": "workflow.resolve_request",
             "telemetry": {
@@ -667,7 +667,7 @@
               "estimatedSavedTokens": 2370,
               "outputTokens": 236,
               "id": "tel_18",
-              "createdAt": "2026-05-07T06:49:48.757Z",
+              "createdAt": "2026-05-07T17:04:25.694Z",
               "roi": 10.042372881355933,
               "graduated": true
             },
@@ -683,7 +683,7 @@
           "request": "Compare professional MCP filesystem server implementations to ours and list gaps",
           "passed": true,
           "reason": "matched expected route, format, evidence, and resource contract",
-          "ms": 11,
+          "ms": 17,
           "estimatedTokens": 2574,
           "actual": {
             "intent": "compare",
@@ -696,8 +696,8 @@
               "docs"
             ],
             "resourceUris": [
-              "tokenhub://resource/f3cb9f86-8bbd-4283-8b12-32747ebe8dd5",
-              "tokenhub://resource/7b2b8c40-040d-4765-80ac-4f69c8daa4d7"
+              "tokenhub://resource/4bad7233-afb7-42f0-b429-96b814ef44d4",
+              "tokenhub://resource/40ac0c57-758b-4bfb-a477-ffd0ca35efea"
             ],
             "telemetryCapability": "workflow.resolve_request",
             "telemetry": {
@@ -706,7 +706,7 @@
               "estimatedSavedTokens": 2642,
               "outputTokens": 272,
               "id": "tel_19",
-              "createdAt": "2026-05-07T06:49:48.768Z",
+              "createdAt": "2026-05-07T17:04:25.710Z",
               "roi": 9.713235294117647,
               "graduated": true
             },
@@ -732,8 +732,8 @@
               "web_search"
             ],
             "resourceUris": [
-              "tokenhub://resource/8c582d1f-f17c-48c9-95e9-9b004eb72176",
-              "tokenhub://resource/37faec83-25d0-4ed7-8646-7d58c6c118d8"
+              "tokenhub://resource/44487aec-2b2c-4f8b-8a79-efcc1461be83",
+              "tokenhub://resource/6b2f3877-6641-4556-bb6a-5e9cc62e537c"
             ],
             "telemetryCapability": "workflow.resolve_request",
             "telemetry": {
@@ -742,7 +742,7 @@
               "estimatedSavedTokens": 2302,
               "outputTokens": 183,
               "id": "tel_20",
-              "createdAt": "2026-05-07T06:49:48.774Z",
+              "createdAt": "2026-05-07T17:04:25.717Z",
               "roi": 12.579234972677595,
               "graduated": true
             },
@@ -763,7 +763,7 @@
           "request": "Find current Prisma migration docs and create a checklist",
           "passed": true,
           "reason": "matched expected route, format, evidence, and resource contract",
-          "ms": 6,
+          "ms": 8,
           "estimatedTokens": 2051,
           "actual": {
             "intent": "plan",
@@ -774,8 +774,8 @@
               "web_search"
             ],
             "resourceUris": [
-              "tokenhub://resource/ae856fce-ecaf-4a57-8610-1a7f4c903627",
-              "tokenhub://resource/8a50f72e-9bd6-479e-b3b0-06f61f79f917"
+              "tokenhub://resource/109f64d1-1d63-4b93-8ad4-8ac70928cf6f",
+              "tokenhub://resource/8d840eb7-d65f-4dae-91e7-518ee3f844d4"
             ],
             "telemetryCapability": "workflow.resolve_request",
             "telemetry": {
@@ -784,7 +784,7 @@
               "estimatedSavedTokens": 2204,
               "outputTokens": 209,
               "id": "tel_21",
-              "createdAt": "2026-05-07T06:49:48.780Z",
+              "createdAt": "2026-05-07T17:04:25.725Z",
               "roi": 10.545454545454545,
               "graduated": true
             },
@@ -799,7 +799,7 @@
           "request": "Debug Vercel FUNCTION_INVOCATION_FAILED 500 errors",
           "passed": true,
           "reason": "matched expected route, format, evidence, and resource contract",
-          "ms": 5,
+          "ms": 7,
           "estimatedTokens": 1442,
           "actual": {
             "intent": "debug",
@@ -809,8 +809,8 @@
               "web_search"
             ],
             "resourceUris": [
-              "tokenhub://resource/7002e630-a4a1-4712-b78b-9c1ee236d5dc",
-              "tokenhub://resource/60622b8e-720b-4359-95ef-5679977fb997"
+              "tokenhub://resource/60367e67-3407-403a-8605-2ae94212c65d",
+              "tokenhub://resource/75ae264c-c3a3-470c-b4ba-efbc41b11438"
             ],
             "telemetryCapability": "workflow.resolve_request",
             "telemetry": {
@@ -819,7 +819,7 @@
               "estimatedSavedTokens": 1567,
               "outputTokens": 239,
               "id": "tel_22",
-              "createdAt": "2026-05-07T06:49:48.785Z",
+              "createdAt": "2026-05-07T17:04:25.732Z",
               "roi": 6.556485355648536,
               "graduated": true
             },
@@ -834,7 +834,7 @@
           "request": "Extract Cloudflare cache headers from current docs as a table",
           "passed": true,
           "reason": "matched expected route, format, evidence, and resource contract",
-          "ms": 6,
+          "ms": 7,
           "estimatedTokens": 2195,
           "actual": {
             "intent": "extract",
@@ -845,8 +845,8 @@
               "web_search"
             ],
             "resourceUris": [
-              "tokenhub://resource/d912b471-737a-4ca5-8188-e01a2c7184d4",
-              "tokenhub://resource/acc46a9e-f66b-4850-a5bf-1434058cd6ea"
+              "tokenhub://resource/56aaa9fd-bc56-4608-9e0b-dd41cdfa78f2",
+              "tokenhub://resource/7512e5bc-ea0a-41de-8173-239302c098f2"
             ],
             "telemetryCapability": "workflow.resolve_request",
             "telemetry": {
@@ -855,7 +855,7 @@
               "estimatedSavedTokens": 2330,
               "outputTokens": 224,
               "id": "tel_23",
-              "createdAt": "2026-05-07T06:49:48.791Z",
+              "createdAt": "2026-05-07T17:04:25.739Z",
               "roi": 10.401785714285714,
               "graduated": true
             },
@@ -870,7 +870,7 @@
           "request": "Compare Redis and Upstash for API rate limiting",
           "passed": true,
           "reason": "matched expected route, format, evidence, and resource contract",
-          "ms": 6,
+          "ms": 10,
           "estimatedTokens": 1932,
           "actual": {
             "intent": "compare",
@@ -883,8 +883,8 @@
               "docs"
             ],
             "resourceUris": [
-              "tokenhub://resource/c5adfaa4-83fb-4ef8-828c-2d7ae0a3539c",
-              "tokenhub://resource/00e9cf2d-1e50-4a17-9e2f-f1b3160bda51"
+              "tokenhub://resource/fcfacc7c-efa9-4929-b731-aff741f0e544",
+              "tokenhub://resource/112253d0-ccbf-40c3-98f0-897f6d2545fb"
             ],
             "telemetryCapability": "workflow.resolve_request",
             "telemetry": {
@@ -893,7 +893,7 @@
               "estimatedSavedTokens": 2107,
               "outputTokens": 189,
               "id": "tel_24",
-              "createdAt": "2026-05-07T06:49:48.797Z",
+              "createdAt": "2026-05-07T17:04:25.749Z",
               "roi": 11.148148148148149,
               "graduated": true
             },
@@ -908,7 +908,7 @@
           "request": "Summarize the latest TypeScript release notes in one paragraph",
           "passed": true,
           "reason": "matched expected route, format, evidence, and resource contract",
-          "ms": 6,
+          "ms": 8,
           "estimatedTokens": 2172,
           "actual": {
             "intent": "research",
@@ -921,8 +921,8 @@
               "docs"
             ],
             "resourceUris": [
-              "tokenhub://resource/dc1a07c4-15bf-4c14-9988-4891d04bf0af",
-              "tokenhub://resource/9ffede2f-91a4-4c6b-af80-ffc3a8e1f745"
+              "tokenhub://resource/54811eae-e600-4113-8c5d-8e9c305fea49",
+              "tokenhub://resource/2ba1129f-167b-4981-b0d0-ef00e6004125"
             ],
             "telemetryCapability": "workflow.resolve_request",
             "telemetry": {
@@ -931,7 +931,7 @@
               "estimatedSavedTokens": 2280,
               "outputTokens": 222,
               "id": "tel_25",
-              "createdAt": "2026-05-07T06:49:48.803Z",
+              "createdAt": "2026-05-07T17:04:25.757Z",
               "roi": 10.27027027027027,
               "graduated": true
             },
@@ -947,7 +947,7 @@
           "request": "Find official Docker Node image best practices and give commands",
           "passed": true,
           "reason": "matched expected route, format, evidence, and resource contract",
-          "ms": 7,
+          "ms": 8,
           "estimatedTokens": 2205,
           "actual": {
             "intent": "plan",
@@ -958,8 +958,8 @@
               "web_search"
             ],
             "resourceUris": [
-              "tokenhub://resource/38891138-c233-4a2a-ade3-ff530d981496",
-              "tokenhub://resource/38d15ecb-5fde-491b-a537-829f29ccb280"
+              "tokenhub://resource/6ba3d225-64af-41d4-96b7-c863a6f3b3cd",
+              "tokenhub://resource/c67a56c8-baf7-447b-bdb7-f5db7376dffc"
             ],
             "telemetryCapability": "workflow.resolve_request",
             "telemetry": {
@@ -968,7 +968,7 @@
               "estimatedSavedTokens": 2338,
               "outputTokens": 225,
               "id": "tel_26",
-              "createdAt": "2026-05-07T06:49:48.810Z",
+              "createdAt": "2026-05-07T17:04:25.765Z",
               "roi": 10.391111111111112,
               "graduated": true
             },
@@ -983,7 +983,7 @@
           "request": "Look up GitHub REST API rate limits and return structured data",
           "passed": true,
           "reason": "matched expected route, format, evidence, and resource contract",
-          "ms": 5,
+          "ms": 8,
           "estimatedTokens": 2176,
           "actual": {
             "intent": "answer",
@@ -994,8 +994,8 @@
               "web_search"
             ],
             "resourceUris": [
-              "tokenhub://resource/bb6d0b18-088d-4f74-9718-80a7a639214e",
-              "tokenhub://resource/bd202427-ffb9-4d40-b074-f2c335076dd0"
+              "tokenhub://resource/b2aa32db-8e50-428e-a617-461a9589b381",
+              "tokenhub://resource/2c344737-92b2-4010-a420-c93b450b88e3"
             ],
             "telemetryCapability": "workflow.resolve_request",
             "telemetry": {
@@ -1004,7 +1004,7 @@
               "estimatedSavedTokens": 2313,
               "outputTokens": 221,
               "id": "tel_27",
-              "createdAt": "2026-05-07T06:49:48.815Z",
+              "createdAt": "2026-05-07T17:04:25.773Z",
               "roi": 10.46606334841629,
               "graduated": true
             },
@@ -1019,7 +1019,7 @@
           "request": "Summarize latest PostgreSQL release notes",
           "passed": true,
           "reason": "matched expected route, format, evidence, and resource contract",
-          "ms": 6,
+          "ms": 8,
           "estimatedTokens": 2155,
           "actual": {
             "intent": "research",
@@ -1032,8 +1032,8 @@
               "docs"
             ],
             "resourceUris": [
-              "tokenhub://resource/0bdf569d-bc7b-46ed-9c59-9055b35e9001",
-              "tokenhub://resource/1e1cf8fb-694c-4620-84af-584a783b7095"
+              "tokenhub://resource/35ec5b3a-5424-4e4c-b1a5-afee23050a39",
+              "tokenhub://resource/c6f60812-b247-4c3c-b5bd-56894e1e5d36"
             ],
             "telemetryCapability": "workflow.resolve_request",
             "telemetry": {
@@ -1042,7 +1042,7 @@
               "estimatedSavedTokens": 2277,
               "outputTokens": 220,
               "id": "tel_28",
-              "createdAt": "2026-05-07T06:49:48.821Z",
+              "createdAt": "2026-05-07T17:04:25.781Z",
               "roi": 10.35,
               "graduated": true
             },
@@ -1058,7 +1058,7 @@
           "request": "Compare professional browser automation state capture implementations to ours",
           "passed": true,
           "reason": "matched expected route, format, evidence, and resource contract",
-          "ms": 8,
+          "ms": 12,
           "estimatedTokens": 2585,
           "actual": {
             "intent": "compare",
@@ -1071,8 +1071,8 @@
               "docs"
             ],
             "resourceUris": [
-              "tokenhub://resource/965f718c-d395-4a5f-87c5-3ffde4ff8b94",
-              "tokenhub://resource/222d26f1-cd27-4702-a551-a80efbf43bfa"
+              "tokenhub://resource/26302b76-eff9-4e06-a0c9-bfd71a297316",
+              "tokenhub://resource/77e8fa60-f6c5-4107-8378-7ac8999504f7"
             ],
             "telemetryCapability": "workflow.resolve_request",
             "telemetry": {
@@ -1081,7 +1081,7 @@
               "estimatedSavedTokens": 2635,
               "outputTokens": 291,
               "id": "tel_29",
-              "createdAt": "2026-05-07T06:49:48.829Z",
+              "createdAt": "2026-05-07T17:04:25.793Z",
               "roi": 9.054982817869416,
               "graduated": true
             },
@@ -1096,7 +1096,7 @@
           "request": "Find current OAuth 2.1 spec changes and cite sources",
           "passed": true,
           "reason": "matched expected route, format, evidence, and resource contract",
-          "ms": 6,
+          "ms": 7,
           "estimatedTokens": 2083,
           "actual": {
             "intent": "research",
@@ -1107,8 +1107,8 @@
               "web_search"
             ],
             "resourceUris": [
-              "tokenhub://resource/e23c8654-4bee-41a0-b4f1-6a3124197a51",
-              "tokenhub://resource/f98068ec-16fd-4d54-9d7c-6a7f46ce8170"
+              "tokenhub://resource/d6ece1fa-0c87-410f-99a1-ef8a3132c9bd",
+              "tokenhub://resource/28d6e190-ccf7-4013-94c0-1bfe70b874d0"
             ],
             "telemetryCapability": "workflow.resolve_request",
             "telemetry": {
@@ -1117,7 +1117,7 @@
               "estimatedSavedTokens": 2230,
               "outputTokens": 217,
               "id": "tel_30",
-              "createdAt": "2026-05-07T06:49:48.835Z",
+              "createdAt": "2026-05-07T17:04:25.800Z",
               "roi": 10.276497695852534,
               "graduated": true
             },

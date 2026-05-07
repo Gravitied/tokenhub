@@ -3,8 +3,17 @@
   "version": "0.1.0",
   "description": "A token-disciplined developer MCP hub with a tiny always-loaded surface and deferred internal capabilities.",
   "type": "module",
+  "author": "Gravitied",
   "bin": {
     "tokenhub-mcp": "dist/cli.js"
+  },
+  "homepage": "https://github.com/Gravitied/tokenhub#readme",
+  "bugs": {
+    "url": "https://github.com/Gravitied/tokenhub/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Gravitied/tokenhub.git"
   },
   "files": [
     "dist",
@@ -34,7 +43,6 @@
     "playwright",
     "automation"
   ],
-  "author": "",
   "license": "MIT",
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.29.0",

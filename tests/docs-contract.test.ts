@@ -1,4 +1,4 @@
-import { readFileSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, test } from "vitest";
 
@@ -76,5 +76,32 @@ describe("README contract", () => {
     for (const source of documentedRetrievalSources) {
       expect(readme, `missing retrieval source: ${source}`).toContain(`\`${source}\``);
     }
+  });
+});
+
+describe("public release repository contract", () => {
+  test("includes standard community and security files for a public release", () => {
+    const requiredFiles = ["CHANGELOG.md", "CONTRIBUTING.md", "SECURITY.md", "CODE_OF_CONDUCT.md", ".github/workflows/ci.yml"];
+
+    for (const file of requiredFiles) {
+      expect(existsSync(join(process.cwd(), file)), `missing public release file: ${file}`).toBe(true);
+    }
+  });
+
+  test("documents the public release support surfaces from the README", () => {
+    const readme = readReadme();
+
+    for (const file of ["CHANGELOG.md", "CONTRIBUTING.md", "SECURITY.md", "CODE_OF_CONDUCT.md"]) {
+      expect(readme, `README should link ${file}`).toContain(file);
+    }
+  });
+
+  test("keeps repository URLs aligned with the GitHub release repository", () => {
+    const packageJson = readFileSync(join(process.cwd(), "package.json"), "utf8");
+    const webModule = readFileSync(join(process.cwd(), "src", "modules", "web.ts"), "utf8");
+    const expectedRepository = "https://github.com/Gravitied/tokenhub";
+
+    expect(packageJson).toContain(expectedRepository);
+    expect(webModule).toContain(expectedRepository);
   });
 });

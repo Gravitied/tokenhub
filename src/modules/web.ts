@@ -50,7 +50,7 @@ export async function fetchAndScrape(input: FetchWebInput): Promise<{
     input.url,
     {
     headers: {
-      "user-agent": "tokenhub-mcp/0.1 (+https://github.com/tokenhub-mcp/tokenhub-mcp)"
+      "user-agent": "tokenhub-mcp/0.1 (+https://github.com/Gravitied/tokenhub)"
     }
     },
     input.timeoutMs ?? 5000,

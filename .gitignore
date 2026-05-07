@@ -5,3 +5,9 @@ dist/
 artifacts/proof/*.html
 *.tsbuildinfo
 npm-debug.log*
+tokenhub-mcp-*.tgz
+coverage/
+playwright-report/
+.env
+.env.*
+!.env.example
