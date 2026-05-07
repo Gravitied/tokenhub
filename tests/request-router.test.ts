@@ -54,4 +54,14 @@ describe("request router", () => {
     expect(plan.execution).toBe("implement_and_verify");
     expect(plan.depth).toBe("deep");
   });
+
+  test("routes current official docs requests to web evidence instead of local-only context", () => {
+    const plan = inferRequestPlan({
+      request: "Find current Vitest official config docs for TypeScript projects and summarize setup"
+    });
+
+    expect(plan.subject).toBe("docs");
+    expect(plan.sources).toEqual(expect.arrayContaining(["docs", "web_search"]));
+    expect(plan.sources).not.toEqual(["local_files"]);
+  });
 });

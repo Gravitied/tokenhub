@@ -41,37 +41,6 @@ type CandidateMention = {
   line: number;
 };
 
-const VEGETABLE_CATALOG = [
-  ["Watercress", "watercress"],
-  ["Spinach", "spinach"],
-  ["Kale", "kale"],
-  ["Swiss chard", "swiss chard", "chard"],
-  ["Beet greens", "beet greens"],
-  ["Collard greens", "collard greens", "collards"],
-  ["Broccoli", "broccoli"],
-  ["Brussels sprouts", "brussels sprouts", "brussel sprouts"],
-  ["Carrots", "carrots", "carrot"],
-  ["Sweet potatoes", "sweet potatoes", "sweet potato"],
-  ["Garlic", "garlic"],
-  ["Beets", "beets", "beetroot"],
-  ["Bell peppers", "bell peppers", "bell pepper", "red peppers", "red pepper"],
-  ["Asparagus", "asparagus"],
-  ["Red cabbage", "red cabbage"],
-  ["Cauliflower", "cauliflower"],
-  ["Peas", "peas"],
-  ["Green beans", "green beans"],
-  ["Tomatoes", "tomatoes", "tomato"],
-  ["Onions", "onions", "onion"],
-  ["Mushrooms", "mushrooms", "mushroom"],
-  ["Celery", "celery"],
-  ["Romaine lettuce", "romaine lettuce", "romaine"],
-  ["Arugula", "arugula"],
-  ["Radishes", "radishes", "radish"],
-  ["Turnips", "turnips", "turnip"],
-  ["Squash", "squash"],
-  ["Pumpkin", "pumpkin"]
-] as const;
-
 export async function answerFromWeb(input: AnswerFromWebInput): Promise<AnswerFromWebResult> {
   const target = input.target ?? "ranked_list";
   if (target !== "ranked_list" && target !== "summary") {
@@ -221,23 +190,7 @@ function buildSummaryAnswer(
 }
 
 export function extractCandidateMentions(text: string, query: string): CandidateMention[] {
-  const catalog = candidateCatalog(query);
-  if (catalog.length === 0) {
-    return extractGenericCandidates(text);
-  }
-  const mentions: CandidateMention[] = [];
-  const seen = new Set<string>();
-  const lines = usefulLines(text);
-  for (const [lineIndex, line] of lines.entries()) {
-    for (const entry of catalog) {
-      if (seen.has(entry.name)) continue;
-      if (entry.patterns.some((pattern) => pattern.test(line))) {
-        seen.add(entry.name);
-        mentions.push({ name: entry.name, evidence: trimEvidence(line), line: lineIndex + 1 });
-      }
-    }
-  }
-  return mentions;
+  return extractGenericCandidates(text);
 }
 
 function aggregateCandidates(
@@ -264,16 +217,6 @@ function aggregateCandidates(
     map.set(row.mention.name, current);
   }
   return [...map.values()].sort((a, b) => b.sources.length - a.sources.length || b.score - a.score || a.name.localeCompare(b.name));
-}
-
-function candidateCatalog(query: string): Array<{ name: string; patterns: RegExp[] }> {
-  if (!/\b(vegetables?|veggies|vegies)\b/i.test(query)) {
-    return [];
-  }
-  return VEGETABLE_CATALOG.map(([name, ...aliases]) => ({
-    name,
-    patterns: aliases.map((alias) => new RegExp(`(^|[^a-z])${escapeRegex(alias)}([^a-z]|$)`, "i"))
-  }));
 }
 
 function extractGenericCandidates(text: string): CandidateMention[] {
@@ -384,7 +327,7 @@ function ensureSentence(text: string): string {
 }
 
 function synthesizeSummary(query: string, clauses: string[]): string {
-  const topic = query.toLowerCase().includes("deepseek") ? "DeepSeek research" : "the searched topic";
+  const topic = summarizeTopic(query);
   if (clauses.length === 1) {
     return ensureSentence(`Recent ${topic} surfaced by the workflow emphasizes ${clauses[0]}`);
   }
@@ -393,17 +336,9 @@ function synthesizeSummary(query: string, clauses: string[]): string {
 }
 
 function summaryClause(text: string): string {
-  let value = summarySnippetText(text)
-    .replace(/^NEWS\s+\d{1,2}\s+\w+\s+\d{4}\s+/i, "")
-    .replace(/^Artificial intelligence\s+/i, "")
-    .replace(/^The DeepSeek Series:\s*A Technical Overview\s+/i, "")
-    .replace(/^DeepSeek research paper summary\s*/i, "");
-  const betterStart = value.match(/\b(First peer-reviewed|The appearance of|DeepSeek\s*-?V\d|The model can|Like DeepSeek|V\d marks)\b/i);
-  if (betterStart?.index && betterStart.index > 0) {
-    value = value.slice(betterStart.index);
-  }
-  value = value.replace(/\s+/g, " ").replace(/[.!?]+$/g, "").trim();
-  return truncateAtWord(value, 220).replace(/\.\.\.$/, "");
+  const value = summarySnippetText(text).replace(/^NEWS\s+\d{1,2}\s+\w+\s+\d{4}\s+/i, "");
+  const cleaned = value.replace(/\s+/g, " ").replace(/[.!?]+$/g, "").trim();
+  return truncateAtWord(cleaned, 220).replace(/\.\.\.$/, "");
 }
 
 function summarySnippetText(text: string): string {
@@ -427,8 +362,9 @@ function truncateAtWord(text: string, maxLength: number): string {
   return `${slice.slice(0, boundary > maxLength * 0.6 ? boundary : slice.length).trimEnd()}...`;
 }
 
-function escapeRegex(value: string): string {
-  return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+function summarizeTopic(query: string): string {
+  const keywords = queryKeywords(query).slice(0, 3);
+  return keywords.length ? keywords.join(" ") : "the searched topic";
 }
 
 function clampInt(value: number, min: number, max: number): number {

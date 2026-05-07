@@ -13,7 +13,7 @@ Local development:
 ```bash
 npm install
 npm run build
-node dist/src/cli.js --root .
+node dist/cli.js --root .
 ```
 
 ## Always-Loaded Tools

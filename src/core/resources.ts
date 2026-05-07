@@ -76,7 +76,17 @@ export class ResourceStore {
     }
 
     const manifest = JSON.parse(await readFile(join(this.rootDir, `${id}.json`), "utf8")) as ResourceManifest;
-    const raw = await readFile(join(this.rootDir, manifest.contentFile), "utf8");
+    const rawBytes = await readFile(join(this.rootDir, manifest.contentFile));
+    if (manifest.kind === "screenshot") {
+      const content = `data:image/png;base64,${rawBytes.toString("base64")}`;
+      return {
+        ...publicLink(manifest),
+        content,
+        truncated: false
+      };
+    }
+
+    const raw = rawBytes.toString("utf8");
     const mode = options.mode ?? "snippet";
     const selected = mode === "range" ? selectLineRange(raw, options.startLine, options.endLine) : raw;
     const truncated =

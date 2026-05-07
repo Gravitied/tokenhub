@@ -1,0 +1,3170 @@
+{
+  "generatedAt": "2026-05-06T23:37:05.220Z",
+  "mode": "LIVE resolve_request depth=fast execution=plan_only using compiled runtime, real workspace root, no mocked fetch, no seeded workspace",
+  "total": 100,
+  "passed": 100,
+  "failed": 0,
+  "passRate": 1,
+  "mismatchCountsByField": {},
+  "failures": [],
+  "results": [
+    {
+      "id": 1,
+      "prompt": "Inspect this repository and summarize the main architecture, runtime stack, and entry points.",
+      "passed": true,
+      "mismatches": [],
+      "expected": {
+        "intent": "extract",
+        "subject": "repo",
+        "outputShape": "list",
+        "sources": [
+          "local_files"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "actual": {
+        "intent": "extract",
+        "subject": "repo",
+        "outputShape": "list",
+        "sources": [
+          "local_files"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "ms": 35,
+      "warningCount": 1,
+      "resourceCount": 1,
+      "usedLiveWorkspaceRoot": "C:\\Users\\winsi\\OneDrive\\Documents\\New project 3",
+      "summarySample": "Local context\n- .tmp_eval_1_50.txt:1 1: 1\tInspect this repository and summarize the main architecture, runtime stack, and entry points.\tintent:extract->answer | subject:repo->unknown | outputShape:list->paragraph | sources:[local_files]->[web_search]\n2: 2\tFind the likely cause of this failing test and implement the smallest safe fix.\tintent:debug->implement | subject:error->unknown | outputShape:p"
+    },
+    {
+      "id": 2,
+      "prompt": "Find the likely cause of this failing test and implement the smallest safe fix.",
+      "passed": true,
+      "mismatches": [],
+      "expected": {
+        "intent": "debug",
+        "subject": "error",
+        "outputShape": "plan",
+        "sources": [
+          "local_files"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "actual": {
+        "intent": "debug",
+        "subject": "error",
+        "outputShape": "plan",
+        "sources": [
+          "local_files"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "ms": 32,
+      "warningCount": 1,
+      "resourceCount": 1,
+      "usedLiveWorkspaceRoot": "C:\\Users\\winsi\\OneDrive\\Documents\\New project 3",
+      "summarySample": "Local context\n- .tmp_eval_1_50.txt:2 1: 1\tInspect this repository and summarize the main architecture, runtime stack, and entry points.\tintent:extract->answer | subject:repo->unknown | outputShape:list->paragraph | sources:[local_files]->[web_search]\n2: 2\tFind the likely cause of this failing test and implement the smallest safe fix.\tintent:debug->implement | subject:error->unknown | outputShape:p"
+    },
+    {
+      "id": 3,
+      "prompt": "Add a new REST endpoint for creating projects, following the existing controller/service patterns.",
+      "passed": true,
+      "mismatches": [],
+      "expected": {
+        "intent": "implement",
+        "subject": "api",
+        "outputShape": "patch_plan",
+        "sources": [
+          "local_files"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "actual": {
+        "intent": "implement",
+        "subject": "api",
+        "outputShape": "patch_plan",
+        "sources": [
+          "local_files"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "ms": 35,
+      "warningCount": 1,
+      "resourceCount": 1,
+      "usedLiveWorkspaceRoot": "C:\\Users\\winsi\\OneDrive\\Documents\\New project 3",
+      "summarySample": "Local context\n- .tmp_eval_1_50.txt:3 1: 1\tInspect this repository and summarize the main architecture, runtime stack, and entry points.\tintent:extract->answer | subject:repo->unknown | outputShape:list->paragraph | sources:[local_files]->[web_search]\n2: 2\tFind the likely cause of this failing test and implement the smallest safe fix.\tintent:debug->implement | subject:error->unknown | outputShape:p"
+    },
+    {
+      "id": 4,
+      "prompt": "Refactor this large component into smaller components without changing behavior.",
+      "passed": true,
+      "mismatches": [],
+      "expected": {
+        "intent": "implement",
+        "subject": "code",
+        "outputShape": "patch_plan",
+        "sources": [
+          "local_files"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "actual": {
+        "intent": "implement",
+        "subject": "code",
+        "outputShape": "patch_plan",
+        "sources": [
+          "local_files"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "ms": 28,
+      "warningCount": 1,
+      "resourceCount": 1,
+      "usedLiveWorkspaceRoot": "C:\\Users\\winsi\\OneDrive\\Documents\\New project 3",
+      "summarySample": "Local context\n- .tmp_eval_1_50.txt:4 2: 2\tFind the likely cause of this failing test and implement the smallest safe fix.\tintent:debug->implement | subject:error->unknown | outputShape:plan->patch_plan | sources:[local_files]->[local_files;web_search;github_code;docs]\n3: 3\tAdd a new REST endpoint for creating projects, following the existing controller/service patterns.\tsources:[local_files]->[loc"
+    },
+    {
+      "id": 5,
+      "prompt": "Review the current diff as a pull request and call out bugs, regressions, and missing tests.",
+      "passed": true,
+      "mismatches": [],
+      "expected": {
+        "intent": "compare",
+        "subject": "code",
+        "outputShape": "list",
+        "sources": [
+          "local_files"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "actual": {
+        "intent": "compare",
+        "subject": "code",
+        "outputShape": "list",
+        "sources": [
+          "local_files"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "ms": 29,
+      "warningCount": 1,
+      "resourceCount": 1,
+      "usedLiveWorkspaceRoot": "C:\\Users\\winsi\\OneDrive\\Documents\\New project 3",
+      "summarySample": "Local context\n- .tmp_eval_1_50.txt:5 3: 3\tAdd a new REST endpoint for creating projects, following the existing controller/service patterns.\tsources:[local_files]->[local_files;web_search;github_code;docs]\n4: 4\tRefactor this large component into smaller components without changing behavior.\tintent:implement->answer | subject:code->unknown | outputShape:patch_plan->paragraph | sources:[local_files]"
+    },
+    {
+      "id": 6,
+      "prompt": "Add unit tests for the payment validation logic, including edge cases.",
+      "passed": true,
+      "mismatches": [],
+      "expected": {
+        "intent": "implement",
+        "subject": "code",
+        "outputShape": "patch_plan",
+        "sources": [
+          "local_files"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "actual": {
+        "intent": "implement",
+        "subject": "code",
+        "outputShape": "patch_plan",
+        "sources": [
+          "local_files"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "ms": 32,
+      "warningCount": 1,
+      "resourceCount": 1,
+      "usedLiveWorkspaceRoot": "C:\\Users\\winsi\\OneDrive\\Documents\\New project 3",
+      "summarySample": "Local context\n- .tmp_eval_1_50.txt:6 4: 4\tRefactor this large component into smaller components without changing behavior.\tintent:implement->answer | subject:code->unknown | outputShape:patch_plan->paragraph | sources:[local_files]->[web_search]\n5: 5\tReview the current diff as a pull request and call out bugs, regressions, and missing tests.\tintent:compare->answer | subject:code->repo | outputShap"
+    },
+    {
+      "id": 7,
+      "prompt": "Convert this JavaScript file to TypeScript and fix any resulting type errors.",
+      "passed": true,
+      "mismatches": [],
+      "expected": {
+        "intent": "implement",
+        "subject": "code",
+        "outputShape": "patch_plan",
+        "sources": [
+          "local_files"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "actual": {
+        "intent": "implement",
+        "subject": "code",
+        "outputShape": "patch_plan",
+        "sources": [
+          "local_files"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "ms": 28,
+      "warningCount": 1,
+      "resourceCount": 1,
+      "usedLiveWorkspaceRoot": "C:\\Users\\winsi\\OneDrive\\Documents\\New project 3",
+      "summarySample": "Local context\n- .tmp_eval_1_50.txt:7 5: 5\tReview the current diff as a pull request and call out bugs, regressions, and missing tests.\tintent:compare->answer | subject:code->repo | outputShape:list->paragraph | sources:[local_files]->[web_search]\n6: 6\tAdd unit tests for the payment validation logic, including edge cases.\tsubject:code->unknown | sources:[local_files]->[local_files;web_search;github"
+    },
+    {
+      "id": 8,
+      "prompt": "Improve the accessibility of this modal, including keyboard focus and screen reader behavior.",
+      "passed": true,
+      "mismatches": [],
+      "expected": {
+        "intent": "implement",
+        "subject": "code",
+        "outputShape": "patch_plan",
+        "sources": [
+          "local_files"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "actual": {
+        "intent": "implement",
+        "subject": "code",
+        "outputShape": "patch_plan",
+        "sources": [
+          "local_files"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "ms": 36,
+      "warningCount": 1,
+      "resourceCount": 1,
+      "usedLiveWorkspaceRoot": "C:\\Users\\winsi\\OneDrive\\Documents\\New project 3",
+      "summarySample": "Local context\n- .tmp_eval_1_50.txt:8 6: 6\tAdd unit tests for the payment validation logic, including edge cases.\tsubject:code->unknown | sources:[local_files]->[local_files;web_search;github_code;docs]\n7: 7\tConvert this JavaScript file to TypeScript and fix any resulting type errors.\tsubject:code->error | sources:[local_files]->[local_files;web_search;github_code;docs]\n8: 8\tImprove the accessibili"
+    },
+    {
+      "id": 9,
+      "prompt": "Investigate why this React page rerenders too often and optimize it.",
+      "passed": true,
+      "mismatches": [],
+      "expected": {
+        "intent": "debug",
+        "subject": "code",
+        "outputShape": "plan",
+        "sources": [
+          "local_files"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "actual": {
+        "intent": "debug",
+        "subject": "code",
+        "outputShape": "plan",
+        "sources": [
+          "local_files"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "ms": 30,
+      "warningCount": 1,
+      "resourceCount": 1,
+      "usedLiveWorkspaceRoot": "C:\\Users\\winsi\\OneDrive\\Documents\\New project 3",
+      "summarySample": "Local context\n- .tmp_eval_1_50.txt:9 7: 7\tConvert this JavaScript file to TypeScript and fix any resulting type errors.\tsubject:code->error | sources:[local_files]->[local_files;web_search;github_code;docs]\n8: 8\tImprove the accessibility of this modal, including keyboard focus and screen reader behavior.\tintent:implement->answer | subject:code->unknown | outputShape:patch_plan->paragraph | sources"
+    },
+    {
+      "id": 10,
+      "prompt": "Add pagination to this API endpoint while preserving backward compatibility.",
+      "passed": true,
+      "mismatches": [],
+      "expected": {
+        "intent": "implement",
+        "subject": "api",
+        "outputShape": "patch_plan",
+        "sources": [
+          "local_files"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "actual": {
+        "intent": "implement",
+        "subject": "api",
+        "outputShape": "patch_plan",
+        "sources": [
+          "local_files"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "ms": 27,
+      "warningCount": 1,
+      "resourceCount": 1,
+      "usedLiveWorkspaceRoot": "C:\\Users\\winsi\\OneDrive\\Documents\\New project 3",
+      "summarySample": "Local context\n- .tmp_eval_1_50.txt:10 8: 8\tImprove the accessibility of this modal, including keyboard focus and screen reader behavior.\tintent:implement->answer | subject:code->unknown | outputShape:patch_plan->paragraph | sources:[local_files]->[web_search]\n9: 9\tInvestigate why this React page rerenders too often and optimize it.\tintent:debug->answer | subject:code->unknown | outputShape:plan->p"
+    },
+    {
+      "id": 11,
+      "prompt": "Create a database migration to add a nullable archived_at column and update the model.",
+      "passed": true,
+      "mismatches": [],
+      "expected": {
+        "intent": "implement",
+        "subject": "code",
+        "outputShape": "patch_plan",
+        "sources": [
+          "local_files"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "actual": {
+        "intent": "implement",
+        "subject": "code",
+        "outputShape": "patch_plan",
+        "sources": [
+          "local_files"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "ms": 27,
+      "warningCount": 1,
+      "resourceCount": 1,
+      "usedLiveWorkspaceRoot": "C:\\Users\\winsi\\OneDrive\\Documents\\New project 3",
+      "summarySample": "Local context\n- .tmp_eval_1_50.txt:11 9: 9\tInvestigate why this React page rerenders too often and optimize it.\tintent:debug->answer | subject:code->unknown | outputShape:plan->paragraph | sources:[local_files]->[web_search]\n10: 10\tAdd pagination to this API endpoint while preserving backward compatibility.\tsources:[local_files]->[local_files;web_search;github_code;docs]\n11: 11\tCreate a database m"
+    },
+    {
+      "id": 12,
+      "prompt": "Debug this flaky CI failure and explain whether it is test order, timing, or environment related.",
+      "passed": true,
+      "mismatches": [],
+      "expected": {
+        "intent": "debug",
+        "subject": "error",
+        "outputShape": "plan",
+        "sources": [
+          "local_files"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "actual": {
+        "intent": "debug",
+        "subject": "error",
+        "outputShape": "plan",
+        "sources": [
+          "local_files"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "ms": 27,
+      "warningCount": 1,
+      "resourceCount": 1,
+      "usedLiveWorkspaceRoot": "C:\\Users\\winsi\\OneDrive\\Documents\\New project 3",
+      "summarySample": "Local context\n- .tmp_eval_1_50.txt:12 10: 10\tAdd pagination to this API endpoint while preserving backward compatibility.\tsources:[local_files]->[local_files;web_search;github_code;docs]\n11: 11\tCreate a database migration to add a nullable archived_at column and update the model.\tsubject:code->unknown | sources:[local_files]->[local_files;web_search;github_code;docs]\n12: 12\tDebug this flaky CI fai"
+    },
+    {
+      "id": 13,
+      "prompt": "Implement optimistic UI updates for this task completion flow.",
+      "passed": true,
+      "mismatches": [],
+      "expected": {
+        "intent": "implement",
+        "subject": "code",
+        "outputShape": "patch_plan",
+        "sources": [
+          "local_files"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "actual": {
+        "intent": "implement",
+        "subject": "code",
+        "outputShape": "patch_plan",
+        "sources": [
+          "local_files"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "ms": 37,
+      "warningCount": 1,
+      "resourceCount": 1,
+      "usedLiveWorkspaceRoot": "C:\\Users\\winsi\\OneDrive\\Documents\\New project 3",
+      "summarySample": "Local context\n- .tmp_eval_1_50.txt:13 11: 11\tCreate a database migration to add a nullable archived_at column and update the model.\tsubject:code->unknown | sources:[local_files]->[local_files;web_search;github_code;docs]\n12: 12\tDebug this flaky CI failure and explain whether it is test order, timing, or environment related.\toutputShape:plan->paragraph | sources:[local_files]->[web_search]\n13: 13\tI"
+    },
+    {
+      "id": 14,
+      "prompt": "Add structured logging around the checkout process without logging sensitive data.",
+      "passed": true,
+      "mismatches": [],
+      "expected": {
+        "intent": "implement",
+        "subject": "code",
+        "outputShape": "patch_plan",
+        "sources": [
+          "local_files"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "actual": {
+        "intent": "implement",
+        "subject": "code",
+        "outputShape": "patch_plan",
+        "sources": [
+          "local_files"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "ms": 33,
+      "warningCount": 1,
+      "resourceCount": 1,
+      "usedLiveWorkspaceRoot": "C:\\Users\\winsi\\OneDrive\\Documents\\New project 3",
+      "summarySample": "Local context\n- .tmp_eval_1_50.txt:14 12: 12\tDebug this flaky CI failure and explain whether it is test order, timing, or environment related.\toutputShape:plan->paragraph | sources:[local_files]->[web_search]\n13: 13\tImplement optimistic UI updates for this task completion flow.\tsubject:code->unknown | sources:[local_files]->[local_files;web_search;github_code;docs]\n14: 14\tAdd structured logging ar"
+    },
+    {
+      "id": 15,
+      "prompt": "Explain how authentication works in this codebase, from login request to session validation.",
+      "passed": true,
+      "mismatches": [],
+      "expected": {
+        "intent": "extract",
+        "subject": "repo",
+        "outputShape": "paragraph",
+        "sources": [
+          "local_files"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "actual": {
+        "intent": "extract",
+        "subject": "repo",
+        "outputShape": "paragraph",
+        "sources": [
+          "local_files"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "ms": 25,
+      "warningCount": 1,
+      "resourceCount": 1,
+      "usedLiveWorkspaceRoot": "C:\\Users\\winsi\\OneDrive\\Documents\\New project 3",
+      "summarySample": "Local context\n- .tmp_eval_1_50.txt:15 13: 13\tImplement optimistic UI updates for this task completion flow.\tsubject:code->unknown | sources:[local_files]->[local_files;web_search;github_code;docs]\n14: 14\tAdd structured logging around the checkout process without logging sensitive data.\tsubject:code->data | sources:[local_files]->[local_files;web_search;github_code;docs]\n15: 15\tExplain how authenti"
+    },
+    {
+      "id": 16,
+      "prompt": "Replace this deprecated library usage with the recommended modern API.",
+      "passed": true,
+      "mismatches": [],
+      "expected": {
+        "intent": "implement",
+        "subject": "package",
+        "outputShape": "patch_plan",
+        "sources": [
+          "local_files",
+          "docs",
+          "package_registry"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "actual": {
+        "intent": "implement",
+        "subject": "package",
+        "outputShape": "patch_plan",
+        "sources": [
+          "local_files",
+          "docs",
+          "package_registry"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "ms": 29,
+      "warningCount": 1,
+      "resourceCount": 1,
+      "usedLiveWorkspaceRoot": "C:\\Users\\winsi\\OneDrive\\Documents\\New project 3",
+      "summarySample": "Local context\n- .tmp_eval_1_50.txt:16 14: 14\tAdd structured logging around the checkout process without logging sensitive data.\tsubject:code->data | sources:[local_files]->[local_files;web_search;github_code;docs]\n15: 15\tExplain how authentication works in this codebase, from login request to session validation.\tintent:extract->answer | subject:repo->unknown | sources:[local_files]->[web_search]\n1"
+    },
+    {
+      "id": 17,
+      "prompt": "Add integration tests for the user registration flow.",
+      "passed": true,
+      "mismatches": [],
+      "expected": {
+        "intent": "implement",
+        "subject": "code",
+        "outputShape": "patch_plan",
+        "sources": [
+          "local_files"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "actual": {
+        "intent": "implement",
+        "subject": "code",
+        "outputShape": "patch_plan",
+        "sources": [
+          "local_files"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "ms": 36,
+      "warningCount": 1,
+      "resourceCount": 1,
+      "usedLiveWorkspaceRoot": "C:\\Users\\winsi\\OneDrive\\Documents\\New project 3",
+      "summarySample": "Local context\n- .tmp_eval_1_50.txt:17 15: 15\tExplain how authentication works in this codebase, from login request to session validation.\tintent:extract->answer | subject:repo->unknown | sources:[local_files]->[web_search]\n16: 16\tReplace this deprecated library usage with the recommended modern API.\tintent:implement->answer | subject:package->api | outputShape:patch_plan->paragraph | sources:[loca"
+    },
+    {
+      "id": 18,
+      "prompt": "Find and fix any SQL injection risks in this repository.",
+      "passed": true,
+      "mismatches": [],
+      "expected": {
+        "intent": "debug",
+        "subject": "code",
+        "outputShape": "patch_plan",
+        "sources": [
+          "local_files"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "actual": {
+        "intent": "debug",
+        "subject": "code",
+        "outputShape": "patch_plan",
+        "sources": [
+          "local_files"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "ms": 29,
+      "warningCount": 1,
+      "resourceCount": 1,
+      "usedLiveWorkspaceRoot": "C:\\Users\\winsi\\OneDrive\\Documents\\New project 3",
+      "summarySample": "Local context\n- .tmp_eval_1_50.txt:18 16: 16\tReplace this deprecated library usage with the recommended modern API.\tintent:implement->answer | subject:package->api | outputShape:patch_plan->paragraph | sources:[local_files;docs;package_registry]->[docs;web_search]\n17: 17\tAdd integration tests for the user registration flow.\tsubject:code->unknown | sources:[local_files]->[local_files;web_search;git"
+    },
+    {
+      "id": 19,
+      "prompt": "Generate OpenAPI documentation for the existing API routes.",
+      "passed": true,
+      "mismatches": [],
+      "expected": {
+        "intent": "implement",
+        "subject": "docs",
+        "outputShape": "structured_data",
+        "sources": [
+          "local_files"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "actual": {
+        "intent": "implement",
+        "subject": "docs",
+        "outputShape": "structured_data",
+        "sources": [
+          "local_files"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "ms": 25,
+      "warningCount": 1,
+      "resourceCount": 1,
+      "usedLiveWorkspaceRoot": "C:\\Users\\winsi\\OneDrive\\Documents\\New project 3",
+      "summarySample": "Local context\n- .tmp_eval_1_50.txt:19 17: 17\tAdd integration tests for the user registration flow.\tsubject:code->unknown | sources:[local_files]->[local_files;web_search;github_code;docs]\n18: 18\tFind and fix any SQL injection risks in this repository.\tintent:debug->implement | subject:code->unknown | sources:[local_files]->[local_files;web_search;github_code;docs]\n19: 19\tGenerate OpenAPI documenta"
+    },
+    {
+      "id": 20,
+      "prompt": "Add dark mode support using the project’s existing design tokens.",
+      "passed": true,
+      "mismatches": [],
+      "expected": {
+        "intent": "implement",
+        "subject": "code",
+        "outputShape": "patch_plan",
+        "sources": [
+          "local_files"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "actual": {
+        "intent": "implement",
+        "subject": "code",
+        "outputShape": "patch_plan",
+        "sources": [
+          "local_files"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "ms": 34,
+      "warningCount": 1,
+      "resourceCount": 1,
+      "usedLiveWorkspaceRoot": "C:\\Users\\winsi\\OneDrive\\Documents\\New project 3",
+      "summarySample": "Local context\n- .tmp_eval_1_50.txt:20 18: 18\tFind and fix any SQL injection risks in this repository.\tintent:debug->implement | subject:code->unknown | sources:[local_files]->[local_files;web_search;github_code;docs]\n19: 19\tGenerate OpenAPI documentation for the existing API routes.\tintent:implement->answer | subject:docs->api | outputShape:structured_data->paragraph | sources:[local_files]->[docs"
+    },
+    {
+      "id": 21,
+      "prompt": "Investigate this production error stack trace and identify the most likely root cause.",
+      "passed": true,
+      "mismatches": [],
+      "expected": {
+        "intent": "debug",
+        "subject": "error",
+        "outputShape": "list",
+        "sources": [
+          "local_files"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "actual": {
+        "intent": "debug",
+        "subject": "error",
+        "outputShape": "list",
+        "sources": [
+          "local_files"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "ms": 25,
+      "warningCount": 1,
+      "resourceCount": 1,
+      "usedLiveWorkspaceRoot": "C:\\Users\\winsi\\OneDrive\\Documents\\New project 3",
+      "summarySample": "Local context\n- .tmp_eval_1_50.txt:21 19: 19\tGenerate OpenAPI documentation for the existing API routes.\tintent:implement->answer | subject:docs->api | outputShape:structured_data->paragraph | sources:[local_files]->[docs;web_search]\n20: 20\tAdd dark mode support using the project’s existing design tokens.\tsubject:code->unknown | sources:[local_files]->[local_files;web_search;github_code;docs]\n21: "
+    },
+    {
+      "id": 22,
+      "prompt": "Implement rate limiting for password reset requests.",
+      "passed": true,
+      "mismatches": [],
+      "expected": {
+        "intent": "implement",
+        "subject": "code",
+        "outputShape": "patch_plan",
+        "sources": [
+          "local_files"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "actual": {
+        "intent": "implement",
+        "subject": "code",
+        "outputShape": "patch_plan",
+        "sources": [
+          "local_files"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "ms": 33,
+      "warningCount": 1,
+      "resourceCount": 1,
+      "usedLiveWorkspaceRoot": "C:\\Users\\winsi\\OneDrive\\Documents\\New project 3",
+      "summarySample": "Local context\n- .tmp_eval_1_50.txt:22 20: 20\tAdd dark mode support using the project’s existing design tokens.\tsubject:code->unknown | sources:[local_files]->[local_files;web_search;github_code;docs]\n21: 21\tInvestigate this production error stack trace and identify the most likely root cause.\toutputShape:list->paragraph | sources:[local_files]->[web_search]\n22: 22\tImplement rate limiting for passw"
+    },
+    {
+      "id": 23,
+      "prompt": "Update this Dockerfile to reduce image size and improve build caching.",
+      "passed": true,
+      "mismatches": [],
+      "expected": {
+        "intent": "implement",
+        "subject": "code",
+        "outputShape": "patch_plan",
+        "sources": [
+          "local_files"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "actual": {
+        "intent": "implement",
+        "subject": "code",
+        "outputShape": "patch_plan",
+        "sources": [
+          "local_files"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "ms": 26,
+      "warningCount": 1,
+      "resourceCount": 1,
+      "usedLiveWorkspaceRoot": "C:\\Users\\winsi\\OneDrive\\Documents\\New project 3",
+      "summarySample": "Local context\n- .tmp_eval_1_50.txt:23 21: 21\tInvestigate this production error stack trace and identify the most likely root cause.\toutputShape:list->paragraph | sources:[local_files]->[web_search]\n22: 22\tImplement rate limiting for password reset requests.\tsubject:code->unknown | sources:[local_files]->[local_files;web_search;github_code;docs]\n23: 23\tUpdate this Dockerfile to reduce image size an"
+    },
+    {
+      "id": 24,
+      "prompt": "Add input validation to this form and show inline error messages.",
+      "passed": true,
+      "mismatches": [],
+      "expected": {
+        "intent": "implement",
+        "subject": "code",
+        "outputShape": "patch_plan",
+        "sources": [
+          "local_files"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "actual": {
+        "intent": "implement",
+        "subject": "code",
+        "outputShape": "patch_plan",
+        "sources": [
+          "local_files"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "ms": 23,
+      "warningCount": 1,
+      "resourceCount": 1,
+      "usedLiveWorkspaceRoot": "C:\\Users\\winsi\\OneDrive\\Documents\\New project 3",
+      "summarySample": "Local context\n- .tmp_eval_1_50.txt:24 22: 22\tImplement rate limiting for password reset requests.\tsubject:code->unknown | sources:[local_files]->[local_files;web_search;github_code;docs]\n23: 23\tUpdate this Dockerfile to reduce image size and improve build caching.\tintent:implement->answer | subject:code->unknown | outputShape:patch_plan->paragraph | sources:[local_files]->[web_search]\n24: 24\tAdd i"
+    },
+    {
+      "id": 25,
+      "prompt": "Convert this synchronous file processing job to run asynchronously in the background.",
+      "passed": true,
+      "mismatches": [],
+      "expected": {
+        "intent": "implement",
+        "subject": "code",
+        "outputShape": "patch_plan",
+        "sources": [
+          "local_files"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "actual": {
+        "intent": "implement",
+        "subject": "code",
+        "outputShape": "patch_plan",
+        "sources": [
+          "local_files"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "ms": 26,
+      "warningCount": 1,
+      "resourceCount": 1,
+      "usedLiveWorkspaceRoot": "C:\\Users\\winsi\\OneDrive\\Documents\\New project 3",
+      "summarySample": "Local context\n- .tmp_eval_1_50.txt:25 23: 23\tUpdate this Dockerfile to reduce image size and improve build caching.\tintent:implement->answer | subject:code->unknown | outputShape:patch_plan->paragraph | sources:[local_files]->[web_search]\n24: 24\tAdd input validation to this form and show inline error messages.\tsubject:code->error | sources:[local_files]->[local_files;web_search;github_code;docs]\n2"
+    },
+    {
+      "id": 26,
+      "prompt": "Review this database schema and suggest indexes for the slow queries shown here.",
+      "passed": true,
+      "mismatches": [],
+      "expected": {
+        "intent": "compare",
+        "subject": "data",
+        "outputShape": "table",
+        "sources": [
+          "local_files"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "actual": {
+        "intent": "compare",
+        "subject": "data",
+        "outputShape": "table",
+        "sources": [
+          "local_files"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "ms": 25,
+      "warningCount": 1,
+      "resourceCount": 1,
+      "usedLiveWorkspaceRoot": "C:\\Users\\winsi\\OneDrive\\Documents\\New project 3",
+      "summarySample": "Local context\n- .tmp_eval_1_50.txt:26 24: 24\tAdd input validation to this form and show inline error messages.\tsubject:code->error | sources:[local_files]->[local_files;web_search;github_code;docs]\n25: 25\tConvert this synchronous file processing job to run asynchronously in the background.\tintent:implement->answer | subject:code->unknown | outputShape:patch_plan->paragraph | sources:[local_files]-"
+    },
+    {
+      "id": 27,
+      "prompt": "Add a feature flag around the new onboarding experience.",
+      "passed": true,
+      "mismatches": [],
+      "expected": {
+        "intent": "implement",
+        "subject": "code",
+        "outputShape": "patch_plan",
+        "sources": [
+          "local_files"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "actual": {
+        "intent": "implement",
+        "subject": "code",
+        "outputShape": "patch_plan",
+        "sources": [
+          "local_files"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "ms": 23,
+      "warningCount": 1,
+      "resourceCount": 1,
+      "usedLiveWorkspaceRoot": "C:\\Users\\winsi\\OneDrive\\Documents\\New project 3",
+      "summarySample": "Local context\n- .tmp_eval_1_50.txt:27 25: 25\tConvert this synchronous file processing job to run asynchronously in the background.\tintent:implement->answer | subject:code->unknown | outputShape:patch_plan->paragraph | sources:[local_files]->[web_search]\n26: 26\tReview this database schema and suggest indexes for the slow queries shown here.\tintent:compare->answer | subject:data->unknown | outputSha"
+    },
+    {
+      "id": 28,
+      "prompt": "Write an end-to-end test for the happy path checkout flow.",
+      "passed": true,
+      "mismatches": [],
+      "expected": {
+        "intent": "implement",
+        "subject": "code",
+        "outputShape": "patch_plan",
+        "sources": [
+          "local_files"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "actual": {
+        "intent": "implement",
+        "subject": "code",
+        "outputShape": "patch_plan",
+        "sources": [
+          "local_files"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "ms": 24,
+      "warningCount": 1,
+      "resourceCount": 1,
+      "usedLiveWorkspaceRoot": "C:\\Users\\winsi\\OneDrive\\Documents\\New project 3",
+      "summarySample": "Local context\n- .tmp_eval_1_50.txt:28 26: 26\tReview this database schema and suggest indexes for the slow queries shown here.\tintent:compare->answer | subject:data->unknown | outputShape:table->paragraph | sources:[local_files]->[web_search]\n27: 27\tAdd a feature flag around the new onboarding experience.\tsources:[local_files]->[local_files;web_search;github_code;docs]\n28: 28\tWrite an end-to-end te"
+    },
+    {
+      "id": 29,
+      "prompt": "Improve the error handling in this GraphQL resolver.",
+      "passed": true,
+      "mismatches": [],
+      "expected": {
+        "intent": "implement",
+        "subject": "code",
+        "outputShape": "patch_plan",
+        "sources": [
+          "local_files"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "actual": {
+        "intent": "implement",
+        "subject": "code",
+        "outputShape": "patch_plan",
+        "sources": [
+          "local_files"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "ms": 24,
+      "warningCount": 1,
+      "resourceCount": 1,
+      "usedLiveWorkspaceRoot": "C:\\Users\\winsi\\OneDrive\\Documents\\New project 3",
+      "summarySample": "Local context\n- .tmp_eval_1_50.txt:29 27: 27\tAdd a feature flag around the new onboarding experience.\tsources:[local_files]->[local_files;web_search;github_code;docs]\n28: 28\tWrite an end-to-end test for the happy path checkout flow.\tintent:implement->answer | subject:code->unknown | outputShape:patch_plan->paragraph | sources:[local_files]->[web_search]\n29: 29\tImprove the error handling in this Gr"
+    },
+    {
+      "id": 30,
+      "prompt": "Rename this domain concept across the codebase while keeping migrations safe.",
+      "passed": true,
+      "mismatches": [],
+      "expected": {
+        "intent": "plan",
+        "subject": "repo",
+        "outputShape": "plan",
+        "sources": [
+          "local_files"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "actual": {
+        "intent": "plan",
+        "subject": "repo",
+        "outputShape": "plan",
+        "sources": [
+          "local_files"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "ms": 26,
+      "warningCount": 1,
+      "resourceCount": 1,
+      "usedLiveWorkspaceRoot": "C:\\Users\\winsi\\OneDrive\\Documents\\New project 3",
+      "summarySample": "Local context\n- .tmp_eval_1_50.txt:30 28: 28\tWrite an end-to-end test for the happy path checkout flow.\tintent:implement->answer | subject:code->unknown | outputShape:patch_plan->paragraph | sources:[local_files]->[web_search]\n29: 29\tImprove the error handling in this GraphQL resolver.\tintent:implement->debug | subject:code->error | outputShape:patch_plan->paragraph | sources:[local_files]->[web_s"
+    },
+    {
+      "id": 31,
+      "prompt": "Create a seed script that generates realistic local development data.",
+      "passed": true,
+      "mismatches": [],
+      "expected": {
+        "intent": "implement",
+        "subject": "code",
+        "outputShape": "patch_plan",
+        "sources": [
+          "local_files"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "actual": {
+        "intent": "implement",
+        "subject": "code",
+        "outputShape": "patch_plan",
+        "sources": [
+          "local_files"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "ms": 23,
+      "warningCount": 1,
+      "resourceCount": 1,
+      "usedLiveWorkspaceRoot": "C:\\Users\\winsi\\OneDrive\\Documents\\New project 3",
+      "summarySample": "Local context\n- .tmp_eval_1_50.txt:31 29: 29\tImprove the error handling in this GraphQL resolver.\tintent:implement->debug | subject:code->error | outputShape:patch_plan->paragraph | sources:[local_files]->[web_search]\n30: 30\tRename this domain concept across the codebase while keeping migrations safe.\tintent:plan->answer | subject:repo->unknown | outputShape:plan->paragraph | sources:[local_files]"
+    },
+    {
+      "id": 32,
+      "prompt": "Analyze the bundle size and identify the largest avoidable dependencies.",
+      "passed": true,
+      "mismatches": [],
+      "expected": {
+        "intent": "debug",
+        "subject": "package",
+        "outputShape": "list",
+        "sources": [
+          "local_files",
+          "docs"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "actual": {
+        "intent": "debug",
+        "subject": "package",
+        "outputShape": "list",
+        "sources": [
+          "local_files",
+          "docs"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "ms": 24,
+      "warningCount": 1,
+      "resourceCount": 1,
+      "usedLiveWorkspaceRoot": "C:\\Users\\winsi\\OneDrive\\Documents\\New project 3",
+      "summarySample": "Local context\n- .tmp_eval_1_50.txt:32 30: 30\tRename this domain concept across the codebase while keeping migrations safe.\tintent:plan->answer | subject:repo->unknown | outputShape:plan->paragraph | sources:[local_files]->[web_search]\n31: 31\tCreate a seed script that generates realistic local development data.\tintent:implement->answer | subject:code->data | outputShape:patch_plan->structured_data "
+    },
+    {
+      "id": 33,
+      "prompt": "Add retry logic with exponential backoff to this external API client.",
+      "passed": true,
+      "mismatches": [],
+      "expected": {
+        "intent": "implement",
+        "subject": "api",
+        "outputShape": "patch_plan",
+        "sources": [
+          "local_files"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "actual": {
+        "intent": "implement",
+        "subject": "api",
+        "outputShape": "patch_plan",
+        "sources": [
+          "local_files"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "ms": 27,
+      "warningCount": 1,
+      "resourceCount": 1,
+      "usedLiveWorkspaceRoot": "C:\\Users\\winsi\\OneDrive\\Documents\\New project 3",
+      "summarySample": "Local context\n- .tmp_eval_1_50.txt:33 31: 31\tCreate a seed script that generates realistic local development data.\tintent:implement->answer | subject:code->data | outputShape:patch_plan->structured_data | sources:[local_files]->[web_search]\n32: 32\tAnalyze the bundle size and identify the largest avoidable dependencies.\tintent:debug->answer | subject:package->unknown | outputShape:list->paragraph |"
+    },
+    {
+      "id": 34,
+      "prompt": "Make this page responsive on mobile without changing the desktop layout.",
+      "passed": true,
+      "mismatches": [],
+      "expected": {
+        "intent": "implement",
+        "subject": "code",
+        "outputShape": "patch_plan",
+        "sources": [
+          "local_files"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "actual": {
+        "intent": "implement",
+        "subject": "code",
+        "outputShape": "patch_plan",
+        "sources": [
+          "local_files"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "ms": 24,
+      "warningCount": 1,
+      "resourceCount": 1,
+      "usedLiveWorkspaceRoot": "C:\\Users\\winsi\\OneDrive\\Documents\\New project 3",
+      "summarySample": "Local context\n- .tmp_eval_1_50.txt:34 32: 32\tAnalyze the bundle size and identify the largest avoidable dependencies.\tintent:debug->answer | subject:package->unknown | outputShape:list->paragraph | sources:[local_files;docs]->[web_search]\n33: 33\tAdd retry logic with exponential backoff to this external API client.\tsources:[local_files]->[local_files;web_search;github_code;docs]\n34: 34\tMake this pa"
+    },
+    {
+      "id": 35,
+      "prompt": "Implement server-side filtering and sorting for this data table.",
+      "passed": true,
+      "mismatches": [],
+      "expected": {
+        "intent": "implement",
+        "subject": "api",
+        "outputShape": "patch_plan",
+        "sources": [
+          "local_files"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "actual": {
+        "intent": "implement",
+        "subject": "api",
+        "outputShape": "patch_plan",
+        "sources": [
+          "local_files"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "ms": 31,
+      "warningCount": 1,
+      "resourceCount": 1,
+      "usedLiveWorkspaceRoot": "C:\\Users\\winsi\\OneDrive\\Documents\\New project 3",
+      "summarySample": "Local context\n- .tmp_eval_1_50.txt:35 33: 33\tAdd retry logic with exponential backoff to this external API client.\tsources:[local_files]->[local_files;web_search;github_code;docs]\n34: 34\tMake this page responsive on mobile without changing the desktop layout.\tintent:implement->answer | subject:code->unknown | outputShape:patch_plan->paragraph | sources:[local_files]->[web_search]\n35: 35\tImplement "
+    },
+    {
+      "id": 36,
+      "prompt": "Find dead code in this package and remove it safely.",
+      "passed": true,
+      "mismatches": [],
+      "expected": {
+        "intent": "debug",
+        "subject": "repo",
+        "outputShape": "plan",
+        "sources": [
+          "local_files"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "actual": {
+        "intent": "debug",
+        "subject": "repo",
+        "outputShape": "plan",
+        "sources": [
+          "local_files"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "ms": 25,
+      "warningCount": 1,
+      "resourceCount": 1,
+      "usedLiveWorkspaceRoot": "C:\\Users\\winsi\\OneDrive\\Documents\\New project 3",
+      "summarySample": "Local context\n- .tmp_eval_1_50.txt:36 34: 34\tMake this page responsive on mobile without changing the desktop layout.\tintent:implement->answer | subject:code->unknown | outputShape:patch_plan->paragraph | sources:[local_files]->[web_search]\n35: 35\tImplement server-side filtering and sorting for this data table.\tsubject:api->data | sources:[local_files]->[local_files;web_search;github_code;docs]\n36"
+    },
+    {
+      "id": 37,
+      "prompt": "Add observability metrics for request latency and error rate.",
+      "passed": true,
+      "mismatches": [],
+      "expected": {
+        "intent": "implement",
+        "subject": "api",
+        "outputShape": "patch_plan",
+        "sources": [
+          "local_files",
+          "docs"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "actual": {
+        "intent": "implement",
+        "subject": "api",
+        "outputShape": "patch_plan",
+        "sources": [
+          "local_files",
+          "docs"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "ms": 30,
+      "warningCount": 1,
+      "resourceCount": 1,
+      "usedLiveWorkspaceRoot": "C:\\Users\\winsi\\OneDrive\\Documents\\New project 3",
+      "summarySample": "Local context\n- .tmp_eval_1_50.txt:37 35: 35\tImplement server-side filtering and sorting for this data table.\tsubject:api->data | sources:[local_files]->[local_files;web_search;github_code;docs]\n36: 36\tFind dead code in this package and remove it safely.\tintent:debug->answer | subject:repo->package | outputShape:plan->paragraph | sources:[local_files]->[web_search;package_registry;docs]\n37: 37\tAdd"
+    },
+    {
+      "id": 38,
+      "prompt": "Explain why this TypeScript generic is failing and simplify it if possible.",
+      "passed": true,
+      "mismatches": [],
+      "expected": {
+        "intent": "debug",
+        "subject": "code",
+        "outputShape": "paragraph",
+        "sources": [
+          "local_files"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "actual": {
+        "intent": "debug",
+        "subject": "code",
+        "outputShape": "paragraph",
+        "sources": [
+          "local_files"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "ms": 25,
+      "warningCount": 1,
+      "resourceCount": 1,
+      "usedLiveWorkspaceRoot": "C:\\Users\\winsi\\OneDrive\\Documents\\New project 3",
+      "summarySample": "Local context\n- .tmp_eval_1_50.txt:38 36: 36\tFind dead code in this package and remove it safely.\tintent:debug->answer | subject:repo->package | outputShape:plan->paragraph | sources:[local_files]->[web_search;package_registry;docs]\n37: 37\tAdd observability metrics for request latency and error rate.\tsubject:api->error | sources:[local_files;docs]->[local_files;web_search;github_code;docs]\n38: 38\t"
+    },
+    {
+      "id": 39,
+      "prompt": "Upgrade the project from Node 18 to Node 20 and fix compatibility issues.",
+      "passed": true,
+      "mismatches": [],
+      "expected": {
+        "intent": "implement",
+        "subject": "package",
+        "outputShape": "patch_plan",
+        "sources": [
+          "local_files",
+          "docs",
+          "package_registry"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "actual": {
+        "intent": "implement",
+        "subject": "package",
+        "outputShape": "patch_plan",
+        "sources": [
+          "local_files",
+          "docs",
+          "package_registry"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "ms": 27,
+      "warningCount": 1,
+      "resourceCount": 1,
+      "usedLiveWorkspaceRoot": "C:\\Users\\winsi\\OneDrive\\Documents\\New project 3",
+      "summarySample": "Local context\n- .tmp_eval_1_50.txt:39 37: 37\tAdd observability metrics for request latency and error rate.\tsubject:api->error | sources:[local_files;docs]->[local_files;web_search;github_code;docs]\n38: 38\tExplain why this TypeScript generic is failing and simplify it if possible.\tsources:[local_files]->[local_files;web_search;github_code;docs]\n39: 39\tUpgrade the project from Node 18 to Node 20 and"
+    },
+    {
+      "id": 40,
+      "prompt": "Add localization support for this settings page.",
+      "passed": true,
+      "mismatches": [],
+      "expected": {
+        "intent": "implement",
+        "subject": "code",
+        "outputShape": "patch_plan",
+        "sources": [
+          "local_files",
+          "docs"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "actual": {
+        "intent": "implement",
+        "subject": "code",
+        "outputShape": "patch_plan",
+        "sources": [
+          "local_files",
+          "docs"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "ms": 27,
+      "warningCount": 1,
+      "resourceCount": 1,
+      "usedLiveWorkspaceRoot": "C:\\Users\\winsi\\OneDrive\\Documents\\New project 3",
+      "summarySample": "Local context\n- .tmp_eval_1_50.txt:40 38: 38\tExplain why this TypeScript generic is failing and simplify it if possible.\tsources:[local_files]->[local_files;web_search;github_code;docs]\n39: 39\tUpgrade the project from Node 18 to Node 20 and fix compatibility issues.\tsubject:package->unknown | sources:[local_files;docs;package_registry]->[local_files;web_search;github_code;docs]\n40: 40\tAdd localiza"
+    },
+    {
+      "id": 41,
+      "prompt": "Implement a cron job that sends weekly summary emails.",
+      "passed": true,
+      "mismatches": [],
+      "expected": {
+        "intent": "implement",
+        "subject": "code",
+        "outputShape": "patch_plan",
+        "sources": [
+          "local_files"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "actual": {
+        "intent": "implement",
+        "subject": "code",
+        "outputShape": "patch_plan",
+        "sources": [
+          "local_files"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "ms": 33,
+      "warningCount": 1,
+      "resourceCount": 1,
+      "usedLiveWorkspaceRoot": "C:\\Users\\winsi\\OneDrive\\Documents\\New project 3",
+      "summarySample": "Local context\n- .tmp_eval_1_50.txt:41 39: 39\tUpgrade the project from Node 18 to Node 20 and fix compatibility issues.\tsubject:package->unknown | sources:[local_files;docs;package_registry]->[local_files;web_search;github_code;docs]\n40: 40\tAdd localization support for this settings page.\tsubject:code->unknown | sources:[local_files;docs]->[local_files;web_search;github_code;docs]\n41: 41\tImplement "
+    },
+    {
+      "id": 42,
+      "prompt": "Review this Terraform module for security and maintainability issues.",
+      "passed": true,
+      "mismatches": [],
+      "expected": {
+        "intent": "debug",
+        "subject": "code",
+        "outputShape": "list",
+        "sources": [
+          "local_files"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "actual": {
+        "intent": "debug",
+        "subject": "code",
+        "outputShape": "list",
+        "sources": [
+          "local_files"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "ms": 33,
+      "warningCount": 1,
+      "resourceCount": 1,
+      "usedLiveWorkspaceRoot": "C:\\Users\\winsi\\OneDrive\\Documents\\New project 3",
+      "summarySample": "Local context\n- .tmp_eval_1_50.txt:42 40: 40\tAdd localization support for this settings page.\tsubject:code->unknown | sources:[local_files;docs]->[local_files;web_search;github_code;docs]\n41: 41\tImplement a cron job that sends weekly summary emails.\tsubject:code->unknown | sources:[local_files]->[local_files;web_search;github_code;docs]\n42: 42\tReview this Terraform module for security and maintain"
+    },
+    {
+      "id": 43,
+      "prompt": "Add cache invalidation for updated user profile data.",
+      "passed": true,
+      "mismatches": [],
+      "expected": {
+        "intent": "implement",
+        "subject": "code",
+        "outputShape": "patch_plan",
+        "sources": [
+          "local_files"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "actual": {
+        "intent": "implement",
+        "subject": "code",
+        "outputShape": "patch_plan",
+        "sources": [
+          "local_files"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "ms": 34,
+      "warningCount": 1,
+      "resourceCount": 1,
+      "usedLiveWorkspaceRoot": "C:\\Users\\winsi\\OneDrive\\Documents\\New project 3",
+      "summarySample": "Local context\n- .tmp_eval_1_50.txt:43 41: 41\tImplement a cron job that sends weekly summary emails.\tsubject:code->unknown | sources:[local_files]->[local_files;web_search;github_code;docs]\n42: 42\tReview this Terraform module for security and maintainability issues.\tintent:debug->answer | subject:code->unknown | outputShape:list->paragraph | sources:[local_files]->[web_search]\n43: 43\tAdd cache inva"
+    },
+    {
+      "id": 44,
+      "prompt": "Create a CLI command for importing users from a CSV file.",
+      "passed": true,
+      "mismatches": [],
+      "expected": {
+        "intent": "implement",
+        "subject": "code",
+        "outputShape": "patch_plan",
+        "sources": [
+          "local_files"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "actual": {
+        "intent": "implement",
+        "subject": "code",
+        "outputShape": "patch_plan",
+        "sources": [
+          "local_files"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "ms": 26,
+      "warningCount": 1,
+      "resourceCount": 1,
+      "usedLiveWorkspaceRoot": "C:\\Users\\winsi\\OneDrive\\Documents\\New project 3",
+      "summarySample": "Local context\n- .tmp_eval_1_50.txt:44 42: 42\tReview this Terraform module for security and maintainability issues.\tintent:debug->answer | subject:code->unknown | outputShape:list->paragraph | sources:[local_files]->[web_search]\n43: 43\tAdd cache invalidation for updated user profile data.\tsubject:code->data | sources:[local_files]->[local_files;web_search;github_code;docs]\n44: 44\tCreate a CLI comma"
+    },
+    {
+      "id": 45,
+      "prompt": "Fix this race condition in the concurrent job worker.",
+      "passed": true,
+      "mismatches": [],
+      "expected": {
+        "intent": "debug",
+        "subject": "error",
+        "outputShape": "plan",
+        "sources": [
+          "local_files"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "actual": {
+        "intent": "debug",
+        "subject": "error",
+        "outputShape": "plan",
+        "sources": [
+          "local_files"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "ms": 25,
+      "warningCount": 1,
+      "resourceCount": 1,
+      "usedLiveWorkspaceRoot": "C:\\Users\\winsi\\OneDrive\\Documents\\New project 3",
+      "summarySample": "Local context\n- .tmp_eval_1_50.txt:45 43: 43\tAdd cache invalidation for updated user profile data.\tsubject:code->data | sources:[local_files]->[local_files;web_search;github_code;docs]\n44: 44\tCreate a CLI command for importing users from a CSV file.\tintent:implement->answer | subject:code->data | outputShape:patch_plan->structured_data | sources:[local_files]->[web_search]\n45: 45\tFix this race con"
+    },
+    {
+      "id": 46,
+      "prompt": "Add snapshot tests for this UI component only where they provide value.",
+      "passed": true,
+      "mismatches": [],
+      "expected": {
+        "intent": "implement",
+        "subject": "code",
+        "outputShape": "patch_plan",
+        "sources": [
+          "local_files"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "actual": {
+        "intent": "implement",
+        "subject": "code",
+        "outputShape": "patch_plan",
+        "sources": [
+          "local_files"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "ms": 32,
+      "warningCount": 1,
+      "resourceCount": 1,
+      "usedLiveWorkspaceRoot": "C:\\Users\\winsi\\OneDrive\\Documents\\New project 3",
+      "summarySample": "Local context\n- .tmp_eval_1_50.txt:46 44: 44\tCreate a CLI command for importing users from a CSV file.\tintent:implement->answer | subject:code->data | outputShape:patch_plan->structured_data | sources:[local_files]->[web_search]\n45: 45\tFix this race condition in the concurrent job worker.\tintent:debug->implement | subject:error->unknown | outputShape:plan->patch_plan | sources:[local_files]->[loca"
+    },
+    {
+      "id": 47,
+      "prompt": "Implement drag-and-drop reordering for this list.",
+      "passed": true,
+      "mismatches": [],
+      "expected": {
+        "intent": "implement",
+        "subject": "code",
+        "outputShape": "patch_plan",
+        "sources": [
+          "local_files"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "actual": {
+        "intent": "implement",
+        "subject": "code",
+        "outputShape": "patch_plan",
+        "sources": [
+          "local_files"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "ms": 36,
+      "warningCount": 1,
+      "resourceCount": 1,
+      "usedLiveWorkspaceRoot": "C:\\Users\\winsi\\OneDrive\\Documents\\New project 3",
+      "summarySample": "Local context\n- .tmp_eval_1_50.txt:47 45: 45\tFix this race condition in the concurrent job worker.\tintent:debug->implement | subject:error->unknown | outputShape:plan->patch_plan | sources:[local_files]->[local_files;web_search;github_code;docs]\n46: 46\tAdd snapshot tests for this UI component only where they provide value.\tsubject:code->fact | sources:[local_files]->[local_files;web_search;github_"
+    },
+    {
+      "id": 48,
+      "prompt": "Investigate why memory usage grows over time in this service.",
+      "passed": true,
+      "mismatches": [],
+      "expected": {
+        "intent": "debug",
+        "subject": "error",
+        "outputShape": "plan",
+        "sources": [
+          "local_files"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "actual": {
+        "intent": "debug",
+        "subject": "error",
+        "outputShape": "plan",
+        "sources": [
+          "local_files"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "ms": 23,
+      "warningCount": 1,
+      "resourceCount": 1,
+      "usedLiveWorkspaceRoot": "C:\\Users\\winsi\\OneDrive\\Documents\\New project 3",
+      "summarySample": "Local context\n- .tmp_eval_1_50.txt:48 46: 46\tAdd snapshot tests for this UI component only where they provide value.\tsubject:code->fact | sources:[local_files]->[local_files;web_search;github_code;docs]\n47: 47\tImplement drag-and-drop reordering for this list.\tsubject:code->unknown | sources:[local_files]->[local_files;web_search;github_code;docs]\n48: 48\tInvestigate why memory usage grows over time"
+    },
+    {
+      "id": 49,
+      "prompt": "Add CSRF protection to the session-based routes.",
+      "passed": true,
+      "mismatches": [],
+      "expected": {
+        "intent": "implement",
+        "subject": "code",
+        "outputShape": "patch_plan",
+        "sources": [
+          "local_files",
+          "docs"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "actual": {
+        "intent": "implement",
+        "subject": "code",
+        "outputShape": "patch_plan",
+        "sources": [
+          "local_files",
+          "docs"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "ms": 24,
+      "warningCount": 1,
+      "resourceCount": 1,
+      "usedLiveWorkspaceRoot": "C:\\Users\\winsi\\OneDrive\\Documents\\New project 3",
+      "summarySample": "Local context\n- .tmp_eval_1_50.txt:49 47: 47\tImplement drag-and-drop reordering for this list.\tsubject:code->unknown | sources:[local_files]->[local_files;web_search;github_code;docs]\n48: 48\tInvestigate why memory usage grows over time in this service.\tintent:debug->answer | subject:error->unknown | outputShape:plan->paragraph | sources:[local_files]->[web_search]\n49: 49\tAdd CSRF protection to the"
+    },
+    {
+      "id": 50,
+      "prompt": "Write developer documentation for running this project locally.",
+      "passed": true,
+      "mismatches": [],
+      "expected": {
+        "intent": "implement",
+        "subject": "docs",
+        "outputShape": "plan",
+        "sources": [
+          "local_files"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "actual": {
+        "intent": "implement",
+        "subject": "docs",
+        "outputShape": "plan",
+        "sources": [
+          "local_files"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "ms": 25,
+      "warningCount": 0,
+      "resourceCount": 1,
+      "usedLiveWorkspaceRoot": "C:\\Users\\winsi\\OneDrive\\Documents\\New project 3",
+      "summarySample": "Local context\n- .tmp_eval_1_50.txt:50 48: 48\tInvestigate why memory usage grows over time in this service.\tintent:debug->answer | subject:error->unknown | outputShape:plan->paragraph | sources:[local_files]->[web_search]\n49: 49\tAdd CSRF protection to the session-based routes.\tsubject:code->unknown | sources:[local_files;docs]->[local_files;web_search;github_code;docs]\n50: 50\tWrite developer docume"
+    },
+    {
+      "id": 51,
+      "prompt": "Convert this class-based React component to a function component with hooks.",
+      "passed": true,
+      "mismatches": [],
+      "expected": {
+        "intent": "implement",
+        "subject": "code",
+        "outputShape": "patch_plan",
+        "sources": [
+          "local_files"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "actual": {
+        "intent": "implement",
+        "subject": "code",
+        "outputShape": "patch_plan",
+        "sources": [
+          "local_files"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "ms": 30,
+      "warningCount": 0,
+      "resourceCount": 1,
+      "usedLiveWorkspaceRoot": "C:\\Users\\winsi\\OneDrive\\Documents\\New project 3",
+      "summarySample": "Local context\n- tests/request-router-corpus.test.ts:58 56:   \"Add CSRF protection to the session-based routes.\",\n57:   \"Write developer documentation for running this project locally.\",\n58:   \"Convert this class-based React component to a function component with hooks.\",\n59:   \"Add a new column to this admin table with server-provided status values.\",\n60:   \"Implement soft deletes for organization"
+    },
+    {
+      "id": 52,
+      "prompt": "Add a new column to this admin table with server-provided status values.",
+      "passed": true,
+      "mismatches": [],
+      "expected": {
+        "intent": "implement",
+        "subject": "code",
+        "outputShape": "patch_plan",
+        "sources": [
+          "local_files"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "actual": {
+        "intent": "implement",
+        "subject": "code",
+        "outputShape": "patch_plan",
+        "sources": [
+          "local_files"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "ms": 22,
+      "warningCount": 0,
+      "resourceCount": 1,
+      "usedLiveWorkspaceRoot": "C:\\Users\\winsi\\OneDrive\\Documents\\New project 3",
+      "summarySample": "Local context\n- tests/request-router-corpus.test.ts:59 57:   \"Write developer documentation for running this project locally.\",\n58:   \"Convert this class-based React component to a function component with hooks.\",\n59:   \"Add a new column to this admin table with server-provided status values.\",\n60:   \"Implement soft deletes for organizations and update relevant queries.\",\n61:   \"Review this API de"
+    },
+    {
+      "id": 53,
+      "prompt": "Implement soft deletes for organizations and update relevant queries.",
+      "passed": true,
+      "mismatches": [],
+      "expected": {
+        "intent": "implement",
+        "subject": "code",
+        "outputShape": "patch_plan",
+        "sources": [
+          "local_files"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "actual": {
+        "intent": "implement",
+        "subject": "code",
+        "outputShape": "patch_plan",
+        "sources": [
+          "local_files"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "ms": 31,
+      "warningCount": 0,
+      "resourceCount": 1,
+      "usedLiveWorkspaceRoot": "C:\\Users\\winsi\\OneDrive\\Documents\\New project 3",
+      "summarySample": "Local context\n- tests/request-router-corpus.test.ts:60 58:   \"Convert this class-based React component to a function component with hooks.\",\n59:   \"Add a new column to this admin table with server-provided status values.\",\n60:   \"Implement soft deletes for organizations and update relevant queries.\",\n61:   \"Review this API design and suggest a cleaner resource model.\",\n62:   \"Find all TODO comment"
+    },
+    {
+      "id": 54,
+      "prompt": "Review this API design and suggest a cleaner resource model.",
+      "passed": true,
+      "mismatches": [],
+      "expected": {
+        "intent": "compare",
+        "subject": "api",
+        "outputShape": "list",
+        "sources": [
+          "local_files"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "actual": {
+        "intent": "compare",
+        "subject": "api",
+        "outputShape": "list",
+        "sources": [
+          "local_files"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "ms": 32,
+      "warningCount": 0,
+      "resourceCount": 1,
+      "usedLiveWorkspaceRoot": "C:\\Users\\winsi\\OneDrive\\Documents\\New project 3",
+      "summarySample": "Local context\n- tests/request-router-corpus.test.ts:61 59:   \"Add a new column to this admin table with server-provided status values.\",\n60:   \"Implement soft deletes for organizations and update relevant queries.\",\n61:   \"Review this API design and suggest a cleaner resource model.\",\n62:   \"Find all TODO comments related to billing and turn them into actionable issues.\",\n63:   \"Add a health check"
+    },
+    {
+      "id": 55,
+      "prompt": "Find all TODO comments related to billing and turn them into actionable issues.",
+      "passed": true,
+      "mismatches": [],
+      "expected": {
+        "intent": "extract",
+        "subject": "code",
+        "outputShape": "structured_data",
+        "sources": [
+          "local_files"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "actual": {
+        "intent": "extract",
+        "subject": "code",
+        "outputShape": "structured_data",
+        "sources": [
+          "local_files"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "ms": 30,
+      "warningCount": 0,
+      "resourceCount": 1,
+      "usedLiveWorkspaceRoot": "C:\\Users\\winsi\\OneDrive\\Documents\\New project 3",
+      "summarySample": "Local context\n- tests/request-router-corpus.test.ts:62 60:   \"Implement soft deletes for organizations and update relevant queries.\",\n61:   \"Review this API design and suggest a cleaner resource model.\",\n62:   \"Find all TODO comments related to billing and turn them into actionable issues.\",\n63:   \"Add a health check endpoint suitable for Kubernetes readiness probes.\",\n64:   \"Debug why this WebSoc"
+    },
+    {
+      "id": 56,
+      "prompt": "Add a health check endpoint suitable for Kubernetes readiness probes.",
+      "passed": true,
+      "mismatches": [],
+      "expected": {
+        "intent": "implement",
+        "subject": "api",
+        "outputShape": "patch_plan",
+        "sources": [
+          "local_files",
+          "docs"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "actual": {
+        "intent": "implement",
+        "subject": "api",
+        "outputShape": "patch_plan",
+        "sources": [
+          "local_files",
+          "docs"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "ms": 23,
+      "warningCount": 0,
+      "resourceCount": 1,
+      "usedLiveWorkspaceRoot": "C:\\Users\\winsi\\OneDrive\\Documents\\New project 3",
+      "summarySample": "Local context\n- tests/request-router-corpus.test.ts:63 61:   \"Review this API design and suggest a cleaner resource model.\",\n62:   \"Find all TODO comments related to billing and turn them into actionable issues.\",\n63:   \"Add a health check endpoint suitable for Kubernetes readiness probes.\",\n64:   \"Debug why this WebSocket connection disconnects after a few minutes.\",\n65:   \"Implement file upload "
+    },
+    {
+      "id": 57,
+      "prompt": "Debug why this WebSocket connection disconnects after a few minutes.",
+      "passed": true,
+      "mismatches": [],
+      "expected": {
+        "intent": "debug",
+        "subject": "error",
+        "outputShape": "plan",
+        "sources": [
+          "local_files"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "actual": {
+        "intent": "debug",
+        "subject": "error",
+        "outputShape": "plan",
+        "sources": [
+          "local_files"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "ms": 25,
+      "warningCount": 0,
+      "resourceCount": 1,
+      "usedLiveWorkspaceRoot": "C:\\Users\\winsi\\OneDrive\\Documents\\New project 3",
+      "summarySample": "Local context\n- tests/request-router-corpus.test.ts:64 62:   \"Find all TODO comments related to billing and turn them into actionable issues.\",\n63:   \"Add a health check endpoint suitable for Kubernetes readiness probes.\",\n64:   \"Debug why this WebSocket connection disconnects after a few minutes.\",\n65:   \"Implement file upload with size limits, MIME validation, and progress UI.\",\n66:   \"Add tests"
+    },
+    {
+      "id": 58,
+      "prompt": "Implement file upload with size limits, MIME validation, and progress UI.",
+      "passed": true,
+      "mismatches": [],
+      "expected": {
+        "intent": "implement",
+        "subject": "code",
+        "outputShape": "patch_plan",
+        "sources": [
+          "local_files",
+          "docs"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "actual": {
+        "intent": "implement",
+        "subject": "code",
+        "outputShape": "patch_plan",
+        "sources": [
+          "local_files",
+          "docs"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "ms": 24,
+      "warningCount": 0,
+      "resourceCount": 1,
+      "usedLiveWorkspaceRoot": "C:\\Users\\winsi\\OneDrive\\Documents\\New project 3",
+      "summarySample": "Local context\n- tests/request-router-corpus.test.ts:65 63:   \"Add a health check endpoint suitable for Kubernetes readiness probes.\",\n64:   \"Debug why this WebSocket connection disconnects after a few minutes.\",\n65:   \"Implement file upload with size limits, MIME validation, and progress UI.\",\n66:   \"Add tests for timezone handling around daylight saving transitions.\",\n67:   \"Improve this README s"
+    },
+    {
+      "id": 59,
+      "prompt": "Add tests for timezone handling around daylight saving transitions.",
+      "passed": true,
+      "mismatches": [],
+      "expected": {
+        "intent": "implement",
+        "subject": "code",
+        "outputShape": "patch_plan",
+        "sources": [
+          "local_files"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "actual": {
+        "intent": "implement",
+        "subject": "code",
+        "outputShape": "patch_plan",
+        "sources": [
+          "local_files"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "ms": 23,
+      "warningCount": 0,
+      "resourceCount": 1,
+      "usedLiveWorkspaceRoot": "C:\\Users\\winsi\\OneDrive\\Documents\\New project 3",
+      "summarySample": "Local context\n- tests/request-router-corpus.test.ts:66 64:   \"Debug why this WebSocket connection disconnects after a few minutes.\",\n65:   \"Implement file upload with size limits, MIME validation, and progress UI.\",\n66:   \"Add tests for timezone handling around daylight saving transitions.\",\n67:   \"Improve this README so a new contributor can be productive in 15 minutes.\",\n68:   \"Identify security"
+    },
+    {
+      "id": 60,
+      "prompt": "Improve this README so a new contributor can be productive in 15 minutes.",
+      "passed": true,
+      "mismatches": [],
+      "expected": {
+        "intent": "implement",
+        "subject": "docs",
+        "outputShape": "plan",
+        "sources": [
+          "local_files"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "actual": {
+        "intent": "implement",
+        "subject": "docs",
+        "outputShape": "plan",
+        "sources": [
+          "local_files"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "ms": 32,
+      "warningCount": 0,
+      "resourceCount": 1,
+      "usedLiveWorkspaceRoot": "C:\\Users\\winsi\\OneDrive\\Documents\\New project 3",
+      "summarySample": "Local context\n- tests/request-router-corpus.test.ts:67 65:   \"Implement file upload with size limits, MIME validation, and progress UI.\",\n66:   \"Add tests for timezone handling around daylight saving transitions.\",\n67:   \"Improve this README so a new contributor can be productive in 15 minutes.\",\n68:   \"Identify security risks in this OAuth callback implementation.\",\n69:   \"Add graceful shutdown h"
+    },
+    {
+      "id": 61,
+      "prompt": "Identify security risks in this OAuth callback implementation.",
+      "passed": true,
+      "mismatches": [],
+      "expected": {
+        "intent": "debug",
+        "subject": "code",
+        "outputShape": "list",
+        "sources": [
+          "local_files",
+          "docs"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "actual": {
+        "intent": "debug",
+        "subject": "code",
+        "outputShape": "list",
+        "sources": [
+          "local_files",
+          "docs"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "ms": 23,
+      "warningCount": 0,
+      "resourceCount": 1,
+      "usedLiveWorkspaceRoot": "C:\\Users\\winsi\\OneDrive\\Documents\\New project 3",
+      "summarySample": "Local context\n- tests/request-router-corpus.test.ts:68 66:   \"Add tests for timezone handling around daylight saving transitions.\",\n67:   \"Improve this README so a new contributor can be productive in 15 minutes.\",\n68:   \"Identify security risks in this OAuth callback implementation.\",\n69:   \"Add graceful shutdown handling to this Node service.\",\n70:   \"Port this Python script into a reusable pack"
+    },
+    {
+      "id": 62,
+      "prompt": "Add graceful shutdown handling to this Node service.",
+      "passed": true,
+      "mismatches": [],
+      "expected": {
+        "intent": "implement",
+        "subject": "code",
+        "outputShape": "patch_plan",
+        "sources": [
+          "local_files"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "actual": {
+        "intent": "implement",
+        "subject": "code",
+        "outputShape": "patch_plan",
+        "sources": [
+          "local_files"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "ms": 21,
+      "warningCount": 0,
+      "resourceCount": 1,
+      "usedLiveWorkspaceRoot": "C:\\Users\\winsi\\OneDrive\\Documents\\New project 3",
+      "summarySample": "Local context\n- tests/request-router-corpus.test.ts:69 67:   \"Improve this README so a new contributor can be productive in 15 minutes.\",\n68:   \"Identify security risks in this OAuth callback implementation.\",\n69:   \"Add graceful shutdown handling to this Node service.\",\n70:   \"Port this Python script into a reusable package module with tests.\",\n71:   \"Implement role-based access control for the a"
+    },
+    {
+      "id": 63,
+      "prompt": "Port this Python script into a reusable package module with tests.",
+      "passed": true,
+      "mismatches": [],
+      "expected": {
+        "intent": "implement",
+        "subject": "code",
+        "outputShape": "patch_plan",
+        "sources": [
+          "local_files"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "actual": {
+        "intent": "implement",
+        "subject": "code",
+        "outputShape": "patch_plan",
+        "sources": [
+          "local_files"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "ms": 23,
+      "warningCount": 0,
+      "resourceCount": 1,
+      "usedLiveWorkspaceRoot": "C:\\Users\\winsi\\OneDrive\\Documents\\New project 3",
+      "summarySample": "Local context\n- tests/request-router-corpus.test.ts:70 68:   \"Identify security risks in this OAuth callback implementation.\",\n69:   \"Add graceful shutdown handling to this Node service.\",\n70:   \"Port this Python script into a reusable package module with tests.\",\n71:   \"Implement role-based access control for the admin routes.\",\n72:   \"Review this dependency update PR and identify behavior change"
+    },
+    {
+      "id": 64,
+      "prompt": "Implement role-based access control for the admin routes.",
+      "passed": true,
+      "mismatches": [],
+      "expected": {
+        "intent": "implement",
+        "subject": "code",
+        "outputShape": "patch_plan",
+        "sources": [
+          "local_files"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "actual": {
+        "intent": "implement",
+        "subject": "code",
+        "outputShape": "patch_plan",
+        "sources": [
+          "local_files"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "ms": 25,
+      "warningCount": 0,
+      "resourceCount": 1,
+      "usedLiveWorkspaceRoot": "C:\\Users\\winsi\\OneDrive\\Documents\\New project 3",
+      "summarySample": "Local context\n- tests/request-router-corpus.test.ts:71 69:   \"Add graceful shutdown handling to this Node service.\",\n70:   \"Port this Python script into a reusable package module with tests.\",\n71:   \"Implement role-based access control for the admin routes.\",\n72:   \"Review this dependency update PR and identify behavior changes we should test.\",\n73:   \"Add analytics events for the onboarding funne"
+    },
+    {
+      "id": 65,
+      "prompt": "Review this dependency update PR and identify behavior changes we should test.",
+      "passed": true,
+      "mismatches": [],
+      "expected": {
+        "intent": "compare",
+        "subject": "repo",
+        "outputShape": "list",
+        "sources": [
+          "local_files",
+          "docs",
+          "package_registry"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "actual": {
+        "intent": "compare",
+        "subject": "repo",
+        "outputShape": "list",
+        "sources": [
+          "local_files",
+          "docs",
+          "package_registry"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "ms": 27,
+      "warningCount": 0,
+      "resourceCount": 1,
+      "usedLiveWorkspaceRoot": "C:\\Users\\winsi\\OneDrive\\Documents\\New project 3",
+      "summarySample": "Local context\n- tests/request-router-corpus.test.ts:72 70:   \"Port this Python script into a reusable package module with tests.\",\n71:   \"Implement role-based access control for the admin routes.\",\n72:   \"Review this dependency update PR and identify behavior changes we should test.\",\n73:   \"Add analytics events for the onboarding funnel.\",\n74:   \"Fix the layout shift happening when images load on"
+    },
+    {
+      "id": 66,
+      "prompt": "Add analytics events for the onboarding funnel.",
+      "passed": true,
+      "mismatches": [],
+      "expected": {
+        "intent": "implement",
+        "subject": "code",
+        "outputShape": "patch_plan",
+        "sources": [
+          "local_files"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "actual": {
+        "intent": "implement",
+        "subject": "code",
+        "outputShape": "patch_plan",
+        "sources": [
+          "local_files"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "ms": 26,
+      "warningCount": 0,
+      "resourceCount": 1,
+      "usedLiveWorkspaceRoot": "C:\\Users\\winsi\\OneDrive\\Documents\\New project 3",
+      "summarySample": "Local context\n- tests/request-router-corpus.test.ts:73 71:   \"Implement role-based access control for the admin routes.\",\n72:   \"Review this dependency update PR and identify behavior changes we should test.\",\n73:   \"Add analytics events for the onboarding funnel.\",\n74:   \"Fix the layout shift happening when images load on this page.\",\n75:   \"Create a migration plan for moving from REST to GraphQL"
+    },
+    {
+      "id": 67,
+      "prompt": "Fix the layout shift happening when images load on this page.",
+      "passed": true,
+      "mismatches": [],
+      "expected": {
+        "intent": "debug",
+        "subject": "code",
+        "outputShape": "plan",
+        "sources": [
+          "local_files",
+          "docs"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "actual": {
+        "intent": "debug",
+        "subject": "code",
+        "outputShape": "plan",
+        "sources": [
+          "local_files",
+          "docs"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "ms": 31,
+      "warningCount": 0,
+      "resourceCount": 1,
+      "usedLiveWorkspaceRoot": "C:\\Users\\winsi\\OneDrive\\Documents\\New project 3",
+      "summarySample": "Local context\n- tests/request-router-corpus.test.ts:74 72:   \"Review this dependency update PR and identify behavior changes we should test.\",\n73:   \"Add analytics events for the onboarding funnel.\",\n74:   \"Fix the layout shift happening when images load on this page.\",\n75:   \"Create a migration plan for moving from REST to GraphQL for this resource.\",\n76:   \"Implement idempotency keys for payment"
+    },
+    {
+      "id": 68,
+      "prompt": "Create a migration plan for moving from REST to GraphQL for this resource.",
+      "passed": true,
+      "mismatches": [],
+      "expected": {
+        "intent": "plan",
+        "subject": "api",
+        "outputShape": "plan",
+        "sources": [
+          "local_files",
+          "docs"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "actual": {
+        "intent": "plan",
+        "subject": "api",
+        "outputShape": "plan",
+        "sources": [
+          "local_files",
+          "docs"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "ms": 25,
+      "warningCount": 0,
+      "resourceCount": 1,
+      "usedLiveWorkspaceRoot": "C:\\Users\\winsi\\OneDrive\\Documents\\New project 3",
+      "summarySample": "Local context\n- tests/request-router-corpus.test.ts:75 73:   \"Add analytics events for the onboarding funnel.\",\n74:   \"Fix the layout shift happening when images load on this page.\",\n75:   \"Create a migration plan for moving from REST to GraphQL for this resource.\",\n76:   \"Implement idempotency keys for payment creation.\",\n77:   \"Add validation and helpful errors to this YAML configuration parser."
+    },
+    {
+      "id": 69,
+      "prompt": "Implement idempotency keys for payment creation.",
+      "passed": true,
+      "mismatches": [],
+      "expected": {
+        "intent": "implement",
+        "subject": "api",
+        "outputShape": "patch_plan",
+        "sources": [
+          "local_files",
+          "docs"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "actual": {
+        "intent": "implement",
+        "subject": "api",
+        "outputShape": "patch_plan",
+        "sources": [
+          "local_files",
+          "docs"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "ms": 32,
+      "warningCount": 0,
+      "resourceCount": 1,
+      "usedLiveWorkspaceRoot": "C:\\Users\\winsi\\OneDrive\\Documents\\New project 3",
+      "summarySample": "Local context\n- tests/request-router-corpus.test.ts:76 74:   \"Fix the layout shift happening when images load on this page.\",\n75:   \"Create a migration plan for moving from REST to GraphQL for this resource.\",\n76:   \"Implement idempotency keys for payment creation.\",\n77:   \"Add validation and helpful errors to this YAML configuration parser.\",\n78:   \"Investigate why this query is slow and propose "
+    },
+    {
+      "id": 70,
+      "prompt": "Add validation and helpful errors to this YAML configuration parser.",
+      "passed": true,
+      "mismatches": [],
+      "expected": {
+        "intent": "implement",
+        "subject": "code",
+        "outputShape": "patch_plan",
+        "sources": [
+          "local_files"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "actual": {
+        "intent": "implement",
+        "subject": "code",
+        "outputShape": "patch_plan",
+        "sources": [
+          "local_files"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "ms": 31,
+      "warningCount": 0,
+      "resourceCount": 1,
+      "usedLiveWorkspaceRoot": "C:\\Users\\winsi\\OneDrive\\Documents\\New project 3",
+      "summarySample": "Local context\n- tests/request-router-corpus.test.ts:77 75:   \"Create a migration plan for moving from REST to GraphQL for this resource.\",\n76:   \"Implement idempotency keys for payment creation.\",\n77:   \"Add validation and helpful errors to this YAML configuration parser.\",\n78:   \"Investigate why this query is slow and propose a schema or query change.\",\n79:   \"Build a small internal dashboard sho"
+    },
+    {
+      "id": 71,
+      "prompt": "Investigate why this query is slow and propose a schema or query change.",
+      "passed": true,
+      "mismatches": [],
+      "expected": {
+        "intent": "debug",
+        "subject": "data",
+        "outputShape": "plan",
+        "sources": [
+          "local_files",
+          "docs"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "actual": {
+        "intent": "debug",
+        "subject": "data",
+        "outputShape": "plan",
+        "sources": [
+          "local_files",
+          "docs"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "ms": 31,
+      "warningCount": 0,
+      "resourceCount": 1,
+      "usedLiveWorkspaceRoot": "C:\\Users\\winsi\\OneDrive\\Documents\\New project 3",
+      "summarySample": "Local context\n- tests/request-router-corpus.test.ts:78 76:   \"Implement idempotency keys for payment creation.\",\n77:   \"Add validation and helpful errors to this YAML configuration parser.\",\n78:   \"Investigate why this query is slow and propose a schema or query change.\",\n79:   \"Build a small internal dashboard showing queue depth and failed jobs.\",\n80:   \"Add contract tests for this service-to-se"
+    },
+    {
+      "id": 72,
+      "prompt": "Build a small internal dashboard showing queue depth and failed jobs.",
+      "passed": true,
+      "mismatches": [],
+      "expected": {
+        "intent": "implement",
+        "subject": "code",
+        "outputShape": "patch_plan",
+        "sources": [
+          "local_files"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "actual": {
+        "intent": "implement",
+        "subject": "code",
+        "outputShape": "patch_plan",
+        "sources": [
+          "local_files"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "ms": 24,
+      "warningCount": 0,
+      "resourceCount": 1,
+      "usedLiveWorkspaceRoot": "C:\\Users\\winsi\\OneDrive\\Documents\\New project 3",
+      "summarySample": "Local context\n- tests/request-router-corpus.test.ts:79 77:   \"Add validation and helpful errors to this YAML configuration parser.\",\n78:   \"Investigate why this query is slow and propose a schema or query change.\",\n79:   \"Build a small internal dashboard showing queue depth and failed jobs.\",\n80:   \"Add contract tests for this service-to-service API.\",\n81:   \"Explain this legacy module and identif"
+    },
+    {
+      "id": 73,
+      "prompt": "Add contract tests for this service-to-service API.",
+      "passed": true,
+      "mismatches": [],
+      "expected": {
+        "intent": "implement",
+        "subject": "api",
+        "outputShape": "patch_plan",
+        "sources": [
+          "local_files",
+          "docs"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "actual": {
+        "intent": "implement",
+        "subject": "api",
+        "outputShape": "patch_plan",
+        "sources": [
+          "local_files",
+          "docs"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "ms": 22,
+      "warningCount": 0,
+      "resourceCount": 1,
+      "usedLiveWorkspaceRoot": "C:\\Users\\winsi\\OneDrive\\Documents\\New project 3",
+      "summarySample": "Local context\n- tests/request-router-corpus.test.ts:80 78:   \"Investigate why this query is slow and propose a schema or query change.\",\n79:   \"Build a small internal dashboard showing queue depth and failed jobs.\",\n80:   \"Add contract tests for this service-to-service API.\",\n81:   \"Explain this legacy module and identify where a new feature should be added.\",\n82:   \"Implement infinite scrolling w"
+    },
+    {
+      "id": 74,
+      "prompt": "Explain this legacy module and identify where a new feature should be added.",
+      "passed": true,
+      "mismatches": [],
+      "expected": {
+        "intent": "extract",
+        "subject": "code",
+        "outputShape": "paragraph",
+        "sources": [
+          "local_files"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "actual": {
+        "intent": "extract",
+        "subject": "code",
+        "outputShape": "paragraph",
+        "sources": [
+          "local_files"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "ms": 31,
+      "warningCount": 0,
+      "resourceCount": 1,
+      "usedLiveWorkspaceRoot": "C:\\Users\\winsi\\OneDrive\\Documents\\New project 3",
+      "summarySample": "Local context\n- tests/request-router-corpus.test.ts:81 79:   \"Build a small internal dashboard showing queue depth and failed jobs.\",\n80:   \"Add contract tests for this service-to-service API.\",\n81:   \"Explain this legacy module and identify where a new feature should be added.\",\n82:   \"Implement infinite scrolling with proper loading, empty, and error states.\",\n83:   \"Add support for multiple cur"
+    },
+    {
+      "id": 75,
+      "prompt": "Implement infinite scrolling with proper loading, empty, and error states.",
+      "passed": true,
+      "mismatches": [],
+      "expected": {
+        "intent": "implement",
+        "subject": "code",
+        "outputShape": "patch_plan",
+        "sources": [
+          "local_files"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "actual": {
+        "intent": "implement",
+        "subject": "code",
+        "outputShape": "patch_plan",
+        "sources": [
+          "local_files"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "ms": 24,
+      "warningCount": 0,
+      "resourceCount": 1,
+      "usedLiveWorkspaceRoot": "C:\\Users\\winsi\\OneDrive\\Documents\\New project 3",
+      "summarySample": "Local context\n- tests/request-router-corpus.test.ts:82 80:   \"Add contract tests for this service-to-service API.\",\n81:   \"Explain this legacy module and identify where a new feature should be added.\",\n82:   \"Implement infinite scrolling with proper loading, empty, and error states.\",\n83:   \"Add support for multiple currencies in pricing calculations.\",\n84:   \"Review this mobile app screen for pla"
+    },
+    {
+      "id": 76,
+      "prompt": "Add support for multiple currencies in pricing calculations.",
+      "passed": true,
+      "mismatches": [],
+      "expected": {
+        "intent": "implement",
+        "subject": "code",
+        "outputShape": "patch_plan",
+        "sources": [
+          "local_files",
+          "docs"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "actual": {
+        "intent": "implement",
+        "subject": "code",
+        "outputShape": "patch_plan",
+        "sources": [
+          "local_files",
+          "docs"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "ms": 27,
+      "warningCount": 0,
+      "resourceCount": 1,
+      "usedLiveWorkspaceRoot": "C:\\Users\\winsi\\OneDrive\\Documents\\New project 3",
+      "summarySample": "Local context\n- tests/request-router-corpus.test.ts:83 81:   \"Explain this legacy module and identify where a new feature should be added.\",\n82:   \"Implement infinite scrolling with proper loading, empty, and error states.\",\n83:   \"Add support for multiple currencies in pricing calculations.\",\n84:   \"Review this mobile app screen for platform-specific usability issues.\",\n85:   \"Set up linting and "
+    },
+    {
+      "id": 77,
+      "prompt": "Review this mobile app screen for platform-specific usability issues.",
+      "passed": true,
+      "mismatches": [],
+      "expected": {
+        "intent": "compare",
+        "subject": "code",
+        "outputShape": "list",
+        "sources": [
+          "local_files",
+          "docs"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "actual": {
+        "intent": "compare",
+        "subject": "code",
+        "outputShape": "list",
+        "sources": [
+          "local_files",
+          "docs"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "ms": 27,
+      "warningCount": 0,
+      "resourceCount": 1,
+      "usedLiveWorkspaceRoot": "C:\\Users\\winsi\\OneDrive\\Documents\\New project 3",
+      "summarySample": "Local context\n- tests/request-router-corpus.test.ts:84 82:   \"Implement infinite scrolling with proper loading, empty, and error states.\",\n83:   \"Add support for multiple currencies in pricing calculations.\",\n84:   \"Review this mobile app screen for platform-specific usability issues.\",\n85:   \"Set up linting and formatting in this repo without causing broad unrelated churn.\",\n86:   \"Add a mock ser"
+    },
+    {
+      "id": 78,
+      "prompt": "Set up linting and formatting in this repo without causing broad unrelated churn.",
+      "passed": true,
+      "mismatches": [],
+      "expected": {
+        "intent": "implement",
+        "subject": "repo",
+        "outputShape": "patch_plan",
+        "sources": [
+          "local_files",
+          "docs"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "actual": {
+        "intent": "implement",
+        "subject": "repo",
+        "outputShape": "patch_plan",
+        "sources": [
+          "local_files",
+          "docs"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "ms": 31,
+      "warningCount": 0,
+      "resourceCount": 1,
+      "usedLiveWorkspaceRoot": "C:\\Users\\winsi\\OneDrive\\Documents\\New project 3",
+      "summarySample": "Local context\n- tests/request-router-corpus.test.ts:85 83:   \"Add support for multiple currencies in pricing calculations.\",\n84:   \"Review this mobile app screen for platform-specific usability issues.\",\n85:   \"Set up linting and formatting in this repo without causing broad unrelated churn.\",\n86:   \"Add a mock server for local development against the third-party API.\",\n87:   \"Fix this failing Doc"
+    },
+    {
+      "id": 79,
+      "prompt": "Add a mock server for local development against the third-party API.",
+      "passed": true,
+      "mismatches": [],
+      "expected": {
+        "intent": "implement",
+        "subject": "api",
+        "outputShape": "patch_plan",
+        "sources": [
+          "local_files",
+          "docs"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "actual": {
+        "intent": "implement",
+        "subject": "api",
+        "outputShape": "patch_plan",
+        "sources": [
+          "local_files",
+          "docs"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "ms": 29,
+      "warningCount": 0,
+      "resourceCount": 1,
+      "usedLiveWorkspaceRoot": "C:\\Users\\winsi\\OneDrive\\Documents\\New project 3",
+      "summarySample": "Local context\n- tests/request-router-corpus.test.ts:86 84:   \"Review this mobile app screen for platform-specific usability issues.\",\n85:   \"Set up linting and formatting in this repo without causing broad unrelated churn.\",\n86:   \"Add a mock server for local development against the third-party API.\",\n87:   \"Fix this failing Docker Compose setup and make the services start reliably.\",\n88:   \"Imple"
+    },
+    {
+      "id": 80,
+      "prompt": "Fix this failing Docker Compose setup and make the services start reliably.",
+      "passed": true,
+      "mismatches": [],
+      "expected": {
+        "intent": "debug",
+        "subject": "error",
+        "outputShape": "plan",
+        "sources": [
+          "local_files",
+          "docs"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "actual": {
+        "intent": "debug",
+        "subject": "error",
+        "outputShape": "plan",
+        "sources": [
+          "local_files",
+          "docs"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "ms": 25,
+      "warningCount": 0,
+      "resourceCount": 1,
+      "usedLiveWorkspaceRoot": "C:\\Users\\winsi\\OneDrive\\Documents\\New project 3",
+      "summarySample": "Local context\n- tests/request-router-corpus.test.ts:87 85:   \"Set up linting and formatting in this repo without causing broad unrelated churn.\",\n86:   \"Add a mock server for local development against the third-party API.\",\n87:   \"Fix this failing Docker Compose setup and make the services start reliably.\",\n88:   \"Implement password strength validation using the existing form framework.\",\n89:   \"A"
+    },
+    {
+      "id": 81,
+      "prompt": "Implement password strength validation using the existing form framework.",
+      "passed": true,
+      "mismatches": [],
+      "expected": {
+        "intent": "implement",
+        "subject": "code",
+        "outputShape": "patch_plan",
+        "sources": [
+          "local_files"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "actual": {
+        "intent": "implement",
+        "subject": "code",
+        "outputShape": "patch_plan",
+        "sources": [
+          "local_files"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "ms": 24,
+      "warningCount": 0,
+      "resourceCount": 1,
+      "usedLiveWorkspaceRoot": "C:\\Users\\winsi\\OneDrive\\Documents\\New project 3",
+      "summarySample": "Local context\n- tests/request-router-corpus.test.ts:88 86:   \"Add a mock server for local development against the third-party API.\",\n87:   \"Fix this failing Docker Compose setup and make the services start reliably.\",\n88:   \"Implement password strength validation using the existing form framework.\",\n89:   \"Add audit log entries for permission changes.\",\n90:   \"Create a small proof of concept for u"
+    },
+    {
+      "id": 82,
+      "prompt": "Add audit log entries for permission changes.",
+      "passed": true,
+      "mismatches": [],
+      "expected": {
+        "intent": "implement",
+        "subject": "code",
+        "outputShape": "patch_plan",
+        "sources": [
+          "local_files"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "actual": {
+        "intent": "implement",
+        "subject": "code",
+        "outputShape": "patch_plan",
+        "sources": [
+          "local_files"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "ms": 32,
+      "warningCount": 0,
+      "resourceCount": 1,
+      "usedLiveWorkspaceRoot": "C:\\Users\\winsi\\OneDrive\\Documents\\New project 3",
+      "summarySample": "Local context\n- tests/request-router-corpus.test.ts:89 87:   \"Fix this failing Docker Compose setup and make the services start reliably.\",\n88:   \"Implement password strength validation using the existing form framework.\",\n89:   \"Add audit log entries for permission changes.\",\n90:   \"Create a small proof of concept for using Web Workers to process large files.\",\n91:   \"Review this caching strategy"
+    },
+    {
+      "id": 83,
+      "prompt": "Create a small proof of concept for using Web Workers to process large files.",
+      "passed": true,
+      "mismatches": [],
+      "expected": {
+        "intent": "implement",
+        "subject": "code",
+        "outputShape": "patch_plan",
+        "sources": [
+          "local_files",
+          "docs"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "actual": {
+        "intent": "implement",
+        "subject": "code",
+        "outputShape": "patch_plan",
+        "sources": [
+          "local_files",
+          "docs"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "ms": 28,
+      "warningCount": 0,
+      "resourceCount": 1,
+      "usedLiveWorkspaceRoot": "C:\\Users\\winsi\\OneDrive\\Documents\\New project 3",
+      "summarySample": "Local context\n- tests/request-router-corpus.test.ts:90 88:   \"Implement password strength validation using the existing form framework.\",\n89:   \"Add audit log entries for permission changes.\",\n90:   \"Create a small proof of concept for using Web Workers to process large files.\",\n91:   \"Review this caching strategy and identify stale-data risks.\",\n92:   \"Add a database transaction around this multi"
+    },
+    {
+      "id": 84,
+      "prompt": "Review this caching strategy and identify stale-data risks.",
+      "passed": true,
+      "mismatches": [],
+      "expected": {
+        "intent": "compare",
+        "subject": "code",
+        "outputShape": "list",
+        "sources": [
+          "local_files"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "actual": {
+        "intent": "compare",
+        "subject": "code",
+        "outputShape": "list",
+        "sources": [
+          "local_files"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "ms": 33,
+      "warningCount": 0,
+      "resourceCount": 1,
+      "usedLiveWorkspaceRoot": "C:\\Users\\winsi\\OneDrive\\Documents\\New project 3",
+      "summarySample": "Local context\n- tests/request-router-corpus.test.ts:91 89:   \"Add audit log entries for permission changes.\",\n90:   \"Create a small proof of concept for using Web Workers to process large files.\",\n91:   \"Review this caching strategy and identify stale-data risks.\",\n92:   \"Add a database transaction around this multi-step write operation.\",\n93:   \"Generate a changelog from the commits since the las"
+    },
+    {
+      "id": 85,
+      "prompt": "Add a database transaction around this multi-step write operation.",
+      "passed": true,
+      "mismatches": [],
+      "expected": {
+        "intent": "implement",
+        "subject": "code",
+        "outputShape": "patch_plan",
+        "sources": [
+          "local_files"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "actual": {
+        "intent": "implement",
+        "subject": "code",
+        "outputShape": "patch_plan",
+        "sources": [
+          "local_files"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "ms": 28,
+      "warningCount": 0,
+      "resourceCount": 1,
+      "usedLiveWorkspaceRoot": "C:\\Users\\winsi\\OneDrive\\Documents\\New project 3",
+      "summarySample": "Local context\n- tests/request-router-corpus.test.ts:92 90:   \"Create a small proof of concept for using Web Workers to process large files.\",\n91:   \"Review this caching strategy and identify stale-data risks.\",\n92:   \"Add a database transaction around this multi-step write operation.\",\n93:   \"Generate a changelog from the commits since the last release.\",\n94:   \"Find inconsistent error response sh"
+    },
+    {
+      "id": 86,
+      "prompt": "Generate a changelog from the commits since the last release.",
+      "passed": true,
+      "mismatches": [],
+      "expected": {
+        "intent": "extract",
+        "subject": "repo",
+        "outputShape": "structured_data",
+        "sources": [
+          "local_files"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "actual": {
+        "intent": "extract",
+        "subject": "repo",
+        "outputShape": "structured_data",
+        "sources": [
+          "local_files"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "ms": 23,
+      "warningCount": 0,
+      "resourceCount": 1,
+      "usedLiveWorkspaceRoot": "C:\\Users\\winsi\\OneDrive\\Documents\\New project 3",
+      "summarySample": "Local context\n- tests/request-router-corpus.test.ts:93 91:   \"Review this caching strategy and identify stale-data risks.\",\n92:   \"Add a database transaction around this multi-step write operation.\",\n93:   \"Generate a changelog from the commits since the last release.\",\n94:   \"Find inconsistent error response shapes and standardize them.\",\n95:   \"Add test coverage for this bug before fixing it.\",\n"
+    },
+    {
+      "id": 87,
+      "prompt": "Find inconsistent error response shapes and standardize them.",
+      "passed": true,
+      "mismatches": [],
+      "expected": {
+        "intent": "implement",
+        "subject": "api",
+        "outputShape": "patch_plan",
+        "sources": [
+          "local_files"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "actual": {
+        "intent": "implement",
+        "subject": "api",
+        "outputShape": "patch_plan",
+        "sources": [
+          "local_files"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "ms": 32,
+      "warningCount": 0,
+      "resourceCount": 1,
+      "usedLiveWorkspaceRoot": "C:\\Users\\winsi\\OneDrive\\Documents\\New project 3",
+      "summarySample": "Local context\n- tests/request-router-corpus.test.ts:94 92:   \"Add a database transaction around this multi-step write operation.\",\n93:   \"Generate a changelog from the commits since the last release.\",\n94:   \"Find inconsistent error response shapes and standardize them.\",\n95:   \"Add test coverage for this bug before fixing it.\",\n96:   \"Implement a search box with debounced requests and cancelation"
+    },
+    {
+      "id": 88,
+      "prompt": "Add test coverage for this bug before fixing it.",
+      "passed": true,
+      "mismatches": [],
+      "expected": {
+        "intent": "implement",
+        "subject": "code",
+        "outputShape": "patch_plan",
+        "sources": [
+          "local_files"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "actual": {
+        "intent": "implement",
+        "subject": "code",
+        "outputShape": "patch_plan",
+        "sources": [
+          "local_files"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "ms": 30,
+      "warningCount": 0,
+      "resourceCount": 1,
+      "usedLiveWorkspaceRoot": "C:\\Users\\winsi\\OneDrive\\Documents\\New project 3",
+      "summarySample": "Local context\n- tests/request-router-corpus.test.ts:95 93:   \"Generate a changelog from the commits since the last release.\",\n94:   \"Find inconsistent error response shapes and standardize them.\",\n95:   \"Add test coverage for this bug before fixing it.\",\n96:   \"Implement a search box with debounced requests and cancelation of stale calls.\",\n97:   \"Review this code for accessibility issues related "
+    },
+    {
+      "id": 89,
+      "prompt": "Implement a search box with debounced requests and cancelation of stale calls.",
+      "passed": true,
+      "mismatches": [],
+      "expected": {
+        "intent": "implement",
+        "subject": "code",
+        "outputShape": "patch_plan",
+        "sources": [
+          "local_files"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "actual": {
+        "intent": "implement",
+        "subject": "code",
+        "outputShape": "patch_plan",
+        "sources": [
+          "local_files"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "ms": 21,
+      "warningCount": 0,
+      "resourceCount": 1,
+      "usedLiveWorkspaceRoot": "C:\\Users\\winsi\\OneDrive\\Documents\\New project 3",
+      "summarySample": "Local context\n- tests/request-router-corpus.test.ts:96 94:   \"Find inconsistent error response shapes and standardize them.\",\n95:   \"Add test coverage for this bug before fixing it.\",\n96:   \"Implement a search box with debounced requests and cancelation of stale calls.\",\n97:   \"Review this code for accessibility issues related to color contrast and focus states.\",\n98:   \"Add support for SSO login "
+    },
+    {
+      "id": 90,
+      "prompt": "Review this code for accessibility issues related to color contrast and focus states.",
+      "passed": true,
+      "mismatches": [],
+      "expected": {
+        "intent": "compare",
+        "subject": "code",
+        "outputShape": "list",
+        "sources": [
+          "local_files",
+          "docs"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "actual": {
+        "intent": "compare",
+        "subject": "code",
+        "outputShape": "list",
+        "sources": [
+          "local_files",
+          "docs"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "ms": 25,
+      "warningCount": 0,
+      "resourceCount": 1,
+      "usedLiveWorkspaceRoot": "C:\\Users\\winsi\\OneDrive\\Documents\\New project 3",
+      "summarySample": "Local context\n- tests/request-router-corpus.test.ts:97 95:   \"Add test coverage for this bug before fixing it.\",\n96:   \"Implement a search box with debounced requests and cancelation of stale calls.\",\n97:   \"Review this code for accessibility issues related to color contrast and focus states.\",\n98:   \"Add support for SSO login while keeping password login working.\",\n99:   \"Investigate why this Kub"
+    },
+    {
+      "id": 91,
+      "prompt": "Add support for SSO login while keeping password login working.",
+      "passed": true,
+      "mismatches": [],
+      "expected": {
+        "intent": "implement",
+        "subject": "code",
+        "outputShape": "patch_plan",
+        "sources": [
+          "local_files",
+          "docs"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "actual": {
+        "intent": "implement",
+        "subject": "code",
+        "outputShape": "patch_plan",
+        "sources": [
+          "local_files",
+          "docs"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "ms": 26,
+      "warningCount": 0,
+      "resourceCount": 1,
+      "usedLiveWorkspaceRoot": "C:\\Users\\winsi\\OneDrive\\Documents\\New project 3",
+      "summarySample": "Local context\n- tests/request-router-corpus.test.ts:98 96:   \"Implement a search box with debounced requests and cancelation of stale calls.\",\n97:   \"Review this code for accessibility issues related to color contrast and focus states.\",\n98:   \"Add support for SSO login while keeping password login working.\",\n99:   \"Investigate why this Kubernetes deployment keeps restarting.\",\n100:   \"Create a mi"
+    },
+    {
+      "id": 92,
+      "prompt": "Investigate why this Kubernetes deployment keeps restarting.",
+      "passed": true,
+      "mismatches": [],
+      "expected": {
+        "intent": "debug",
+        "subject": "error",
+        "outputShape": "plan",
+        "sources": [
+          "local_files",
+          "docs"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "actual": {
+        "intent": "debug",
+        "subject": "error",
+        "outputShape": "plan",
+        "sources": [
+          "local_files",
+          "docs"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "ms": 29,
+      "warningCount": 0,
+      "resourceCount": 1,
+      "usedLiveWorkspaceRoot": "C:\\Users\\winsi\\OneDrive\\Documents\\New project 3",
+      "summarySample": "Local context\n- tests/request-router-corpus.test.ts:99 97:   \"Review this code for accessibility issues related to color contrast and focus states.\",\n98:   \"Add support for SSO login while keeping password login working.\",\n99:   \"Investigate why this Kubernetes deployment keeps restarting.\",\n100:   \"Create a minimal reproduction for this reported frontend bug.\",\n101:   \"Add schema validation to th"
+    },
+    {
+      "id": 93,
+      "prompt": "Create a minimal reproduction for this reported frontend bug.",
+      "passed": true,
+      "mismatches": [],
+      "expected": {
+        "intent": "debug",
+        "subject": "code",
+        "outputShape": "patch_plan",
+        "sources": [
+          "local_files"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "actual": {
+        "intent": "debug",
+        "subject": "code",
+        "outputShape": "patch_plan",
+        "sources": [
+          "local_files"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "ms": 26,
+      "warningCount": 0,
+      "resourceCount": 1,
+      "usedLiveWorkspaceRoot": "C:\\Users\\winsi\\OneDrive\\Documents\\New project 3",
+      "summarySample": "Local context\n- tests/request-router-corpus.test.ts:100 98:   \"Add support for SSO login while keeping password login working.\",\n99:   \"Investigate why this Kubernetes deployment keeps restarting.\",\n100:   \"Create a minimal reproduction for this reported frontend bug.\",\n101:   \"Add schema validation to this event payload before publishing it.\",\n102:   \"Review this agent tool definition and suggest"
+    },
+    {
+      "id": 94,
+      "prompt": "Add schema validation to this event payload before publishing it.",
+      "passed": true,
+      "mismatches": [],
+      "expected": {
+        "intent": "implement",
+        "subject": "code",
+        "outputShape": "patch_plan",
+        "sources": [
+          "local_files"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "actual": {
+        "intent": "implement",
+        "subject": "code",
+        "outputShape": "patch_plan",
+        "sources": [
+          "local_files"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "ms": 23,
+      "warningCount": 0,
+      "resourceCount": 1,
+      "usedLiveWorkspaceRoot": "C:\\Users\\winsi\\OneDrive\\Documents\\New project 3",
+      "summarySample": "Local context\n- tests/request-router-corpus.test.ts:101 99:   \"Investigate why this Kubernetes deployment keeps restarting.\",\n100:   \"Create a minimal reproduction for this reported frontend bug.\",\n101:   \"Add schema validation to this event payload before publishing it.\",\n102:   \"Review this agent tool definition and suggest safer parameter validation.\",\n103:   \"Implement a rollback-safe migratio"
+    },
+    {
+      "id": 95,
+      "prompt": "Review this agent tool definition and suggest safer parameter validation.",
+      "passed": true,
+      "mismatches": [],
+      "expected": {
+        "intent": "compare",
+        "subject": "code",
+        "outputShape": "list",
+        "sources": [
+          "local_files",
+          "docs"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "actual": {
+        "intent": "compare",
+        "subject": "code",
+        "outputShape": "list",
+        "sources": [
+          "local_files",
+          "docs"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "ms": 29,
+      "warningCount": 0,
+      "resourceCount": 1,
+      "usedLiveWorkspaceRoot": "C:\\Users\\winsi\\OneDrive\\Documents\\New project 3",
+      "summarySample": "Local context\n- tests/request-router-corpus.test.ts:102 100:   \"Create a minimal reproduction for this reported frontend bug.\",\n101:   \"Add schema validation to this event payload before publishing it.\",\n102:   \"Review this agent tool definition and suggest safer parameter validation.\",\n103:   \"Implement a rollback-safe migration for splitting a name field into first_name and last_name.\",\n104:   \""
+    },
+    {
+      "id": 96,
+      "prompt": "Implement a rollback-safe migration for splitting a name field into first_name and last_name.",
+      "passed": true,
+      "mismatches": [],
+      "expected": {
+        "intent": "implement",
+        "subject": "code",
+        "outputShape": "patch_plan",
+        "sources": [
+          "local_files"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "actual": {
+        "intent": "implement",
+        "subject": "code",
+        "outputShape": "patch_plan",
+        "sources": [
+          "local_files"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "ms": 24,
+      "warningCount": 0,
+      "resourceCount": 1,
+      "usedLiveWorkspaceRoot": "C:\\Users\\winsi\\OneDrive\\Documents\\New project 3",
+      "summarySample": "Local context\n- tests/request-router-corpus.test.ts:103 101:   \"Add schema validation to this event payload before publishing it.\",\n102:   \"Review this agent tool definition and suggest safer parameter validation.\",\n103:   \"Implement a rollback-safe migration for splitting a name field into first_name and last_name.\",\n104:   \"Add Playwright tests for the most important user flows.\",\n105:   \"Explai"
+    },
+    {
+      "id": 97,
+      "prompt": "Add Playwright tests for the most important user flows.",
+      "passed": true,
+      "mismatches": [],
+      "expected": {
+        "intent": "implement",
+        "subject": "code",
+        "outputShape": "patch_plan",
+        "sources": [
+          "local_files",
+          "docs"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "actual": {
+        "intent": "implement",
+        "subject": "code",
+        "outputShape": "patch_plan",
+        "sources": [
+          "local_files",
+          "docs"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "ms": 27,
+      "warningCount": 0,
+      "resourceCount": 1,
+      "usedLiveWorkspaceRoot": "C:\\Users\\winsi\\OneDrive\\Documents\\New project 3",
+      "summarySample": "Local context\n- tests/request-router-corpus.test.ts:104 102:   \"Review this agent tool definition and suggest safer parameter validation.\",\n103:   \"Implement a rollback-safe migration for splitting a name field into first_name and last_name.\",\n104:   \"Add Playwright tests for the most important user flows.\",\n105:   \"Explain the trade-offs between three possible implementations for this feature.\",\n"
+    },
+    {
+      "id": 98,
+      "prompt": "Explain the trade-offs between three possible implementations for this feature.",
+      "passed": true,
+      "mismatches": [],
+      "expected": {
+        "intent": "compare",
+        "subject": "code",
+        "outputShape": "agent_context",
+        "sources": [
+          "local_files"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "actual": {
+        "intent": "compare",
+        "subject": "code",
+        "outputShape": "agent_context",
+        "sources": [
+          "local_files"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "ms": 26,
+      "warningCount": 0,
+      "resourceCount": 1,
+      "usedLiveWorkspaceRoot": "C:\\Users\\winsi\\OneDrive\\Documents\\New project 3",
+      "summarySample": "Local context\n- tests/request-router-corpus.test.ts:105 103:   \"Implement a rollback-safe migration for splitting a name field into first_name and last_name.\",\n104:   \"Add Playwright tests for the most important user flows.\",\n105:   \"Explain the trade-offs between three possible implementations for this feature.\",\n106:   \"Prepare this branch for a pull request: run tests, summarize changes, and no"
+    },
+    {
+      "id": 99,
+      "prompt": "Prepare this branch for a pull request: run tests, summarize changes, and note risks.",
+      "passed": true,
+      "mismatches": [],
+      "expected": {
+        "intent": "plan",
+        "subject": "repo",
+        "outputShape": "plan",
+        "sources": [
+          "local_files"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "actual": {
+        "intent": "plan",
+        "subject": "repo",
+        "outputShape": "plan",
+        "sources": [
+          "local_files"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "ms": 29,
+      "warningCount": 0,
+      "resourceCount": 1,
+      "usedLiveWorkspaceRoot": "C:\\Users\\winsi\\OneDrive\\Documents\\New project 3",
+      "summarySample": "Local context\n- tests/request-router-corpus.test.ts:106 104:   \"Add Playwright tests for the most important user flows.\",\n105:   \"Explain the trade-offs between three possible implementations for this feature.\",\n106:   \"Prepare this branch for a pull request: run tests, summarize changes, and note risks.\",\n107:   \"Inspect the current worktree, identify unfinished changes, and recommend the next be"
+    },
+    {
+      "id": 100,
+      "prompt": "Inspect the current worktree, identify unfinished changes, and recommend the next best step.",
+      "passed": true,
+      "mismatches": [],
+      "expected": {
+        "intent": "extract",
+        "subject": "repo",
+        "outputShape": "plan",
+        "sources": [
+          "local_files"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "actual": {
+        "intent": "extract",
+        "subject": "repo",
+        "outputShape": "plan",
+        "sources": [
+          "local_files"
+        ],
+        "depth": "fast",
+        "execution": "plan_only"
+      },
+      "ms": 30,
+      "warningCount": 0,
+      "resourceCount": 1,
+      "usedLiveWorkspaceRoot": "C:\\Users\\winsi\\OneDrive\\Documents\\New project 3",
+      "summarySample": "Local context\n- tests/request-router-corpus.test.ts:107 105:   \"Explain the trade-offs between three possible implementations for this feature.\",\n106:   \"Prepare this branch for a pull request: run tests, summarize changes, and note risks.\",\n107:   \"Inspect the current worktree, identify unfinished changes, and recommend the next best step.\"\n108: ];\n109: \n\nRequest plan\nintent=extract\nsubject=repo\n"
+    }
+  ]
+}

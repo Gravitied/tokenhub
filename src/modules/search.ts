@@ -128,7 +128,7 @@ async function fetchProvider(
     return (json.results ?? []).map((item) => ({ title: item.title, url: item.url, snippet: item.text, provider }));
   }
 
-  const response = await fetchImpl(`https://duckduckgo.com/html/?q=${encodeURIComponent(query)}`);
+  const response = await fetchWithTimeout(fetchImpl, `https://html.duckduckgo.com/html/?q=${encodeURIComponent(query)}`, {}, 5000);
   const html = await response.text();
   return [...html.matchAll(/<a[^>]+class="result__a"[^>]+href="([^"]+)"[^>]*>([\s\S]*?)<\/a>[\s\S]*?<a[^>]+class="result__snippet"[^>]*>([\s\S]*?)<\/a>/g)]
     .slice(0, limit)
@@ -138,6 +138,23 @@ async function fetchProvider(
       snippet: stripHtml(match[3]),
       provider
     }));
+}
+
+async function fetchWithTimeout(fetchImpl: FetchLike, url: string, init: RequestInit, timeoutMs: number): Promise<Response> {
+  const controller = new AbortController();
+  const abortTimeout = setTimeout(() => controller.abort(), timeoutMs);
+  let rejectTimeout: ReturnType<typeof setTimeout> | undefined;
+  try {
+    return await Promise.race([
+      fetchImpl(url, { ...init, signal: controller.signal }),
+      new Promise<Response>((_resolve, reject) => {
+        rejectTimeout = setTimeout(() => reject(new Error(`Search fetch timed out after ${timeoutMs}ms for ${url}`)), timeoutMs);
+      })
+    ]);
+  } finally {
+    clearTimeout(abortTimeout);
+    if (rejectTimeout) clearTimeout(rejectTimeout);
+  }
 }
 
 function providerFromEnv(): SearchProvider {

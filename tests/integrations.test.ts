@@ -97,6 +97,19 @@ describe("git action module", () => {
       await rm(dir, { recursive: true, force: true });
     }
   });
+
+  test("does not summarize failed git actions as successful", async () => {
+    const dir = await mkdtemp(join(tmpdir(), "tokenhub-git-fail-"));
+    try {
+      const result = await runGitAction({ root: dir, action: "commit", message: "nothing" });
+
+      expect(result.warnings.length).toBeGreaterThan(0);
+      expect(result.summary).toContain("failed");
+      expect(result.summary).not.toContain("committed changes");
+    } finally {
+      await rm(dir, { recursive: true, force: true });
+    }
+  });
 });
 
 describe("web search module", () => {
@@ -316,6 +329,9 @@ describe("browser module", () => {
       expect(result.state.elements[0]).toEqual(expect.objectContaining({ ref: "e1", role: "link", text: "Docs" }));
       expect(result.state.consoleErrors).toContain("fixture error");
       expect(result.resources[0]).toMatch(/^tokenhub:\/\/resource\//);
+
+      const screenshot = await store.read(result.resources[0], { mode: "full" });
+      expect(screenshot.content).toMatch(/^data:image\/png;base64,/);
     } finally {
       await new Promise<void>((resolve) => server.close(() => resolve()));
       await rm(dir, { recursive: true, force: true });
@@ -342,6 +358,33 @@ describe("runtime routing", () => {
             "web.answer"
           ])
       );
+    } finally {
+      await rm(dir, { recursive: true, force: true });
+    }
+  });
+
+  test("compact file retrieval returns the matching line, not the query echo", async () => {
+    const dir = await mkdtemp(join(tmpdir(), "tokenhub-compact-files-"));
+    try {
+      await writeFile(join(dir, "notes.txt"), "alpha\nneedle is here\nomega\n", "utf8");
+      const runtime = createTokenHubRuntime({ root: dir });
+
+      const result = await runtime.retrieveContext({ source: "files", query: "needle", returnMode: "compact" });
+
+      expect(result).toEqual({
+        m: [[expect.stringContaining("notes.txt"), 2, expect.stringContaining("needle is here"), expect.stringMatching(/^tokenhub:\/\/resource\//)]]
+      });
+    } finally {
+      await rm(dir, { recursive: true, force: true });
+    }
+  });
+
+  test("rejects unknown workflow names instead of running a hardcoded project scan", async () => {
+    const dir = await mkdtemp(join(tmpdir(), "tokenhub-unknown-workflow-"));
+    try {
+      const runtime = createTokenHubRuntime({ root: dir });
+
+      await expect(runtime.runWorkflow({ name: "typo_workflow" })).rejects.toThrow(/Unknown workflow/);
     } finally {
       await rm(dir, { recursive: true, force: true });
     }

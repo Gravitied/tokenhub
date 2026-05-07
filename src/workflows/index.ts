@@ -80,7 +80,10 @@ export async function runWorkflow(input: WorkflowInput): Promise<{
       execution: input.execution
     });
   }
-  return runProjectScan(input);
+  if (input.name === "project_scan") {
+    return runProjectScan(input);
+  }
+  throw new Error(`Unknown workflow: ${input.name}`);
 }
 
 function requireRequest(request: string | undefined): string {
@@ -168,7 +171,7 @@ async function runProjectScan(input: WorkflowInput) {
   });
   const files = await searchFiles({
     root: input.root,
-    query: "tokenhub",
+    query: input.query,
     limit: 5,
     budgetTokens: Math.floor((input.budgetTokens ?? 600) / 2),
     resourceStore: input.resourceStore

@@ -93,13 +93,15 @@ export async function runGitAction(input: GitActionInput): Promise<{ summary: st
     args = input.branch ? ["branch", input.branch] : ["branch", "--show-current"];
   }
 
+  let failed = false;
   const output = await runGit(input.root, args).catch((error: Error) => {
+    failed = true;
     warnings.push(error.message.trim());
     return error.message.trim();
   });
   const redacted = redactSecrets(output);
   return {
-    summary: summarizeGitAction(input.action, redacted),
+    summary: summarizeGitAction(input.action, redacted, failed),
     output: truncateToTokens(redacted, input.budgetTokens ?? 500).text,
     warnings
   };
@@ -172,7 +174,8 @@ function statusName(code: string): GitChangedFile["status"] {
   return "other";
 }
 
-function summarizeGitAction(action: GitActionInput["action"], output: string): string {
+function summarizeGitAction(action: GitActionInput["action"], output: string, failed: boolean): string {
+  if (failed) return `${action} failed\n${output}`;
   if (action === "stage") return "staged requested paths";
   if (action === "commit") return `committed changes\n${output}`;
   if (action === "status") return summarizeStatus(output);

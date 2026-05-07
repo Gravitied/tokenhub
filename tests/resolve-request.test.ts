@@ -84,4 +84,66 @@ describe("resolve_request workflow", () => {
       await rm(dir, { recursive: true, force: true });
     }
   });
+
+  test("executes planned package registry and docs sources", async () => {
+    const dir = await mkdtemp(join(tmpdir(), "tokenhub-resolve-package-"));
+    const resourceStore = new ResourceStore({ rootDir: join(dir, ".tokenhub", "resources") });
+    try {
+      const result = await runWorkflow({
+        name: "resolve_request",
+        root: dir,
+        request: "Collect npm package metadata for zod and return a table",
+        resourceStore,
+        telemetry: new TokenTelemetry({ roiThreshold: 3 }),
+        fetchImpl: async (url) => {
+          const urlText = url.toString();
+          if (urlText.includes("registry.npmjs.org")) {
+            return new Response(
+              JSON.stringify({
+                name: "zod",
+                description: "TypeScript-first schema validation",
+                "dist-tags": { latest: "4.0.0" },
+                versions: { "3.0.0": {}, "4.0.0": {} },
+                repository: { url: "git+https://github.com/colinhacks/zod.git" }
+              }),
+              { status: 200 }
+            );
+          }
+          if (urlText.includes("duckduckgo.com")) {
+            return new Response(
+              '<a class="result__a" href="https://zod.dev/">Zod documentation</a><a class="result__snippet">Official Zod docs for schema validation.</a>',
+              { status: 200 }
+            );
+          }
+          return new Response("<title>Zod</title><main><p>Zod validates TypeScript schemas.</p></main>", { status: 200 });
+        }
+      });
+
+      expect(result.summary).toContain("Package registry");
+      expect(result.summary).toContain("zod@4.0.0");
+      expect(JSON.stringify(result.data)).toContain("packageRegistry");
+      expect(JSON.stringify(result.data)).toContain("docs");
+    } finally {
+      await rm(dir, { recursive: true, force: true });
+    }
+  });
+
+  test("rejects implementation execution modes instead of returning fake success", async () => {
+    const dir = await mkdtemp(join(tmpdir(), "tokenhub-resolve-implement-"));
+    const resourceStore = new ResourceStore({ rootDir: join(dir, ".tokenhub", "resources") });
+    try {
+      await expect(
+        runWorkflow({
+          name: "resolve_request",
+          root: dir,
+          request: "Fix this failing test and implement the smallest safe fix.",
+          execution: "implement",
+          resourceStore,
+          telemetry: new TokenTelemetry({ roiThreshold: 3 })
+        })
+      ).rejects.toThrow(/not enabled/);
+    } finally {
+      await rm(dir, { recursive: true, force: true });
+    }
+  });
 });

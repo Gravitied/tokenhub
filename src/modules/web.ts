@@ -13,6 +13,7 @@ export type FetchWebInput = {
   budgetTokens?: number;
   includeRaw?: boolean;
   fetchImpl?: FetchLike;
+  timeoutMs?: number;
 };
 
 export function cleanHtmlToText(html: string): CleanHtmlResult {
@@ -42,11 +43,16 @@ export async function fetchAndScrape(input: FetchWebInput): Promise<{
   warnings: string[];
 }> {
   const fetchImpl = input.fetchImpl ?? fetch;
-  const response = await fetchImpl(input.url, {
+  const response = await fetchWithTimeout(
+    fetchImpl,
+    input.url,
+    {
     headers: {
       "user-agent": "tokenhub-mcp/0.1 (+https://github.com/tokenhub-mcp/tokenhub-mcp)"
     }
-  });
+    },
+    input.timeoutMs ?? 5000
+  );
   if (!response.ok) {
     throw new Error(`Fetch failed for ${input.url}: HTTP ${response.status}`);
   }
@@ -67,6 +73,23 @@ export async function fetchAndScrape(input: FetchWebInput): Promise<{
     tokenEstimate: estimateTokens(truncated.text),
     warnings: truncated.truncated ? ["Web content was truncated; read_resource can expand the artifact."] : []
   };
+}
+
+async function fetchWithTimeout(fetchImpl: FetchLike, url: string, init: RequestInit, timeoutMs: number): Promise<Response> {
+  const controller = new AbortController();
+  const abortTimeout = setTimeout(() => controller.abort(), timeoutMs);
+  let rejectTimeout: ReturnType<typeof setTimeout> | undefined;
+  try {
+    return await Promise.race([
+      fetchImpl(url, { ...init, signal: controller.signal }),
+      new Promise<Response>((_resolve, reject) => {
+        rejectTimeout = setTimeout(() => reject(new Error(`Fetch timed out after ${timeoutMs}ms for ${url}`)), timeoutMs);
+      })
+    ]);
+  } finally {
+    clearTimeout(abortTimeout);
+    if (rejectTimeout) clearTimeout(rejectTimeout);
+  }
 }
 
 function decodeEntities(value: string): string {

@@ -95,11 +95,12 @@ export async function searchFiles(input: FileSearchInput): Promise<{
 
     const line = content.slice(0, index).split(/\r?\n/).length;
     const snippet = buildSnippet(content, line, input.budgetTokens ?? 200);
+    const redactedContent = redactSecrets(content);
     const link = await input.resourceStore.writeText({
       kind: "text",
       label: `file:${relative(root, file)}`,
       source: file,
-      content
+      content: redactedContent
     });
     matches.push({
       path: relative(root, file).split(sep).join("/"),

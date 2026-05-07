@@ -1,5 +1,5 @@
 import { describe, expect, test } from "vitest";
-import { mkdtemp, rm } from "node:fs/promises";
+import { mkdtemp, readFile, rm } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { CapabilityRegistry } from "../src/core/registry.js";
@@ -101,5 +101,34 @@ describe("resource store", () => {
     } finally {
       await rm(dir, { recursive: true, force: true });
     }
+  });
+
+  test("reads screenshot resources as data URLs instead of corrupt UTF-8 text", async () => {
+    const dir = await mkdtemp(join(tmpdir(), "tokenhub-resources-binary-"));
+    const store = new ResourceStore({ rootDir: dir });
+    try {
+      const pngBytes = Buffer.from([0x89, 0x50, 0x4e, 0x47]);
+      const link = await store.writeText({
+        kind: "screenshot",
+        label: "tiny png",
+        content: pngBytes,
+        source: "unit-test"
+      });
+
+      const full = await store.read(link.uri, { mode: "full" });
+
+      expect(full.content).toBe(`data:image/png;base64,${pngBytes.toString("base64")}`);
+    } finally {
+      await rm(dir, { recursive: true, force: true });
+    }
+  });
+});
+
+describe("README", () => {
+  test("documents the actual compiled CLI path", async () => {
+    const readme = await readFile(join(process.cwd(), "README.md"), "utf8");
+
+    expect(readme).toContain("node dist/cli.js --root .");
+    expect(readme).not.toContain("node dist/src/cli.js --root .");
   });
 });

@@ -7,7 +7,7 @@ import { promisify } from "node:util";
 import { ResourceStore } from "../src/core/resources.js";
 import { searchFiles } from "../src/modules/filesystem.js";
 import { summarizeGit } from "../src/modules/git.js";
-import { cleanHtmlToText } from "../src/modules/web.js";
+import { cleanHtmlToText, fetchAndScrape } from "../src/modules/web.js";
 
 const execFileAsync = promisify(execFile);
 
@@ -57,6 +57,10 @@ describe("filesystem retrieval", () => {
       expect(result.matches[0].snippet).toContain("TOKENHUB_BENCHMARK_NEEDLE");
       expect(result.matches[0].snippet).not.toContain("SECRET_VALUE_DO_NOT_RETURN");
       expect(result.matches[0].snippet).toContain("[redacted]");
+
+      const full = await store.read(result.matches[0].resourceUri, { mode: "full" });
+      expect(full.content).not.toContain("SECRET_VALUE_DO_NOT_RETURN");
+      expect(full.content).toContain("[redacted]");
     } finally {
       await rm(dir, { recursive: true, force: true });
     }
@@ -99,5 +103,22 @@ describe("web cleanup", () => {
     expect(result.text).toContain("API Docs");
     expect(result.text).toContain("Use the client.");
     expect(result.text).not.toContain("bad()");
+  });
+
+  test("times out stalled page fetches", async () => {
+    const dir = await mkdtemp(join(tmpdir(), "tokenhub-web-timeout-"));
+    const store = new ResourceStore({ rootDir: join(dir, ".tokenhub", "resources") });
+    try {
+      await expect(
+        fetchAndScrape({
+          url: "https://example.test/slow",
+          resourceStore: store,
+          timeoutMs: 5,
+          fetchImpl: () => new Promise<Response>(() => undefined)
+        })
+      ).rejects.toThrow(/timed out/);
+    } finally {
+      await rm(dir, { recursive: true, force: true });
+    }
   });
 });

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-05-06T22:16:46.823Z",
+  "generatedAt": "2026-05-07T00:25:58.843Z",
   "batches": [
     {
       "batch": 1,
@@ -10,8 +10,8 @@
           "request": "Give me a 1 paragraph summary of the latest DeepSeek research papers",
           "passed": true,
           "reason": "matched expected route, format, evidence, and resource contract",
-          "ms": 24,
-          "estimatedTokens": 1348,
+          "ms": 25,
+          "estimatedTokens": 1340,
           "actual": {
             "intent": "research",
             "subject": "paper",
@@ -21,21 +21,21 @@
               "web_pages"
             ],
             "resourceUris": [
-              "tokenhub://resource/daa22daf-2cd3-4149-ab75-f6251256f900",
-              "tokenhub://resource/01b7dc18-718e-400a-bdbe-5bc3c2b0a8b9"
+              "tokenhub://resource/5cc9f95e-aaba-4598-93ba-10a6c3190014",
+              "tokenhub://resource/a55cce37-917b-4cae-b179-c5171e3468ef"
             ],
             "telemetryCapability": "workflow.resolve_request",
             "telemetry": {
               "capability": "workflow.resolve_request",
-              "estimatedToolCostTokens": 188,
-              "estimatedSavedTokens": 1519,
-              "outputTokens": 188,
+              "estimatedToolCostTokens": 185,
+              "estimatedSavedTokens": 1517,
+              "outputTokens": 185,
               "id": "tel_1",
-              "createdAt": "2026-05-06T22:16:46.847Z",
-              "roi": 8.079787234042554,
+              "createdAt": "2026-05-07T00:25:58.868Z",
+              "roi": 8.2,
               "graduated": true
             },
-            "summary": "Web context\nRecent DeepSeek research surfaced by the workflow emphasizes DeepSeek Sparse Attention improves long-context efficiency and reasoning while preserving open model availability; DeepSeek Sparse Attention improves long-context efficiency and reasoning while preserving open model availability; and DeepSeek Sparse Attention improves long-context efficiency and reasoning while preserving open model availability.\n\nSources:\n\n[1] DeepSeek research papers - https://example.test/deepseek/1\n[2] ",
+            "summary": "Web context\nRecent deepseek surfaced by the workflow emphasizes DeepSeek Sparse Attention improves long-context efficiency and reasoning while preserving open model availability; DeepSeek Sparse Attention improves long-context efficiency and reasoning while preserving open model availability; and DeepSeek Sparse Attention improves long-context efficiency and reasoning while preserving open model availability.\n\nSources:\n\n[1] DeepSeek research papers - https://example.test/deepseek/1\n[2] DeepSeek ",
             "warnings": [
               "Using no-key DuckDuckGo HTML fallback; provider freshness metadata is limited."
             ]
@@ -46,8 +46,8 @@
           "request": "Find the top 10 healthiest vegetables and return a ranked list",
           "passed": true,
           "reason": "matched expected route, format, evidence, and resource contract",
-          "ms": 9,
-          "estimatedTokens": 2526,
+          "ms": 8,
+          "estimatedTokens": 2540,
           "actual": {
             "intent": "answer",
             "subject": "data",
@@ -56,21 +56,21 @@
               "web_search"
             ],
             "resourceUris": [
-              "tokenhub://resource/589fead5-2a47-420e-a9c7-1fb4df2af375",
-              "tokenhub://resource/d4c3633f-ce8c-47c1-9fe5-1a96580c09f7"
+              "tokenhub://resource/c1b39ea0-2ddf-47ab-bd89-34d83f08f87d",
+              "tokenhub://resource/96d1fced-3e82-4b47-a1de-0705002d1791"
             ],
             "telemetryCapability": "workflow.resolve_request",
             "telemetry": {
               "capability": "workflow.resolve_request",
-              "estimatedToolCostTokens": 143,
-              "estimatedSavedTokens": 2741,
-              "outputTokens": 143,
+              "estimatedToolCostTokens": 148,
+              "estimatedSavedTokens": 2751,
+              "outputTokens": 148,
               "id": "tel_2",
-              "createdAt": "2026-05-06T22:16:46.856Z",
-              "roi": 19.167832167832167,
+              "createdAt": "2026-05-07T00:25:58.876Z",
+              "roi": 18.58783783783784,
               "graduated": true
             },
-            "summary": "Web context\n1. Watercress (3 sources)\n2. Spinach (3 sources)\n3. Kale (3 sources)\n4. Swiss chard (3 sources)\n5. Beet greens (3 sources)\n6. Broccoli (3 sources)\n7. Brussels sprouts (3 sources)\n8. Carrots (3 sources)\n9. Red cabbage (3 sources)\n10. Bell peppers (3 sources)\n\nSources:\n\n[1] Healthy vegetables - https://example.test/vegetables/1\n[2] Healthy vegetables - https://example.test/vegetables/2\n[3] Healthy vegetables - https://example.test/vegetables/3\n\nRequest plan\nintent=answer\nsubject=data\no",
+            "summary": "Web context\n1. Healthy vegetables Watercress (3 sources)\n2. Spinach (3 sources)\n3. Kale (3 sources)\n4. Swiss chard (3 sources)\n5. Beet greens (3 sources)\n6. Broccoli (3 sources)\n7. Brussels sprouts (3 sources)\n8. Carrots (3 sources)\n9. Red cabbage (3 sources)\n10. Bell peppers (3 sources)\n\nSources:\n\n[1] Healthy vegetables - https://example.test/vegetables/1\n[2] Healthy vegetables - https://example.test/vegetables/2\n[3] Healthy vegetables - https://example.test/vegetables/3\n\nRequest plan\nintent=an",
             "warnings": [
               "Using no-key DuckDuckGo HTML fallback; provider freshness metadata is limited."
             ]
@@ -82,7 +82,7 @@
           "passed": true,
           "reason": "matched expected route, format, evidence, and resource contract",
           "ms": 9,
-          "estimatedTokens": 1271,
+          "estimatedTokens": 1926,
           "actual": {
             "intent": "compare",
             "subject": "api",
@@ -94,21 +94,21 @@
               "docs"
             ],
             "resourceUris": [
-              "tokenhub://resource/e7619934-7842-4d19-877d-726a6fc0a622",
-              "tokenhub://resource/9fae8bf1-28e0-431e-aee9-fcf54018389c"
+              "tokenhub://resource/f1b11602-cf98-4c8b-94a4-0bfda059ecdd",
+              "tokenhub://resource/f71c2ec8-bb81-48a3-a604-10e247183da1"
             ],
             "telemetryCapability": "workflow.resolve_request",
             "telemetry": {
               "capability": "workflow.resolve_request",
-              "estimatedToolCostTokens": 184,
-              "estimatedSavedTokens": 1446,
-              "outputTokens": 184,
+              "estimatedToolCostTokens": 185,
+              "estimatedSavedTokens": 2099,
+              "outputTokens": 185,
               "id": "tel_3",
-              "createdAt": "2026-05-06T22:16:46.865Z",
-              "roi": 7.858695652173913,
+              "createdAt": "2026-05-07T00:25:58.886Z",
+              "roi": 11.345945945945946,
               "graduated": true
             },
-            "summary": "Local context\nNo matching local files found.\n\nWeb context\nRecent the searched topic surfaced by the workflow emphasizes Bun Node backend API comparison Bun and Node both support backend API workloads; Bun Node backend API comparison Bun and Node both support backend API workloads; and Bun Node backend API comparison Bun and Node both support backend API workloads.\n\nSources:\n\n[1] Bun Node backend API comparison - https://example.test/bun-node/1\n[2] Bun Node backend API comparison - https://exampl",
+            "summary": "Local context\nNo matching local files found.\n\nWeb context\nRecent compare node backend surfaced by the workflow emphasizes Bun Node backend API comparison Bun and Node both support backend API workloads; Bun Node backend API comparison Bun and Node both support backend API workloads; and Bun Node backend API comparison Bun and Node both support backend API workloads.\n\nSources:\n\n[1] Bun Node backend API comparison - https://example.test/bun-node/1\n[2] Bun Node backend API comparison - https://exam",
             "warnings": [
               "Using no-key DuckDuckGo HTML fallback; provider freshness metadata is limited."
             ]
@@ -119,8 +119,8 @@
           "request": "Look up the latest Stripe Checkout API docs and give implementation context for subscriptions",
           "passed": true,
           "reason": "matched expected route, format, evidence, and resource contract",
-          "ms": 6,
-          "estimatedTokens": 1418,
+          "ms": 7,
+          "estimatedTokens": 2159,
           "actual": {
             "intent": "research",
             "subject": "api",
@@ -131,21 +131,21 @@
               "docs"
             ],
             "resourceUris": [
-              "tokenhub://resource/424a40fe-a68d-41c9-bfae-7cc2f6774985",
-              "tokenhub://resource/e71c12b7-bb8a-4b4b-a0f8-f09d48b21072"
+              "tokenhub://resource/23635be1-a705-449b-a793-6521d1d5bc2a",
+              "tokenhub://resource/b6662ec1-6cc9-4c2f-ac95-4d41879b0c70"
             ],
             "telemetryCapability": "workflow.resolve_request",
             "telemetry": {
               "capability": "workflow.resolve_request",
-              "estimatedToolCostTokens": 185,
-              "estimatedSavedTokens": 1576,
-              "outputTokens": 185,
+              "estimatedToolCostTokens": 186,
+              "estimatedSavedTokens": 2316,
+              "outputTokens": 186,
               "id": "tel_4",
-              "createdAt": "2026-05-06T22:16:46.871Z",
-              "roi": 8.518918918918919,
+              "createdAt": "2026-05-07T00:25:58.893Z",
+              "roi": 12.451612903225806,
               "graduated": true
             },
-            "summary": "Web context\nRecent the searched topic surfaced by the workflow emphasizes Stripe Checkout API subscriptions source with current docs, implementation notes, and cited context; Stripe Checkout API subscriptions source with current docs, implementation notes, and cited context; and Stripe Checkout API subscriptions source with current docs, implementation notes, and cited context.\n\nSources:\n\n[1] Stripe Checkout API subscriptions - https://example.test/stripe/1\n[2] Stripe Checkout API subscriptions ",
+            "summary": "Web context\nRecent stripe checkout docs surfaced by the workflow emphasizes Stripe Checkout API subscriptions source with current docs, implementation notes, and cited context; Stripe Checkout API subscriptions source with current docs, implementation notes, and cited context; and Stripe Checkout API subscriptions source with current docs, implementation notes, and cited context.\n\nSources:\n\n[1] Stripe Checkout API subscriptions - https://example.test/stripe/1\n[2] Stripe Checkout API subscription",
             "warnings": [
               "Using no-key DuckDuckGo HTML fallback; provider freshness metadata is limited."
             ]
@@ -156,8 +156,8 @@
           "request": "Debug TypeError fetch failed in Node undici ECONNRESET",
           "passed": true,
           "reason": "matched expected route, format, evidence, and resource contract",
-          "ms": 9,
-          "estimatedTokens": 1384,
+          "ms": 6,
+          "estimatedTokens": 1386,
           "actual": {
             "intent": "debug",
             "subject": "error",
@@ -166,21 +166,21 @@
               "web_search"
             ],
             "resourceUris": [
-              "tokenhub://resource/a0257a56-df36-48f5-9d0d-dff038fa66bf",
-              "tokenhub://resource/ed0edea9-12d9-47de-bc06-b6ca97508a67"
+              "tokenhub://resource/ac37a596-c27b-4581-ad70-a25459276add",
+              "tokenhub://resource/c1e8245c-d924-4f46-96b4-f4a57d32bae3"
             ],
             "telemetryCapability": "workflow.resolve_request",
             "telemetry": {
               "capability": "workflow.resolve_request",
-              "estimatedToolCostTokens": 221,
+              "estimatedToolCostTokens": 222,
               "estimatedSavedTokens": 1526,
-              "outputTokens": 221,
+              "outputTokens": 222,
               "id": "tel_5",
-              "createdAt": "2026-05-06T22:16:46.879Z",
-              "roi": 6.904977375565611,
+              "createdAt": "2026-05-07T00:25:58.899Z",
+              "roi": 6.873873873873874,
               "graduated": true
             },
-            "summary": "Web context\nRecent the searched topic surfaced by the workflow emphasizes Node undici ECONNRESET debug ECONNRESET in Node undici usually points to a closed socket, proxy reset, TLS interruption, or missing retry and timeout handling; Node undici ECONNRESET debug ECONNRESET in Node undici usually points to a closed socket, proxy reset, TLS interruption, or missing retry and timeout handling; and Node undici ECONNRESET debug ECONNRESET in Node undici usually points to a closed socket, proxy reset,",
+            "summary": "Web context\nRecent debug typeerror fetch surfaced by the workflow emphasizes Node undici ECONNRESET debug ECONNRESET in Node undici usually points to a closed socket, proxy reset, TLS interruption, or missing retry and timeout handling; Node undici ECONNRESET debug ECONNRESET in Node undici usually points to a closed socket, proxy reset, TLS interruption, or missing retry and timeout handling; and Node undici ECONNRESET debug ECONNRESET in Node undici usually points to a closed socket, proxy res",
             "warnings": [
               "Using no-key DuckDuckGo HTML fallback; provider freshness metadata is limited."
             ]
@@ -191,8 +191,8 @@
           "request": "Extract a pricing table for GitHub Actions minutes",
           "passed": true,
           "reason": "matched expected route, format, evidence, and resource contract",
-          "ms": 6,
-          "estimatedTokens": 1384,
+          "ms": 7,
+          "estimatedTokens": 1385,
           "actual": {
             "intent": "extract",
             "subject": "data",
@@ -201,8 +201,8 @@
               "web_search"
             ],
             "resourceUris": [
-              "tokenhub://resource/fe7312d2-9158-492d-9118-387e19aea113",
-              "tokenhub://resource/30183ad0-2009-4751-80af-a3060cb80ac6"
+              "tokenhub://resource/f19604a8-a5e5-4e79-b35a-7fd2901a013c",
+              "tokenhub://resource/2921cbd6-b41c-4df5-bd06-03307ed2665d"
             ],
             "telemetryCapability": "workflow.resolve_request",
             "telemetry": {
@@ -211,11 +211,11 @@
               "estimatedSavedTokens": 1530,
               "outputTokens": 219,
               "id": "tel_6",
-              "createdAt": "2026-05-06T22:16:46.886Z",
+              "createdAt": "2026-05-07T00:25:58.906Z",
               "roi": 6.986301369863014,
               "graduated": true
             },
-            "summary": "Web context\nRecent the searched topic surfaced by the workflow emphasizes GitHub Actions pricing table GitHub Actions pricing table: Linux minutes, Windows minutes, macOS minutes, storage, included quota, and overage rates; GitHub Actions pricing table GitHub Actions pricing table: Linux minutes, Windows minutes, macOS minutes, storage, included quota, and overage rates; and GitHub Actions pricing table GitHub Actions pricing table: Linux minutes, Windows minutes, macOS minutes, storage, include",
+            "summary": "Web context\nRecent extract pricing table surfaced by the workflow emphasizes GitHub Actions pricing table GitHub Actions pricing table: Linux minutes, Windows minutes, macOS minutes, storage, included quota, and overage rates; GitHub Actions pricing table GitHub Actions pricing table: Linux minutes, Windows minutes, macOS minutes, storage, included quota, and overage rates; and GitHub Actions pricing table GitHub Actions pricing table: Linux minutes, Windows minutes, macOS minutes, storage, incl",
             "warnings": [
               "Using no-key DuckDuckGo HTML fallback; provider freshness metadata is limited."
             ]
@@ -227,7 +227,7 @@
           "passed": true,
           "reason": "matched expected route, format, evidence, and resource contract",
           "ms": 8,
-          "estimatedTokens": 1476,
+          "estimatedTokens": 2274,
           "actual": {
             "intent": "plan",
             "subject": "docs",
@@ -238,21 +238,21 @@
               "docs"
             ],
             "resourceUris": [
-              "tokenhub://resource/4d3714a8-156c-48c2-bd99-35486a1a0a65",
-              "tokenhub://resource/93b88326-66b1-4581-b538-8cb538a39403"
+              "tokenhub://resource/3087e348-2baa-47d7-84c7-c6bc701437c4",
+              "tokenhub://resource/4a7c58f3-0d83-434c-8beb-6c7c3fb47343"
             ],
             "telemetryCapability": "workflow.resolve_request",
             "telemetry": {
               "capability": "workflow.resolve_request",
               "estimatedToolCostTokens": 237,
-              "estimatedSavedTokens": 1595,
+              "estimatedSavedTokens": 2394,
               "outputTokens": 237,
               "id": "tel_7",
-              "createdAt": "2026-05-06T22:16:46.894Z",
-              "roi": 6.729957805907173,
+              "createdAt": "2026-05-07T00:25:58.913Z",
+              "roi": 10.10126582278481,
               "graduated": true
             },
-            "summary": "Web context\nRecent the searched topic surfaced by the workflow emphasizes Express to Fastify migration docs Fastify migration plan: audit Express middleware, convert routes, add schemas, update plugins, run integration tests, then switch traffic; Express to Fastify migration docs Fastify migration plan: audit Express middleware, convert routes, add schemas, update plugins, run integration tests, then switch traffic; and Express to Fastify migration docs Fastify migration plan: audit Express midd",
+            "summary": "Web context\nRecent make plan migrate surfaced by the workflow emphasizes Express to Fastify migration docs Fastify migration plan: audit Express middleware, convert routes, add schemas, update plugins, run integration tests, then switch traffic; Express to Fastify migration docs Fastify migration plan: audit Express middleware, convert routes, add schemas, update plugins, run integration tests, then switch traffic; and Express to Fastify migration docs Fastify migration plan: audit Express middl",
             "warnings": [
               "Using no-key DuckDuckGo HTML fallback; provider freshness metadata is limited."
             ]
@@ -264,7 +264,7 @@
           "passed": true,
           "reason": "matched expected route, format, evidence, and resource contract",
           "ms": 7,
-          "estimatedTokens": 1477,
+          "estimatedTokens": 2292,
           "actual": {
             "intent": "research",
             "subject": "package",
@@ -276,23 +276,24 @@
               "docs"
             ],
             "resourceUris": [
-              "tokenhub://resource/780dc962-5860-4eac-8677-89f3f03f3a29",
-              "tokenhub://resource/6f26bfe0-a524-470f-85b8-e92dbf207105"
+              "tokenhub://resource/7af7603f-2eaf-4535-9b82-c53643ffcb4d",
+              "tokenhub://resource/d667c642-95c6-4cb0-a838-c6eb2fca5747"
             ],
             "telemetryCapability": "workflow.resolve_request",
             "telemetry": {
               "capability": "workflow.resolve_request",
               "estimatedToolCostTokens": 239,
-              "estimatedSavedTokens": 1595,
+              "estimatedSavedTokens": 2378,
               "outputTokens": 239,
               "id": "tel_8",
-              "createdAt": "2026-05-06T22:16:46.901Z",
-              "roi": 6.673640167364017,
+              "createdAt": "2026-05-07T00:25:58.921Z",
+              "roi": 9.94979079497908,
               "graduated": true
             },
-            "summary": "Web context\nRecent the searched topic surfaced by the workflow emphasizes React Query package changelog React Query changelog highlights cache invalidation, stale time defaults, query client updates, and migration notes for caching code; React Query package changelog React Query changelog highlights cache invalidation, stale time defaults, query client updates, and migration notes for caching code; and React Query package changelog React Query changelog highlights cache invalidation, stale time ",
+            "summary": "Web context\nRecent react query package surfaced by the workflow emphasizes React Query package changelog React Query changelog highlights cache invalidation, stale time defaults, query client updates, and migration notes for caching code; React Query package changelog React Query changelog highlights cache invalidation, stale time defaults, query client updates, and migration notes for caching code; and React Query package changelog React Query changelog highlights cache invalidation, stale time",
             "warnings": [
-              "Using no-key DuckDuckGo HTML fallback; provider freshness metadata is limited."
+              "Using no-key DuckDuckGo HTML fallback; provider freshness metadata is limited.",
+              "Could not fetch package registry metadata for @tanstack/react-query: Unexpected token '<', \"<!doctype \"... is not valid JSON"
             ]
           }
         },
@@ -301,12 +302,12 @@
           "request": "Find similar professional optimized implementations of retry backoff in TypeScript and compare them to this code",
           "passed": true,
           "reason": "matched expected route, format, evidence, and resource contract",
-          "ms": 11,
-          "estimatedTokens": 1843,
+          "ms": 10,
+          "estimatedTokens": 2692,
           "actual": {
             "intent": "compare",
             "subject": "code",
-            "outputShape": "agent_context",
+            "outputShape": "list",
             "sources": [
               "local_files",
               "web_search",
@@ -314,21 +315,21 @@
               "docs"
             ],
             "resourceUris": [
-              "tokenhub://resource/0694d9ef-afef-41f1-b677-988c94a4446c",
-              "tokenhub://resource/9b5c6c14-db64-4b06-b584-75e26b82c817"
+              "tokenhub://resource/20e23649-bef0-4971-874d-5d767894ea07",
+              "tokenhub://resource/8bcf4749-9648-40fa-b57d-4a7e781340b9"
             ],
             "telemetryCapability": "workflow.resolve_request",
             "telemetry": {
               "capability": "workflow.resolve_request",
-              "estimatedToolCostTokens": 302,
-              "estimatedSavedTokens": 1866,
-              "outputTokens": 302,
+              "estimatedToolCostTokens": 303,
+              "estimatedSavedTokens": 2715,
+              "outputTokens": 303,
               "id": "tel_9",
-              "createdAt": "2026-05-06T22:16:46.911Z",
-              "roi": 6.178807947019868,
+              "createdAt": "2026-05-07T00:25:58.931Z",
+              "roi": 8.96039603960396,
               "graduated": true
             },
-            "summary": "Local context\n- src/retry.ts:1 1: export async function retryBackoff(fn: () => Promise<unknown>) { try { return await fn(); } catch { return await fn(); } }\n2: \n\nWeb context\nRecent the searched topic surfaced by the workflow emphasizes TypeScript retry backoff implementation A professional retry backoff implementation validates input, supports exponential jitter, typed errors, max attempts, abort signals, and testable timers; TypeScript retry backoff implementation A professional retry backoff i",
+            "summary": "Local context\n- src/retry.ts:1 1: export async function retryBackoff(fn: () => Promise<unknown>) { try { return await fn(); } catch { return await fn(); } }\n2: \n\nWeb context\nRecent similar professional optimized surfaced by the workflow emphasizes TypeScript retry backoff implementation A professional retry backoff implementation validates input, supports exponential jitter, typed errors, max attempts, abort signals, and testable timers; TypeScript retry backoff implementation A professional ret",
             "warnings": [
               "Using no-key DuckDuckGo HTML fallback; provider freshness metadata is limited."
             ]
@@ -339,7 +340,7 @@
           "request": "Who is the current CEO of Nvidia and cite sources",
           "passed": true,
           "reason": "matched expected route, format, evidence, and resource contract",
-          "ms": 6,
+          "ms": 7,
           "estimatedTokens": 1201,
           "actual": {
             "intent": "research",
@@ -349,8 +350,8 @@
               "web_search"
             ],
             "resourceUris": [
-              "tokenhub://resource/5634709f-eb89-46fd-aaaa-0e98d0ca6190",
-              "tokenhub://resource/2791b8c7-f143-48f9-ab16-4eb5c6d66903"
+              "tokenhub://resource/089aa239-61bb-4040-b609-995cb731dafb",
+              "tokenhub://resource/0940f4e2-c317-4cdf-8dbc-1d199a3797ed"
             ],
             "telemetryCapability": "workflow.resolve_request",
             "telemetry": {
@@ -359,11 +360,11 @@
               "estimatedSavedTokens": 1412,
               "outputTokens": 155,
               "id": "tel_10",
-              "createdAt": "2026-05-06T22:16:46.918Z",
+              "createdAt": "2026-05-07T00:25:58.938Z",
               "roi": 9.109677419354838,
               "graduated": true
             },
-            "summary": "Web context\nRecent the searched topic surfaced by the workflow emphasizes Sources should cite current company leadership pages and recent filings; Sources should cite current company leadership pages and recent filings; and Sources should cite current company leadership pages and recent filings.\n\nSources:\n\n[1] Nvidia current CEO sources - https://example.test/nvidia/1\n[2] Nvidia current CEO sources - https://example.test/nvidia/2\n[3] Nvidia current CEO sources - https://example.test/nvidia/3\n\nRe",
+            "summary": "Web context\nRecent current nvidia cite surfaced by the workflow emphasizes Sources should cite current company leadership pages and recent filings; Sources should cite current company leadership pages and recent filings; and Sources should cite current company leadership pages and recent filings.\n\nSources:\n\n[1] Nvidia current CEO sources - https://example.test/nvidia/1\n[2] Nvidia current CEO sources - https://example.test/nvidia/2\n[3] Nvidia current CEO sources - https://example.test/nvidia/3\n\nR",
             "warnings": [
               "Using no-key DuckDuckGo HTML fallback; provider freshness metadata is limited."
             ]
@@ -381,7 +382,7 @@
           "passed": true,
           "reason": "matched expected route, format, evidence, and resource contract",
           "ms": 6,
-          "estimatedTokens": 1471,
+          "estimatedTokens": 2258,
           "actual": {
             "intent": "research",
             "subject": "api",
@@ -392,21 +393,21 @@
               "docs"
             ],
             "resourceUris": [
-              "tokenhub://resource/8daa57bd-7f10-462a-b6ae-e735dbd64b52",
-              "tokenhub://resource/1461ec0f-abbe-4808-9007-b9d05537316c"
+              "tokenhub://resource/a179d473-e8c0-42e2-a524-14f0f2b414c8",
+              "tokenhub://resource/f6a80407-4338-4812-83f2-d502f3c6205f"
             ],
             "telemetryCapability": "workflow.resolve_request",
             "telemetry": {
               "capability": "workflow.resolve_request",
-              "estimatedToolCostTokens": 229,
-              "estimatedSavedTokens": 1593,
-              "outputTokens": 229,
+              "estimatedToolCostTokens": 231,
+              "estimatedSavedTokens": 2378,
+              "outputTokens": 231,
               "id": "tel_11",
-              "createdAt": "2026-05-06T22:16:46.924Z",
-              "roi": 6.956331877729258,
+              "createdAt": "2026-05-07T00:25:58.944Z",
+              "roi": 10.294372294372295,
               "graduated": true
             },
-            "summary": "Web context\nRecent the searched topic surfaced by the workflow emphasizes OpenAI Responses API TypeScript docs Responses API TypeScript example: create a client, call responses.create, pass model and input, then read output_text; OpenAI Responses API TypeScript docs Responses API TypeScript example: create a client, call responses.create, pass model and input, then read output_text; and OpenAI Responses API TypeScript docs Responses API TypeScript example: create a client, call responses.create,",
+            "summary": "Web context\nRecent typescript example openai surfaced by the workflow emphasizes OpenAI Responses API TypeScript docs Responses API TypeScript example: create a client, call responses.create, pass model and input, then read output_text; OpenAI Responses API TypeScript docs Responses API TypeScript example: create a client, call responses.create, pass model and input, then read output_text; and OpenAI Responses API TypeScript docs Responses API TypeScript example: create a client, call responses.",
             "warnings": [
               "Using no-key DuckDuckGo HTML fallback; provider freshness metadata is limited."
             ]
@@ -417,8 +418,8 @@
           "request": "Compare Postgres and SQLite for a local-first SaaS prototype",
           "passed": true,
           "reason": "matched expected route, format, evidence, and resource contract",
-          "ms": 7,
-          "estimatedTokens": 1467,
+          "ms": 8,
+          "estimatedTokens": 2251,
           "actual": {
             "intent": "compare",
             "subject": "unknown",
@@ -430,21 +431,21 @@
               "docs"
             ],
             "resourceUris": [
-              "tokenhub://resource/cce71d39-41e1-4cf6-9139-9ee670260974",
-              "tokenhub://resource/ff1a2ecc-dad6-490a-9fac-3e446cb7e56c"
+              "tokenhub://resource/37af5f3c-e258-4992-9686-1fdfd431070a",
+              "tokenhub://resource/5632c8a4-355d-4bd1-afba-7e7f91415b34"
             ],
             "telemetryCapability": "workflow.resolve_request",
             "telemetry": {
               "capability": "workflow.resolve_request",
-              "estimatedToolCostTokens": 249,
-              "estimatedSavedTokens": 1577,
-              "outputTokens": 249,
+              "estimatedToolCostTokens": 250,
+              "estimatedSavedTokens": 2362,
+              "outputTokens": 250,
               "id": "tel_12",
-              "createdAt": "2026-05-06T22:16:46.931Z",
-              "roi": 6.333333333333333,
+              "createdAt": "2026-05-07T00:25:58.952Z",
+              "roi": 9.448,
               "graduated": true
             },
-            "summary": "Local context\nNo matching local files found.\n\nWeb context\nRecent the searched topic surfaced by the workflow emphasizes Postgres SQLite comparison Postgres supports concurrent SaaS workloads and managed operations, while SQLite is strong for local-first prototypes and embedded data; Postgres SQLite comparison Postgres supports concurrent SaaS workloads and managed operations, while SQLite is strong for local-first prototypes and embedded data; and Postgres SQLite comparison Postgres supports con",
+            "summary": "Local context\nNo matching local files found.\n\nWeb context\nRecent compare postgres sqlite surfaced by the workflow emphasizes Postgres SQLite comparison Postgres supports concurrent SaaS workloads and managed operations, while SQLite is strong for local-first prototypes and embedded data; Postgres SQLite comparison Postgres supports concurrent SaaS workloads and managed operations, while SQLite is strong for local-first prototypes and embedded data; and Postgres SQLite comparison Postgres support",
             "warnings": [
               "Using no-key DuckDuckGo HTML fallback; provider freshness metadata is limited."
             ]
@@ -456,7 +457,7 @@
           "passed": true,
           "reason": "matched expected route, format, evidence, and resource contract",
           "ms": 6,
-          "estimatedTokens": 1449,
+          "estimatedTokens": 2233,
           "actual": {
             "intent": "extract",
             "subject": "docs",
@@ -466,21 +467,21 @@
               "web_search"
             ],
             "resourceUris": [
-              "tokenhub://resource/89c34c1a-fbb8-4d45-9d82-082df07cf533",
-              "tokenhub://resource/a4689af2-3bd2-4894-9efc-01b335579e4f"
+              "tokenhub://resource/69d079aa-5f71-4ab5-900d-92dd2fe7e7ca",
+              "tokenhub://resource/72cb51d2-4972-4aad-83c9-9244754e9b45"
             ],
             "telemetryCapability": "workflow.resolve_request",
             "telemetry": {
               "capability": "workflow.resolve_request",
-              "estimatedToolCostTokens": 222,
-              "estimatedSavedTokens": 1574,
-              "outputTokens": 222,
+              "estimatedToolCostTokens": 224,
+              "estimatedSavedTokens": 2356,
+              "outputTokens": 224,
               "id": "tel_13",
-              "createdAt": "2026-05-06T22:16:46.937Z",
-              "roi": 7.09009009009009,
+              "createdAt": "2026-05-07T00:25:58.958Z",
+              "roi": 10.517857142857142,
               "graduated": true
             },
-            "summary": "Web context\nRecent the searched topic surfaced by the workflow emphasizes Deployment environment variables docs Deployment docs require DATABASE_URL, API_KEY, NODE_ENV, SENTRY_DSN, and AUTH_SECRET environment variables; Deployment environment variables docs Deployment docs require DATABASE_URL, API_KEY, NODE_ENV, SENTRY_DSN, and AUTH_SECRET environment variables; and Deployment environment variables docs Deployment docs require DATABASE_URL, API_KEY, NODE_ENV, SENTRY_DSN, and AUTH_SECRET environ",
+            "summary": "Web context\nRecent extract required environment surfaced by the workflow emphasizes Deployment environment variables docs Deployment docs require DATABASE_URL, API_KEY, NODE_ENV, SENTRY_DSN, and AUTH_SECRET environment variables; Deployment environment variables docs Deployment docs require DATABASE_URL, API_KEY, NODE_ENV, SENTRY_DSN, and AUTH_SECRET environment variables; and Deployment environment variables docs Deployment docs require DATABASE_URL, API_KEY, NODE_ENV, SENTRY_DSN, and AUTH_SECR",
             "warnings": [
               "Using no-key DuckDuckGo HTML fallback; provider freshness metadata is limited."
             ]
@@ -492,7 +493,7 @@
           "passed": true,
           "reason": "matched expected route, format, evidence, and resource contract",
           "ms": 6,
-          "estimatedTokens": 1416,
+          "estimatedTokens": 2182,
           "actual": {
             "intent": "research",
             "subject": "docs",
@@ -503,21 +504,21 @@
               "docs"
             ],
             "resourceUris": [
-              "tokenhub://resource/373b39cd-3262-4584-8f4a-57490157bc18",
-              "tokenhub://resource/2a7f1dd8-527a-43de-8cc3-cb0f3159e71a"
+              "tokenhub://resource/6d50a1f1-bf05-47e5-b4b2-51e8f821d919",
+              "tokenhub://resource/c263bdaf-3a8f-416f-908a-26ec546f66fe"
             ],
             "telemetryCapability": "workflow.resolve_request",
             "telemetry": {
               "capability": "workflow.resolve_request",
-              "estimatedToolCostTokens": 220,
-              "estimatedSavedTokens": 1556,
-              "outputTokens": 220,
+              "estimatedToolCostTokens": 222,
+              "estimatedSavedTokens": 2320,
+              "outputTokens": 222,
               "id": "tel_14",
-              "createdAt": "2026-05-06T22:16:46.943Z",
-              "roi": 7.072727272727272,
+              "createdAt": "2026-05-07T00:25:58.964Z",
+              "roi": 10.45045045045045,
               "graduated": true
             },
-            "summary": "Web context\nRecent the searched topic surfaced by the workflow emphasizes Playwright MCP token efficiency Playwright MCP guidance emphasizes compact snapshots and CLI usage when full MCP page trees cost too many tokens; Playwright MCP token efficiency Playwright MCP guidance emphasizes compact snapshots and CLI usage when full MCP page trees cost too many tokens; and Playwright MCP token efficiency Playwright MCP guidance emphasizes compact snapshots and CLI usage when full MCP page trees cost t",
+            "summary": "Web context\nRecent playwright token efficiency surfaced by the workflow emphasizes Playwright MCP token efficiency Playwright MCP guidance emphasizes compact snapshots and CLI usage when full MCP page trees cost too many tokens; Playwright MCP token efficiency Playwright MCP guidance emphasizes compact snapshots and CLI usage when full MCP page trees cost too many tokens; and Playwright MCP token efficiency Playwright MCP guidance emphasizes compact snapshots and CLI usage when full MCP page tre",
             "warnings": [
               "Using no-key DuckDuckGo HTML fallback; provider freshness metadata is limited."
             ]
@@ -529,7 +530,7 @@
           "passed": true,
           "reason": "matched expected route, format, evidence, and resource contract",
           "ms": 7,
-          "estimatedTokens": 1444,
+          "estimatedTokens": 2232,
           "actual": {
             "intent": "implement",
             "subject": "error",
@@ -541,21 +542,21 @@
               "docs"
             ],
             "resourceUris": [
-              "tokenhub://resource/80f5b71c-9438-4803-a7a9-ae4c3e10cf2c",
-              "tokenhub://resource/c92ca7fd-5ae9-46c1-8f8e-496518d441b5"
+              "tokenhub://resource/58ff055f-b79d-47b0-ac85-fe9a89a2f611",
+              "tokenhub://resource/0c3ee8bb-cd02-4a8f-885c-435a57c92caa"
             ],
             "telemetryCapability": "workflow.resolve_request",
             "telemetry": {
               "capability": "workflow.resolve_request",
               "estimatedToolCostTokens": 214,
-              "estimatedSavedTokens": 1585,
+              "estimatedSavedTokens": 2372,
               "outputTokens": 214,
               "id": "tel_15",
-              "createdAt": "2026-05-06T22:16:46.950Z",
-              "roi": 7.406542056074766,
+              "createdAt": "2026-05-07T00:25:58.971Z",
+              "roi": 11.08411214953271,
               "graduated": true
             },
-            "summary": "Local context\nNo matching local files found.\n\nWeb context\nRecent the searched topic surfaced by the workflow emphasizes GitHub Actions node setup cache failure source with current docs, implementation notes, and cited context; GitHub Actions node setup cache failure source with current docs, implementation notes, and cited context; and GitHub Actions node setup cache failure source with current docs, implementation notes, and cited context.\n\nSources:\n\n[1] GitHub Actions node setup cache failure ",
+            "summary": "Local context\nNo matching local files found.\n\nWeb context\nRecent github actions node surfaced by the workflow emphasizes GitHub Actions node setup cache failure source with current docs, implementation notes, and cited context; GitHub Actions node setup cache failure source with current docs, implementation notes, and cited context; and GitHub Actions node setup cache failure source with current docs, implementation notes, and cited context.\n\nSources:\n\n[1] GitHub Actions node setup cache failure",
             "warnings": [
               "Using no-key DuckDuckGo HTML fallback; provider freshness metadata is limited."
             ]
@@ -567,7 +568,7 @@
           "passed": true,
           "reason": "matched expected route, format, evidence, and resource contract",
           "ms": 6,
-          "estimatedTokens": 1392,
+          "estimatedTokens": 2157,
           "actual": {
             "intent": "plan",
             "subject": "package",
@@ -579,23 +580,24 @@
               "docs"
             ],
             "resourceUris": [
-              "tokenhub://resource/265f788d-cc8a-4a60-b0b1-43e14f29cc68",
-              "tokenhub://resource/1cd4770a-68e5-4137-9cd0-77946c4b99b9"
+              "tokenhub://resource/991c4bc5-53f8-4772-97d4-7d5b18b14dee",
+              "tokenhub://resource/e5726e95-e285-44ce-9a5f-143d0412d383"
             ],
             "telemetryCapability": "workflow.resolve_request",
             "telemetry": {
               "capability": "workflow.resolve_request",
               "estimatedToolCostTokens": 222,
-              "estimatedSavedTokens": 1533,
+              "estimatedSavedTokens": 2269,
               "outputTokens": 222,
               "id": "tel_16",
-              "createdAt": "2026-05-06T22:16:46.956Z",
-              "roi": 6.905405405405405,
+              "createdAt": "2026-05-07T00:25:58.977Z",
+              "roi": 10.22072072072072,
               "graduated": true
             },
-            "summary": "Web context\nRecent the searched topic surfaced by the workflow emphasizes Next.js package changelog Next.js changelog upgrade plan: read breaking changes, update package, run codemods, test routes, and check runtime configuration; Next.js package changelog Next.js changelog upgrade plan: read breaking changes, update package, run codemods, test routes, and check runtime configuration; and Next.js package changelog Next.js changelog upgrade plan: read breaking changes, update package, run codemod",
+            "summary": "Web context\nRecent next changelog make surfaced by the workflow emphasizes Next.js package changelog Next.js changelog upgrade plan: read breaking changes, update package, run codemods, test routes, and check runtime configuration; Next.js package changelog Next.js changelog upgrade plan: read breaking changes, update package, run codemods, test routes, and check runtime configuration; and Next.js package changelog Next.js changelog upgrade plan: read breaking changes, update package, run codemo",
             "warnings": [
-              "Using no-key DuckDuckGo HTML fallback; provider freshness metadata is limited."
+              "Using no-key DuckDuckGo HTML fallback; provider freshness metadata is limited.",
+              "Could not fetch package registry metadata for next: Unexpected token '<', \"<!doctype \"... is not valid JSON"
             ]
           }
         },
@@ -604,8 +606,8 @@
           "request": "Collect npm package metadata for zod and return a table",
           "passed": true,
           "reason": "matched expected route, format, evidence, and resource contract",
-          "ms": 7,
-          "estimatedTokens": 1346,
+          "ms": 6,
+          "estimatedTokens": 2094,
           "actual": {
             "intent": "extract",
             "subject": "package",
@@ -616,23 +618,24 @@
               "docs"
             ],
             "resourceUris": [
-              "tokenhub://resource/edad1028-0b71-439d-993c-483d76713efa",
-              "tokenhub://resource/5763b189-7ef2-48ae-99db-c88771d3b6e7"
+              "tokenhub://resource/6eae5a32-5002-4b2d-99b0-8ce48185148e",
+              "tokenhub://resource/a047347f-ed41-4e60-98bc-678bf4bb782e"
             ],
             "telemetryCapability": "workflow.resolve_request",
             "telemetry": {
               "capability": "workflow.resolve_request",
-              "estimatedToolCostTokens": 212,
-              "estimatedSavedTokens": 1496,
-              "outputTokens": 212,
+              "estimatedToolCostTokens": 214,
+              "estimatedSavedTokens": 2214,
+              "outputTokens": 214,
               "id": "tel_17",
-              "createdAt": "2026-05-06T22:16:46.963Z",
-              "roi": 7.056603773584905,
+              "createdAt": "2026-05-07T00:25:58.983Z",
+              "roi": 10.345794392523365,
               "graduated": true
             },
-            "summary": "Web context\nRecent the searched topic surfaced by the workflow emphasizes zod npm package metadata zod npm package metadata table includes package name, latest version, license, repository, types, and documentation links; zod npm package metadata zod npm package metadata table includes package name, latest version, license, repository, types, and documentation links; and zod npm package metadata zod npm package metadata table includes package name, latest version, license, repository, types, and",
+            "summary": "Web context\nRecent collect package metadata surfaced by the workflow emphasizes zod npm package metadata zod npm package metadata table includes package name, latest version, license, repository, types, and documentation links; zod npm package metadata zod npm package metadata table includes package name, latest version, license, repository, types, and documentation links; and zod npm package metadata zod npm package metadata table includes package name, latest version, license, repository, type",
             "warnings": [
-              "Using no-key DuckDuckGo HTML fallback; provider freshness metadata is limited."
+              "Using no-key DuckDuckGo HTML fallback; provider freshness metadata is limited.",
+              "Could not fetch package registry metadata for zod: Unexpected token '<', \"<!doctype \"... is not valid JSON"
             ]
           }
         },
@@ -641,8 +644,8 @@
           "request": "Summarize the latest Sentry JavaScript SDK release notes",
           "passed": true,
           "reason": "matched expected route, format, evidence, and resource contract",
-          "ms": 6,
-          "estimatedTokens": 1457,
+          "ms": 7,
+          "estimatedTokens": 2277,
           "actual": {
             "intent": "research",
             "subject": "package",
@@ -654,23 +657,24 @@
               "docs"
             ],
             "resourceUris": [
-              "tokenhub://resource/52c8df0d-894c-42f7-9363-b8c51bb1f62b",
-              "tokenhub://resource/d459557c-84aa-44be-842d-997490442032"
+              "tokenhub://resource/546bf39d-a8f5-4fbd-8759-a133c21222e1",
+              "tokenhub://resource/9696c7ee-b1e9-4f40-ac84-097f2e6858f5"
             ],
             "telemetryCapability": "workflow.resolve_request",
             "telemetry": {
               "capability": "workflow.resolve_request",
-              "estimatedToolCostTokens": 235,
-              "estimatedSavedTokens": 1585,
-              "outputTokens": 235,
+              "estimatedToolCostTokens": 236,
+              "estimatedSavedTokens": 2370,
+              "outputTokens": 236,
               "id": "tel_18",
-              "createdAt": "2026-05-06T22:16:46.969Z",
-              "roi": 6.74468085106383,
+              "createdAt": "2026-05-07T00:25:58.990Z",
+              "roi": 10.042372881355933,
               "graduated": true
             },
-            "summary": "Web context\nRecent the searched topic surfaced by the workflow emphasizes Sentry JavaScript SDK release notes Sentry JavaScript SDK release notes summarize tracing changes, browser integrations, Node support, and migration guidance; Sentry JavaScript SDK release notes Sentry JavaScript SDK release notes summarize tracing changes, browser integrations, Node support, and migration guidance; and Sentry JavaScript SDK release notes Sentry JavaScript SDK release notes summarize tracing changes, brows",
+            "summary": "Web context\nRecent sentry javascript release surfaced by the workflow emphasizes Sentry JavaScript SDK release notes Sentry JavaScript SDK release notes summarize tracing changes, browser integrations, Node support, and migration guidance; Sentry JavaScript SDK release notes Sentry JavaScript SDK release notes summarize tracing changes, browser integrations, Node support, and migration guidance; and Sentry JavaScript SDK release notes Sentry JavaScript SDK release notes summarize tracing changes",
             "warnings": [
-              "Using no-key DuckDuckGo HTML fallback; provider freshness metadata is limited."
+              "Using no-key DuckDuckGo HTML fallback; provider freshness metadata is limited.",
+              "Could not fetch package registry metadata for @sentry/javascript: Unexpected token '<', \"<!doctype \"... is not valid JSON"
             ]
           }
         },
@@ -679,8 +683,8 @@
           "request": "Compare professional MCP filesystem server implementations to ours and list gaps",
           "passed": true,
           "reason": "matched expected route, format, evidence, and resource contract",
-          "ms": 14,
-          "estimatedTokens": 1705,
+          "ms": 11,
+          "estimatedTokens": 2574,
           "actual": {
             "intent": "compare",
             "subject": "code",
@@ -692,21 +696,21 @@
               "docs"
             ],
             "resourceUris": [
-              "tokenhub://resource/de3d9304-8f7a-4d03-8c25-0150953de3bb",
-              "tokenhub://resource/f50b5cc2-e48b-4ade-aefa-4fb2ddf7b578"
+              "tokenhub://resource/ce18b2a2-753c-4a9f-a53e-6e647dd90537",
+              "tokenhub://resource/584474cc-a305-43bb-ac2e-ad802df43d3c"
             ],
             "telemetryCapability": "workflow.resolve_request",
             "telemetry": {
               "capability": "workflow.resolve_request",
-              "estimatedToolCostTokens": 269,
-              "estimatedSavedTokens": 1776,
-              "outputTokens": 269,
+              "estimatedToolCostTokens": 272,
+              "estimatedSavedTokens": 2642,
+              "outputTokens": 272,
               "id": "tel_19",
-              "createdAt": "2026-05-06T22:16:46.983Z",
-              "roi": 6.602230483271375,
+              "createdAt": "2026-05-07T00:25:59.001Z",
+              "roi": 9.713235294117647,
               "graduated": true
             },
-            "summary": "Local context\nNo matching local files found.\n\nWeb context\nRecent the searched topic surfaced by the workflow emphasizes MCP filesystem implementation comparison Professional MCP filesystem implementations include allowed roots, path validation, read/write tools, tree listing, and safe error messages; MCP filesystem implementation comparison Professional MCP filesystem implementations include allowed roots, path validation, read/write tools, tree listing, and safe error messages; and MCP filesyst",
+            "summary": "Local context\nNo matching local files found.\n\nWeb context\nRecent compare professional filesystem surfaced by the workflow emphasizes MCP filesystem implementation comparison Professional MCP filesystem implementations include allowed roots, path validation, read/write tools, tree listing, and safe error messages; MCP filesystem implementation comparison Professional MCP filesystem implementations include allowed roots, path validation, read/write tools, tree listing, and safe error messages; and",
             "warnings": [
               "Using no-key DuckDuckGo HTML fallback; provider freshness metadata is limited."
             ]
@@ -717,8 +721,8 @@
           "request": "Generate commands to deploy a Vite app to Cloudflare Pages using current docs",
           "passed": true,
           "reason": "matched expected route, format, evidence, and resource contract",
-          "ms": 7,
-          "estimatedTokens": 1372,
+          "ms": 6,
+          "estimatedTokens": 2135,
           "actual": {
             "intent": "plan",
             "subject": "docs",
@@ -728,21 +732,21 @@
               "web_search"
             ],
             "resourceUris": [
-              "tokenhub://resource/799c81c5-2eb2-4616-939a-c74422d16d98",
-              "tokenhub://resource/5650d779-2a69-49f4-9b48-17144b278406"
+              "tokenhub://resource/14045f1e-e376-41b3-8051-fb7716d069cf",
+              "tokenhub://resource/4e1072ec-4554-404d-a71b-eede327434c7"
             ],
             "telemetryCapability": "workflow.resolve_request",
             "telemetry": {
               "capability": "workflow.resolve_request",
-              "estimatedToolCostTokens": 181,
-              "estimatedSavedTokens": 1542,
-              "outputTokens": 181,
+              "estimatedToolCostTokens": 183,
+              "estimatedSavedTokens": 2302,
+              "outputTokens": 183,
               "id": "tel_20",
-              "createdAt": "2026-05-06T22:16:46.990Z",
-              "roi": 8.519337016574585,
+              "createdAt": "2026-05-07T00:25:59.007Z",
+              "roi": 12.579234972677595,
               "graduated": true
             },
-            "summary": "Web context\nRecent the searched topic surfaced by the workflow emphasizes Cloudflare Pages Vite deployment source with current docs, implementation notes, and cited context; Cloudflare Pages Vite deployment source with current docs, implementation notes, and cited context; and Cloudflare Pages Vite deployment source with current docs, implementation notes, and cited context.\n\nSources:\n\n[1] Cloudflare Pages Vite deployment - https://example.test/cloudflare/1\n[2] Cloudflare Pages Vite deployment -",
+            "summary": "Web context\nRecent generate commands deploy surfaced by the workflow emphasizes Cloudflare Pages Vite deployment source with current docs, implementation notes, and cited context; Cloudflare Pages Vite deployment source with current docs, implementation notes, and cited context; and Cloudflare Pages Vite deployment source with current docs, implementation notes, and cited context.\n\nSources:\n\n[1] Cloudflare Pages Vite deployment - https://example.test/cloudflare/1\n[2] Cloudflare Pages Vite deploy",
             "warnings": [
               "Using no-key DuckDuckGo HTML fallback; provider freshness metadata is limited."
             ]
@@ -760,7 +764,7 @@
           "passed": true,
           "reason": "matched expected route, format, evidence, and resource contract",
           "ms": 6,
-          "estimatedTokens": 1330,
+          "estimatedTokens": 2051,
           "actual": {
             "intent": "plan",
             "subject": "docs",
@@ -770,21 +774,21 @@
               "web_search"
             ],
             "resourceUris": [
-              "tokenhub://resource/a2390cd0-11e8-433e-85c9-2cf1cc768c91",
-              "tokenhub://resource/77a392fb-9d15-4ced-80e8-a566638a41ed"
+              "tokenhub://resource/9e3be98e-10a1-4df9-aed0-056ea413a2b8",
+              "tokenhub://resource/dac84166-6483-4d5c-a09d-80cbf69a5271"
             ],
             "telemetryCapability": "workflow.resolve_request",
             "telemetry": {
               "capability": "workflow.resolve_request",
-              "estimatedToolCostTokens": 208,
-              "estimatedSavedTokens": 1484,
-              "outputTokens": 208,
+              "estimatedToolCostTokens": 209,
+              "estimatedSavedTokens": 2204,
+              "outputTokens": 209,
               "id": "tel_21",
-              "createdAt": "2026-05-06T22:16:46.996Z",
-              "roi": 7.134615384615385,
+              "createdAt": "2026-05-07T00:25:59.013Z",
+              "roi": 10.545454545454545,
               "graduated": true
             },
-            "summary": "Web context\nRecent the searched topic surfaced by the workflow emphasizes Prisma migration docs Prisma migration docs checklist: run prisma migrate dev, review generated SQL, apply migrations in CI, and verify schema drift; Prisma migration docs Prisma migration docs checklist: run prisma migrate dev, review generated SQL, apply migrations in CI, and verify schema drift; and Prisma migration docs Prisma migration docs checklist: run prisma migrate dev, review generated SQL, apply migrations in C",
+            "summary": "Web context\nRecent current prisma migration surfaced by the workflow emphasizes Prisma migration docs Prisma migration docs checklist: run prisma migrate dev, review generated SQL, apply migrations in CI, and verify schema drift; Prisma migration docs Prisma migration docs checklist: run prisma migrate dev, review generated SQL, apply migrations in CI, and verify schema drift; and Prisma migration docs Prisma migration docs checklist: run prisma migrate dev, review generated SQL, apply migration",
             "warnings": [
               "Using no-key DuckDuckGo HTML fallback; provider freshness metadata is limited."
             ]
@@ -795,8 +799,8 @@
           "request": "Debug Vercel FUNCTION_INVOCATION_FAILED 500 errors",
           "passed": true,
           "reason": "matched expected route, format, evidence, and resource contract",
-          "ms": 7,
-          "estimatedTokens": 1440,
+          "ms": 6,
+          "estimatedTokens": 1442,
           "actual": {
             "intent": "debug",
             "subject": "error",
@@ -805,21 +809,21 @@
               "web_search"
             ],
             "resourceUris": [
-              "tokenhub://resource/16196cae-f8c3-4f8a-82b9-d3bf06bf0f3c",
-              "tokenhub://resource/5c999bbf-8ba8-4069-9ed1-391ccf641419"
+              "tokenhub://resource/bbdf5a10-e425-4cce-8d80-4a11a8ad8618",
+              "tokenhub://resource/987ceb8c-c8a9-4a61-8ffa-1fffedbd4a1e"
             ],
             "telemetryCapability": "workflow.resolve_request",
             "telemetry": {
               "capability": "workflow.resolve_request",
-              "estimatedToolCostTokens": 238,
-              "estimatedSavedTokens": 1566,
-              "outputTokens": 238,
+              "estimatedToolCostTokens": 239,
+              "estimatedSavedTokens": 1567,
+              "outputTokens": 239,
               "id": "tel_22",
-              "createdAt": "2026-05-06T22:16:47.003Z",
-              "roi": 6.579831932773109,
+              "createdAt": "2026-05-07T00:25:59.019Z",
+              "roi": 6.556485355648536,
               "graduated": true
             },
-            "summary": "Web context\nRecent the searched topic surfaced by the workflow emphasizes Vercel function invocation debug Vercel FUNCTION_INVOCATION_FAILED 500 errors can come from runtime exceptions, missing environment variables, timeouts, or unsupported Node APIs; Vercel function invocation debug Vercel FUNCTION_INVOCATION_FAILED 500 errors can come from runtime exceptions, missing environment variables, timeouts, or unsupported Node APIs; and Vercel function invocation debug Vercel FUNCTION_INVOCATION_FAIL",
+            "summary": "Web context\nRecent debug vercel function surfaced by the workflow emphasizes Vercel function invocation debug Vercel FUNCTION_INVOCATION_FAILED 500 errors can come from runtime exceptions, missing environment variables, timeouts, or unsupported Node APIs; Vercel function invocation debug Vercel FUNCTION_INVOCATION_FAILED 500 errors can come from runtime exceptions, missing environment variables, timeouts, or unsupported Node APIs; and Vercel function invocation debug Vercel FUNCTION_INVOCATION_F",
             "warnings": [
               "Using no-key DuckDuckGo HTML fallback; provider freshness metadata is limited."
             ]
@@ -830,8 +834,8 @@
           "request": "Extract Cloudflare cache headers from current docs as a table",
           "passed": true,
           "reason": "matched expected route, format, evidence, and resource contract",
-          "ms": 6,
-          "estimatedTokens": 1414,
+          "ms": 5,
+          "estimatedTokens": 2195,
           "actual": {
             "intent": "extract",
             "subject": "docs",
@@ -841,21 +845,21 @@
               "web_search"
             ],
             "resourceUris": [
-              "tokenhub://resource/33f69546-fc97-4279-9db0-18ba57d52af3",
-              "tokenhub://resource/3af530e1-814c-463a-b44f-b471eeeeabe8"
+              "tokenhub://resource/4744eec2-c910-44a8-a97c-46710f811310",
+              "tokenhub://resource/6dbae967-bff9-4bc6-928e-dcd427eef6b4"
             ],
             "telemetryCapability": "workflow.resolve_request",
             "telemetry": {
               "capability": "workflow.resolve_request",
-              "estimatedToolCostTokens": 222,
-              "estimatedSavedTokens": 1551,
-              "outputTokens": 222,
+              "estimatedToolCostTokens": 224,
+              "estimatedSavedTokens": 2330,
+              "outputTokens": 224,
               "id": "tel_23",
-              "createdAt": "2026-05-06T22:16:47.009Z",
-              "roi": 6.986486486486487,
+              "createdAt": "2026-05-07T00:25:59.024Z",
+              "roi": 10.401785714285714,
               "graduated": true
             },
-            "summary": "Web context\nRecent the searched topic surfaced by the workflow emphasizes Cloudflare cache headers docs Cloudflare cache headers table includes Cache-Control, CDN-Cache-Control, Cloudflare-CDN-Cache-Control, ETag, and Vary; Cloudflare cache headers docs Cloudflare cache headers table includes Cache-Control, CDN-Cache-Control, Cloudflare-CDN-Cache-Control, ETag, and Vary; and Cloudflare cache headers docs Cloudflare cache headers table includes Cache-Control, CDN-Cache-Control, Cloudflare-CDN-Cac",
+            "summary": "Web context\nRecent extract cloudflare cache surfaced by the workflow emphasizes Cloudflare cache headers docs Cloudflare cache headers table includes Cache-Control, CDN-Cache-Control, Cloudflare-CDN-Cache-Control, ETag, and Vary; Cloudflare cache headers docs Cloudflare cache headers table includes Cache-Control, CDN-Cache-Control, Cloudflare-CDN-Cache-Control, ETag, and Vary; and Cloudflare cache headers docs Cloudflare cache headers table includes Cache-Control, CDN-Cache-Control, Cloudflare-C",
             "warnings": [
               "Using no-key DuckDuckGo HTML fallback; provider freshness metadata is limited."
             ]
@@ -867,7 +871,7 @@
           "passed": true,
           "reason": "matched expected route, format, evidence, and resource contract",
           "ms": 7,
-          "estimatedTokens": 1268,
+          "estimatedTokens": 1932,
           "actual": {
             "intent": "compare",
             "subject": "api",
@@ -879,21 +883,21 @@
               "docs"
             ],
             "resourceUris": [
-              "tokenhub://resource/50e3e9ec-026e-4b29-a514-4fa68c650a1d",
-              "tokenhub://resource/52a4b5ed-d8d6-406f-ae0b-2ce46a2fb055"
+              "tokenhub://resource/6c725de6-4451-40d5-a6bf-91f1e2cabfee",
+              "tokenhub://resource/831cf5f8-98e6-476a-9ebd-f459a5046e7a"
             ],
             "telemetryCapability": "workflow.resolve_request",
             "telemetry": {
               "capability": "workflow.resolve_request",
               "estimatedToolCostTokens": 189,
-              "estimatedSavedTokens": 1444,
+              "estimatedSavedTokens": 2107,
               "outputTokens": 189,
               "id": "tel_24",
-              "createdAt": "2026-05-06T22:16:47.016Z",
-              "roi": 7.64021164021164,
+              "createdAt": "2026-05-07T00:25:59.031Z",
+              "roi": 11.148148148148149,
               "graduated": true
             },
-            "summary": "Local context\nNo matching local files found.\n\nWeb context\nRecent the searched topic surfaced by the workflow emphasizes Redis Upstash API rate limiting Redis and Upstash both support API rate limiting; Redis Upstash API rate limiting Redis and Upstash both support API rate limiting; and Redis Upstash API rate limiting Redis and Upstash both support API rate limiting.\n\nSources:\n\n[1] Redis Upstash API rate limiting - https://example.test/redis-upstash/1\n[2] Redis Upstash API rate limiting - https:",
+            "summary": "Local context\nNo matching local files found.\n\nWeb context\nRecent compare redis upstash surfaced by the workflow emphasizes Redis Upstash API rate limiting Redis and Upstash both support API rate limiting; Redis Upstash API rate limiting Redis and Upstash both support API rate limiting; and Redis Upstash API rate limiting Redis and Upstash both support API rate limiting.\n\nSources:\n\n[1] Redis Upstash API rate limiting - https://example.test/redis-upstash/1\n[2] Redis Upstash API rate limiting - htt",
             "warnings": [
               "Using no-key DuckDuckGo HTML fallback; provider freshness metadata is limited."
             ]
@@ -904,8 +908,8 @@
           "request": "Summarize the latest TypeScript release notes in one paragraph",
           "passed": true,
           "reason": "matched expected route, format, evidence, and resource contract",
-          "ms": 5,
-          "estimatedTokens": 1403,
+          "ms": 6,
+          "estimatedTokens": 2172,
           "actual": {
             "intent": "research",
             "subject": "package",
@@ -917,23 +921,24 @@
               "docs"
             ],
             "resourceUris": [
-              "tokenhub://resource/5f595e49-e976-4d65-ae76-73a8f635adf3",
-              "tokenhub://resource/39b07260-5e1e-4675-ae22-cac6e969eb1f"
+              "tokenhub://resource/412d9518-d0a7-4b66-a89e-dcfe69ade1d6",
+              "tokenhub://resource/95c8b149-2e0f-4e7d-abc0-ee6292d33798"
             ],
             "telemetryCapability": "workflow.resolve_request",
             "telemetry": {
               "capability": "workflow.resolve_request",
-              "estimatedToolCostTokens": 220,
-              "estimatedSavedTokens": 1542,
-              "outputTokens": 220,
+              "estimatedToolCostTokens": 222,
+              "estimatedSavedTokens": 2280,
+              "outputTokens": 222,
               "id": "tel_25",
-              "createdAt": "2026-05-06T22:16:47.021Z",
-              "roi": 7.009090909090909,
+              "createdAt": "2026-05-07T00:25:59.037Z",
+              "roi": 10.27027027027027,
               "graduated": true
             },
-            "summary": "Web context\nRecent the searched topic surfaced by the workflow emphasizes TypeScript release notes TypeScript release notes summarize compiler changes, editor improvements, stricter checks, and migration recommendations; TypeScript release notes TypeScript release notes summarize compiler changes, editor improvements, stricter checks, and migration recommendations; and TypeScript release notes TypeScript release notes summarize compiler changes, editor improvements, stricter checks, and migratio",
+            "summary": "Web context\nRecent typescript release notes surfaced by the workflow emphasizes TypeScript release notes TypeScript release notes summarize compiler changes, editor improvements, stricter checks, and migration recommendations; TypeScript release notes TypeScript release notes summarize compiler changes, editor improvements, stricter checks, and migration recommendations; and TypeScript release notes TypeScript release notes summarize compiler changes, editor improvements, stricter checks, and mi",
             "warnings": [
-              "Using no-key DuckDuckGo HTML fallback; provider freshness metadata is limited."
+              "Using no-key DuckDuckGo HTML fallback; provider freshness metadata is limited.",
+              "Could not fetch package registry metadata for typescript: Unexpected token '<', \"<!doctype \"... is not valid JSON"
             ]
           }
         },
@@ -943,7 +948,7 @@
           "passed": true,
           "reason": "matched expected route, format, evidence, and resource contract",
           "ms": 7,
-          "estimatedTokens": 1421,
+          "estimatedTokens": 2205,
           "actual": {
             "intent": "plan",
             "subject": "docs",
@@ -953,21 +958,21 @@
               "web_search"
             ],
             "resourceUris": [
-              "tokenhub://resource/49e2bff6-4351-4972-95cd-26c9e5204ba3",
-              "tokenhub://resource/311f769a-50ee-4af8-b9e4-85d8402b530e"
+              "tokenhub://resource/77a80842-6ccb-4163-8fb8-a60c6fb9108b",
+              "tokenhub://resource/574c8315-5403-4c6b-b7ce-c050bc7cd688"
             ],
             "telemetryCapability": "workflow.resolve_request",
             "telemetry": {
               "capability": "workflow.resolve_request",
-              "estimatedToolCostTokens": 224,
-              "estimatedSavedTokens": 1555,
-              "outputTokens": 224,
+              "estimatedToolCostTokens": 225,
+              "estimatedSavedTokens": 2338,
+              "outputTokens": 225,
               "id": "tel_26",
-              "createdAt": "2026-05-06T22:16:47.028Z",
-              "roi": 6.941964285714286,
+              "createdAt": "2026-05-07T00:25:59.044Z",
+              "roi": 10.391111111111112,
               "graduated": true
             },
-            "summary": "Web context\nRecent the searched topic surfaced by the workflow emphasizes Docker Node image best practices Docker Node image best practices commands include docker build, npm ci --omit=dev, non-root users, and multi-stage builds; Docker Node image best practices Docker Node image best practices commands include docker build, npm ci --omit=dev, non-root users, and multi-stage builds; and Docker Node image best practices Docker Node image best practices commands include docker build, npm ci --omit",
+            "summary": "Web context\nRecent official docker node surfaced by the workflow emphasizes Docker Node image best practices Docker Node image best practices commands include docker build, npm ci --omit=dev, non-root users, and multi-stage builds; Docker Node image best practices Docker Node image best practices commands include docker build, npm ci --omit=dev, non-root users, and multi-stage builds; and Docker Node image best practices Docker Node image best practices commands include docker build, npm ci --om",
             "warnings": [
               "Using no-key DuckDuckGo HTML fallback; provider freshness metadata is limited."
             ]
@@ -979,7 +984,7 @@
           "passed": true,
           "reason": "matched expected route, format, evidence, and resource contract",
           "ms": 7,
-          "estimatedTokens": 1406,
+          "estimatedTokens": 2176,
           "actual": {
             "intent": "answer",
             "subject": "api",
@@ -989,21 +994,21 @@
               "web_search"
             ],
             "resourceUris": [
-              "tokenhub://resource/8c9d97bf-d2af-46f2-8c25-22abf1ef84a4",
-              "tokenhub://resource/c74185b5-7cb6-4edb-a2e4-139147bb3040"
+              "tokenhub://resource/13acc580-58c7-4ed7-b2b1-cfa0d2c3e6df",
+              "tokenhub://resource/347132a2-bef0-4b4c-bcb6-bee1b2515686"
             ],
             "telemetryCapability": "workflow.resolve_request",
             "telemetry": {
               "capability": "workflow.resolve_request",
               "estimatedToolCostTokens": 221,
-              "estimatedSavedTokens": 1547,
+              "estimatedSavedTokens": 2313,
               "outputTokens": 221,
               "id": "tel_27",
-              "createdAt": "2026-05-06T22:16:47.035Z",
-              "roi": 7,
+              "createdAt": "2026-05-07T00:25:59.051Z",
+              "roi": 10.46606334841629,
               "graduated": true
             },
-            "summary": "Web context\nRecent the searched topic surfaced by the workflow emphasizes GitHub REST API rate limits GitHub REST API rate limit structured data includes core limit, search limit, GraphQL points, reset time, and headers; GitHub REST API rate limits GitHub REST API rate limit structured data includes core limit, search limit, GraphQL points, reset time, and headers; and GitHub REST API rate limits GitHub REST API rate limit structured data includes core limit, search limit, GraphQL points, reset ",
+            "summary": "Web context\nRecent github rest rate surfaced by the workflow emphasizes GitHub REST API rate limits GitHub REST API rate limit structured data includes core limit, search limit, GraphQL points, reset time, and headers; GitHub REST API rate limits GitHub REST API rate limit structured data includes core limit, search limit, GraphQL points, reset time, and headers; and GitHub REST API rate limits GitHub REST API rate limit structured data includes core limit, search limit, GraphQL points, reset ti",
             "warnings": [
               "Using no-key DuckDuckGo HTML fallback; provider freshness metadata is limited."
             ]
@@ -1015,7 +1020,7 @@
           "passed": true,
           "reason": "matched expected route, format, evidence, and resource contract",
           "ms": 6,
-          "estimatedTokens": 1380,
+          "estimatedTokens": 2155,
           "actual": {
             "intent": "research",
             "subject": "package",
@@ -1027,23 +1032,24 @@
               "docs"
             ],
             "resourceUris": [
-              "tokenhub://resource/589c4fa6-ccfe-4fed-8f87-65f62eb1058f",
-              "tokenhub://resource/937229a1-6dac-4a40-8597-6c22afeda15d"
+              "tokenhub://resource/abb1b328-4a24-41fc-8064-c59a01bf9195",
+              "tokenhub://resource/87a69019-13ed-4ef7-a7aa-37efa607616e"
             ],
             "telemetryCapability": "workflow.resolve_request",
             "telemetry": {
               "capability": "workflow.resolve_request",
-              "estimatedToolCostTokens": 219,
-              "estimatedSavedTokens": 1533,
-              "outputTokens": 219,
+              "estimatedToolCostTokens": 220,
+              "estimatedSavedTokens": 2277,
+              "outputTokens": 220,
               "id": "tel_28",
-              "createdAt": "2026-05-06T22:16:47.041Z",
-              "roi": 7,
+              "createdAt": "2026-05-07T00:25:59.057Z",
+              "roi": 10.35,
               "graduated": true
             },
-            "summary": "Web context\nRecent the searched topic surfaced by the workflow emphasizes PostgreSQL release notes PostgreSQL release notes summarize planner improvements, SQL features, replication changes, and upgrade cautions; PostgreSQL release notes PostgreSQL release notes summarize planner improvements, SQL features, replication changes, and upgrade cautions; and PostgreSQL release notes PostgreSQL release notes summarize planner improvements, SQL features, replication changes, and upgrade cautions.\n\nSour",
+            "summary": "Web context\nRecent postgresql release notes surfaced by the workflow emphasizes PostgreSQL release notes PostgreSQL release notes summarize planner improvements, SQL features, replication changes, and upgrade cautions; PostgreSQL release notes PostgreSQL release notes summarize planner improvements, SQL features, replication changes, and upgrade cautions; and PostgreSQL release notes PostgreSQL release notes summarize planner improvements, SQL features, replication changes, and upgrade cautions.",
             "warnings": [
-              "Using no-key DuckDuckGo HTML fallback; provider freshness metadata is limited."
+              "Using no-key DuckDuckGo HTML fallback; provider freshness metadata is limited.",
+              "Could not fetch package registry metadata for postgres: Unexpected token '<', \"<!doctype \"... is not valid JSON"
             ]
           }
         },
@@ -1052,8 +1058,8 @@
           "request": "Compare professional browser automation state capture implementations to ours",
           "passed": true,
           "reason": "matched expected route, format, evidence, and resource contract",
-          "ms": 8,
-          "estimatedTokens": 1750,
+          "ms": 9,
+          "estimatedTokens": 2585,
           "actual": {
             "intent": "compare",
             "subject": "code",
@@ -1065,21 +1071,21 @@
               "docs"
             ],
             "resourceUris": [
-              "tokenhub://resource/58a7cbee-3ff4-4532-8ac8-61b4f50b4e03",
-              "tokenhub://resource/a9ef4aed-66ef-4b76-b163-be1226e70682"
+              "tokenhub://resource/0e622ebc-4818-43b8-bd43-05143754ff11",
+              "tokenhub://resource/906b8feb-0aed-4ab9-b585-4d2a297cdc2b"
             ],
             "telemetryCapability": "workflow.resolve_request",
             "telemetry": {
               "capability": "workflow.resolve_request",
-              "estimatedToolCostTokens": 288,
-              "estimatedSavedTokens": 1802,
-              "outputTokens": 288,
+              "estimatedToolCostTokens": 291,
+              "estimatedSavedTokens": 2635,
+              "outputTokens": 291,
               "id": "tel_29",
-              "createdAt": "2026-05-06T22:16:47.049Z",
-              "roi": 6.256944444444445,
+              "createdAt": "2026-05-07T00:25:59.066Z",
+              "roi": 9.054982817869416,
               "graduated": true
             },
-            "summary": "Local context\n- src/browser.ts:1 1: export function captureBrowserState() { return { headings: [], links: [], consoleErrors: [] }; }\n2: \n\nWeb context\nRecent the searched topic surfaced by the workflow emphasizes Browser automation state capture Professional browser automation state capture uses compact DOM maps, stable element refs, console errors, network failures, and screenshot resources; Browser automation state capture Professional browser automation state capture uses compact DOM maps, sta",
+            "summary": "Local context\n- src/browser.ts:1 1: export function captureBrowserState() { return { headings: [], links: [], consoleErrors: [] }; }\n2: \n\nWeb context\nRecent compare professional browser surfaced by the workflow emphasizes Browser automation state capture Professional browser automation state capture uses compact DOM maps, stable element refs, console errors, network failures, and screenshot resources; Browser automation state capture Professional browser automation state capture uses compact DOM",
             "warnings": [
               "Using no-key DuckDuckGo HTML fallback; provider freshness metadata is limited."
             ]
@@ -1090,8 +1096,8 @@
           "request": "Find current OAuth 2.1 spec changes and cite sources",
           "passed": true,
           "reason": "matched expected route, format, evidence, and resource contract",
-          "ms": 6,
-          "estimatedTokens": 1352,
+          "ms": 5,
+          "estimatedTokens": 2083,
           "actual": {
             "intent": "research",
             "subject": "docs",
@@ -1101,21 +1107,21 @@
               "web_search"
             ],
             "resourceUris": [
-              "tokenhub://resource/732788dc-4bf6-4e52-909e-353bc310f6dc",
-              "tokenhub://resource/c240002b-4bea-4325-8215-e3a78eb796ee"
+              "tokenhub://resource/d8bab9e0-5665-47fb-99f6-b03e9ee281b1",
+              "tokenhub://resource/c96db39f-32a7-44b3-867d-7cb18090e49e"
             ],
             "telemetryCapability": "workflow.resolve_request",
             "telemetry": {
               "capability": "workflow.resolve_request",
               "estimatedToolCostTokens": 217,
-              "estimatedSavedTokens": 1500,
+              "estimatedSavedTokens": 2230,
               "outputTokens": 217,
               "id": "tel_30",
-              "createdAt": "2026-05-06T22:16:47.055Z",
-              "roi": 6.912442396313364,
+              "createdAt": "2026-05-07T00:25:59.071Z",
+              "roi": 10.276497695852534,
               "graduated": true
             },
-            "summary": "Web context\nRecent the searched topic surfaced by the workflow emphasizes OAuth 2.1 spec changes OAuth 2.1 spec changes consolidate PKCE, remove implicit flow guidance, tighten redirect URI rules, and cite current standards sources; OAuth 2.1 spec changes OAuth 2.1 spec changes consolidate PKCE, remove implicit flow guidance, tighten redirect URI rules, and cite current standards sources; and OAuth 2.1 spec changes OAuth 2.1 spec changes consolidate PKCE, remove implicit flow guidance, tighten r",
+            "summary": "Web context\nRecent current oauth spec surfaced by the workflow emphasizes OAuth 2.1 spec changes OAuth 2.1 spec changes consolidate PKCE, remove implicit flow guidance, tighten redirect URI rules, and cite current standards sources; OAuth 2.1 spec changes OAuth 2.1 spec changes consolidate PKCE, remove implicit flow guidance, tighten redirect URI rules, and cite current standards sources; and OAuth 2.1 spec changes OAuth 2.1 spec changes consolidate PKCE, remove implicit flow guidance, tighten r",
             "warnings": [
               "Using no-key DuckDuckGo HTML fallback; provider freshness metadata is limited."
             ]
