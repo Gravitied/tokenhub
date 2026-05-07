@@ -28,6 +28,7 @@ export type FilesystemActionInput = {
   destination?: string;
   content?: string;
   limit?: number;
+  allowUnsafeMutations?: boolean;
 };
 
 export async function applyFilesystemAction(input: FilesystemActionInput): Promise<{
@@ -39,6 +40,10 @@ export async function applyFilesystemAction(input: FilesystemActionInput): Promi
   if (input.action === "tree") {
     const entries = (await walkEntries(root)).slice(0, input.limit ?? 100);
     return { summary: `listed ${entries.length} entries`, entries };
+  }
+
+  if (!mutationsEnabled(input)) {
+    throw new Error(mutationDisabledMessage(input.action));
   }
 
   if (!input.path) {
@@ -204,6 +209,14 @@ function assertRealPathInsideWorkspace(realRoot: string, realPath: string, reque
     return;
   }
   throw new Error(`Refusing filesystem action outside workspace: ${requestedPath}`);
+}
+
+function mutationDisabledMessage(action: "write" | "move" | "delete"): string {
+  return `filesystem ${action} is disabled by default; set TOKENHUB_ENABLE_FS_MUTATIONS=true only for trusted local workspaces.`;
+}
+
+function mutationsEnabled(input: FilesystemActionInput): boolean {
+  return input.allowUnsafeMutations === true || process.env.TOKENHUB_ENABLE_FS_MUTATIONS === "true";
 }
 
 function buildSnippet(content: string, matchLine: number, budgetTokens: number): string {

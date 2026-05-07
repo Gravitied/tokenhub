@@ -52,20 +52,85 @@ describe("GitHub module", () => {
 });
 
 describe("filesystem action module", () => {
-  test("writes, moves, and deletes files within the workspace only", async () => {
+  test("rejects write, move, and delete by default with a clear opt-in message", async () => {
+    const dir = await mkdtemp(join(tmpdir(), "tokenhub-fs-disabled-"));
+    try {
+      await writeFile(join(dir, "source.txt"), "hello", "utf8");
+      await expect(applyFilesystemAction({ root: dir, action: "write", path: "notes/a.txt", content: "hello" })).rejects.toThrow(
+        "filesystem write is disabled by default; set TOKENHUB_ENABLE_FS_MUTATIONS=true only for trusted local workspaces."
+      );
+      await expect(
+        applyFilesystemAction({ root: dir, action: "move", path: "source.txt", destination: "notes/moved.txt" })
+      ).rejects.toThrow(
+        "filesystem move is disabled by default; set TOKENHUB_ENABLE_FS_MUTATIONS=true only for trusted local workspaces."
+      );
+      await expect(applyFilesystemAction({ root: dir, action: "delete", path: "source.txt" })).rejects.toThrow(
+        "filesystem delete is disabled by default; set TOKENHUB_ENABLE_FS_MUTATIONS=true only for trusted local workspaces."
+      );
+    } finally {
+      await rm(dir, { recursive: true, force: true });
+    }
+  });
+
+  test("lists the workspace tree without mutation opt-in", async () => {
+    const dir = await mkdtemp(join(tmpdir(), "tokenhub-fs-tree-"));
+    try {
+      await writeFile(join(dir, "notes.txt"), "hello", "utf8");
+
+      const result = await applyFilesystemAction({ root: dir, action: "tree" });
+
+      expect(result.summary).toContain("listed");
+      expect(result.entries).toEqual(expect.arrayContaining([{ path: "notes.txt", type: "file" }]));
+    } finally {
+      await rm(dir, { recursive: true, force: true });
+    }
+  });
+
+  test("writes, moves, and deletes files within the workspace only when mutations are explicitly enabled", async () => {
     const dir = await mkdtemp(join(tmpdir(), "tokenhub-fs-action-"));
     try {
-      const write = await applyFilesystemAction({ root: dir, action: "write", path: "notes/a.txt", content: "hello" });
-      const move = await applyFilesystemAction({ root: dir, action: "move", path: "notes/a.txt", destination: "notes/b.txt" });
-      const del = await applyFilesystemAction({ root: dir, action: "delete", path: "notes/b.txt" });
+      const write = await applyFilesystemAction({
+        root: dir,
+        action: "write",
+        path: "notes/a.txt",
+        content: "hello",
+        allowUnsafeMutations: true
+      });
+      const move = await applyFilesystemAction({
+        root: dir,
+        action: "move",
+        path: "notes/a.txt",
+        destination: "notes/b.txt",
+        allowUnsafeMutations: true
+      });
+      const del = await applyFilesystemAction({ root: dir, action: "delete", path: "notes/b.txt", allowUnsafeMutations: true });
 
       expect(write.summary).toContain("wrote notes/a.txt");
       expect(move.summary).toContain("moved notes/a.txt to notes/b.txt");
       expect(del.summary).toContain("deleted notes/b.txt");
-      await expect(applyFilesystemAction({ root: dir, action: "write", path: "../escape.txt", content: "no" })).rejects.toThrow(
-        /outside workspace/
-      );
+      await expect(
+        applyFilesystemAction({ root: dir, action: "write", path: "../escape.txt", content: "no", allowUnsafeMutations: true })
+      ).rejects.toThrow(/outside workspace/);
     } finally {
+      await rm(dir, { recursive: true, force: true });
+    }
+  });
+
+  test("allows trusted local mutations when enabled by environment variable", async () => {
+    const dir = await mkdtemp(join(tmpdir(), "tokenhub-fs-env-action-"));
+    const previous = process.env.TOKENHUB_ENABLE_FS_MUTATIONS;
+    process.env.TOKENHUB_ENABLE_FS_MUTATIONS = "true";
+    try {
+      const result = await applyFilesystemAction({ root: dir, action: "write", path: "notes/env.txt", content: "hello" });
+
+      expect(result.summary).toContain("wrote notes/env.txt");
+      await expect(readFile(join(dir, "notes", "env.txt"), "utf8")).resolves.toBe("hello");
+    } finally {
+      if (previous === undefined) {
+        delete process.env.TOKENHUB_ENABLE_FS_MUTATIONS;
+      } else {
+        process.env.TOKENHUB_ENABLE_FS_MUTATIONS = previous;
+      }
       await rm(dir, { recursive: true, force: true });
     }
   });
@@ -75,7 +140,13 @@ describe("filesystem action module", () => {
     if (!fixture) return;
     try {
       await expect(
-        applyFilesystemAction({ root: fixture.root, action: "write", path: "link/file.txt", content: "escaped" })
+        applyFilesystemAction({
+          root: fixture.root,
+          action: "write",
+          path: "link/file.txt",
+          content: "escaped",
+          allowUnsafeMutations: true
+        })
       ).rejects.toThrow(/outside workspace/);
       await expect(readFile(join(fixture.outside, "file.txt"), "utf8")).rejects.toThrow();
     } finally {
@@ -89,10 +160,12 @@ describe("filesystem action module", () => {
     try {
       await writeFile(join(fixture.outside, "file.txt"), "keep", "utf8");
 
-      await expect(applyFilesystemAction({ root: fixture.root, action: "delete", path: "link/file.txt" })).rejects.toThrow(
-        /outside workspace/
-      );
-      await expect(applyFilesystemAction({ root: fixture.root, action: "delete", path: "link" })).rejects.toThrow(/outside workspace/);
+      await expect(
+        applyFilesystemAction({ root: fixture.root, action: "delete", path: "link/file.txt", allowUnsafeMutations: true })
+      ).rejects.toThrow(/outside workspace/);
+      await expect(
+        applyFilesystemAction({ root: fixture.root, action: "delete", path: "link", allowUnsafeMutations: true })
+      ).rejects.toThrow(/outside workspace/);
       await expect(readFile(join(fixture.outside, "file.txt"), "utf8")).resolves.toBe("keep");
     } finally {
       await cleanupSymlinkedWorkspace(fixture);
@@ -106,7 +179,13 @@ describe("filesystem action module", () => {
       await writeFile(join(fixture.root, "source.txt"), "move me", "utf8");
 
       await expect(
-        applyFilesystemAction({ root: fixture.root, action: "move", path: "source.txt", destination: "link/file.txt" })
+        applyFilesystemAction({
+          root: fixture.root,
+          action: "move",
+          path: "source.txt",
+          destination: "link/file.txt",
+          allowUnsafeMutations: true
+        })
       ).rejects.toThrow(/outside workspace/);
       await expect(readFile(join(fixture.outside, "file.txt"), "utf8")).rejects.toThrow();
       await expect(readFile(join(fixture.root, "source.txt"), "utf8")).resolves.toBe("move me");
