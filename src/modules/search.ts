@@ -53,17 +53,21 @@ export function normalizeSearchResults(
   const seen = new Set<string>();
   const results: SearchResult[] = [];
   for (const raw of rawResults) {
+    if (!raw || typeof raw.title !== "string" || typeof raw.url !== "string") {
+      continue;
+    }
     const url = normalizeUrl(raw.url);
     if (!url || seen.has(url)) {
       continue;
     }
     seen.add(url);
-    const confidence = raw.provider === "brave" || raw.provider === "exa" ? 0.86 : 0.74;
+    const provider = typeof raw.provider === "string" && raw.provider.trim() ? raw.provider : "unknown";
+    const confidence = provider === "brave" || provider === "exa" ? 0.86 : 0.74;
     results.push({
       title: raw.title.trim(),
       url,
-      snippet: (raw.snippet ?? "").trim(),
-      provider: raw.provider,
+      snippet: typeof raw.snippet === "string" ? raw.snippet.trim() : "",
+      provider,
       confidence,
       fields: ["title", "url", "snippet", "provider", "confidence"]
     });

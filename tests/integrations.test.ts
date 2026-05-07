@@ -272,6 +272,31 @@ describe("web search module", () => {
     expect(results[0].fields).toEqual(["title", "url", "snippet", "provider", "confidence"]);
   });
 
+  test("skips malformed provider results instead of throwing", () => {
+    const results = normalizeSearchResults([
+      { title: "Valid", url: "https://example.com/valid", snippet: "Works", provider: "brave" },
+      { title: undefined, url: "https://example.com/missing-title", provider: "exa" },
+      { title: "Missing URL", provider: "tavily" },
+      { title: "Bad snippet", url: "https://example.com/bad-snippet", snippet: 42, provider: "serpapi" },
+      { title: "Missing provider", url: "https://example.com/missing-provider" }
+    ] as unknown as Parameters<typeof normalizeSearchResults>[0]);
+
+    expect(results.map((result) => result.url)).toEqual([
+      "https://example.com/valid",
+      "https://example.com/bad-snippet",
+      "https://example.com/missing-provider"
+    ]);
+    expect(results[1]).toMatchObject({
+      title: "Bad snippet",
+      snippet: "",
+      provider: "serpapi"
+    });
+    expect(results[2]).toMatchObject({
+      title: "Missing provider",
+      provider: "unknown"
+    });
+  });
+
   test("searches a real provider shape through injectable fetch", async () => {
     const result = await searchWeb({
       query: "tokenhub mcp",
@@ -506,6 +531,39 @@ describe("browser module", () => {
 
       const screenshot = await store.read(result.resources[0], { mode: "full" });
       expect(screenshot.content).toMatch(/^data:image\/png;base64,/);
+    } finally {
+      if (previous === undefined) {
+        delete process.env.TOKENHUB_ALLOW_PRIVATE_NETWORK;
+      } else {
+        process.env.TOKENHUB_ALLOW_PRIVATE_NETWORK = previous;
+      }
+      await new Promise<void>((resolve) => server.close(() => resolve()));
+      await rm(dir, { recursive: true, force: true });
+    }
+  });
+
+  test("caps noisy browser console errors to keep capture memory bounded", async () => {
+    const dir = await mkdtemp(join(tmpdir(), "tokenhub-browser-noisy-"));
+    const store = new ResourceStore({ rootDir: join(dir, ".tokenhub", "resources") });
+    const previous = process.env.TOKENHUB_ALLOW_PRIVATE_NETWORK;
+    process.env.TOKENHUB_ALLOW_PRIVATE_NETWORK = "true";
+    const server = createServer((_request, response) => {
+      response.writeHead(200, { "content-type": "text/html" });
+      response.end(`<h1>Noisy Fixture</h1><script>for (let i = 0; i < 80; i++) console.error('noisy-' + i)</script>`);
+    });
+    await new Promise<void>((resolve) => server.listen(0, "127.0.0.1", () => resolve()));
+    const address = server.address();
+    if (address === null || typeof address === "string") throw new Error("No local browser test port.");
+    try {
+      const result = await captureBrowserState({
+        url: `http://127.0.0.1:${address.port}`,
+        resourceStore: store,
+        budgetTokens: 120
+      });
+
+      expect(result.state.consoleErrors).toHaveLength(50);
+      expect(result.state.consoleErrors[0]).toBe("noisy-0");
+      expect(result.state.consoleErrors.at(-1)).toBe("noisy-49");
     } finally {
       if (previous === undefined) {
         delete process.env.TOKENHUB_ALLOW_PRIVATE_NETWORK;

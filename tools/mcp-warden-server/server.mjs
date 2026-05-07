@@ -1,10 +1,11 @@
 import { spawn } from "node:child_process";
+import { existsSync } from "node:fs";
+import { dirname, join } from "node:path";
 import { createInterface } from "node:readline";
 import { fileURLToPath } from "node:url";
 
-const NODE = "C:\\nvm4w\\nodejs\\node.exe";
-const NPX_CLI = "C:\\nvm4w\\nodejs\\node_modules\\npm\\bin\\npx-cli.js";
 const MAX_OUTPUT = 24000;
+const TOOL_TIMEOUT_MS = 120000;
 
 const tools = [
   {
@@ -79,6 +80,47 @@ export function redactSensitiveOutput(text) {
   );
 }
 
+export function appendBoundedOutput(capture, chunk, maxOutput = MAX_OUTPUT) {
+  if (capture.text.length >= maxOutput) {
+    capture.truncated = true;
+    return;
+  }
+
+  const remaining = maxOutput - capture.text.length;
+  capture.text += chunk.slice(0, remaining);
+  if (chunk.length > remaining) {
+    capture.truncated = true;
+  }
+}
+
+export function resolveWardenCommand(options = {}) {
+  const env = options.env ?? process.env;
+  const execPath = options.execPath ?? process.execPath;
+  const exists = options.exists ?? existsSync;
+  const override = typeof env.MCP_WARDEN_NPX_CLI === "string" ? env.MCP_WARDEN_NPX_CLI.trim() : "";
+
+  if (override) {
+    return exists(override)
+      ? { executable: execPath, args: [override] }
+      : { error: `MCP_WARDEN_NPX_CLI does not exist: ${override}` };
+  }
+
+  const nodeDir = dirname(execPath);
+  const candidates = [
+    join(nodeDir, "node_modules", "npm", "bin", "npx-cli.js"),
+    join(dirname(nodeDir), "node_modules", "npm", "bin", "npx-cli.js"),
+    join(dirname(nodeDir), "lib", "node_modules", "npm", "bin", "npx-cli.js")
+  ];
+  const npxCli = candidates.find((candidate) => exists(candidate));
+  if (!npxCli) {
+    return {
+      error:
+        "Could not locate npm's npx-cli.js from the current Node installation. Set MCP_WARDEN_NPX_CLI to the full npx-cli.js path."
+    };
+  }
+  return { executable: execPath, args: [npxCli] };
+}
+
 function send(message) {
   process.stdout.write(`${JSON.stringify(message)}\n`);
 }
@@ -101,28 +143,49 @@ function requireString(args, name) {
 
 function runWarden(args) {
   return new Promise((resolve) => {
-    const child = spawn(NODE, [NPX_CLI, "--yes", "mcp-warden", ...args], {
+    const command = resolveWardenCommand();
+    if (command.error) {
+      resolve({ code: -1, output: command.error });
+      return;
+    }
+
+    const child = spawn(command.executable, [...command.args, "--yes", "mcp-warden", ...args], {
       windowsHide: true
     });
-    let stdout = "";
-    let stderr = "";
+    const stdout = { text: "", truncated: false };
+    const stderr = { text: "", truncated: false };
+    let settled = false;
+    const timeout = setTimeout(() => {
+      child.kill();
+      finish(-1, `mcp-warden timed out after ${TOOL_TIMEOUT_MS}ms`);
+    }, TOOL_TIMEOUT_MS);
+
+    function finish(code, fallbackOutput = "") {
+      if (settled) {
+        return;
+      }
+      settled = true;
+      clearTimeout(timeout);
+      const combined = [stdout.text.trim(), stderr.text.trim(), fallbackOutput.trim()].filter(Boolean).join("\n");
+      const redacted = redactSensitiveOutput(combined);
+      const output =
+        stdout.truncated || stderr.truncated
+          ? `${redacted}\n\n[truncated after ${MAX_OUTPUT} characters per stream]`
+          : redacted;
+      resolve({ code: code ?? 0, output });
+    }
 
     child.stdout.on("data", (chunk) => {
-      stdout += chunk.toString("utf8");
+      appendBoundedOutput(stdout, chunk.toString("utf8"));
     });
     child.stderr.on("data", (chunk) => {
-      stderr += chunk.toString("utf8");
+      appendBoundedOutput(stderr, chunk.toString("utf8"));
     });
     child.on("error", (err) => {
-      resolve({ code: -1, output: err.message });
+      finish(-1, err.message);
     });
     child.on("close", (code) => {
-      const combined = [stdout.trim(), stderr.trim()].filter(Boolean).join("\n");
-      const redacted = redactSensitiveOutput(combined);
-      const output = redacted.length > MAX_OUTPUT
-        ? `${redacted.slice(0, MAX_OUTPUT)}\n\n[truncated after ${MAX_OUTPUT} characters]`
-        : redacted;
-      resolve({ code: code ?? 0, output });
+      finish(code);
     });
   });
 }

@@ -2,6 +2,8 @@ import { estimateTokens, truncateToTokens } from "../core/token.js";
 import type { ResourceStore } from "../core/resources.js";
 import { assertAllowedNetworkUrl, type UrlAddressLookup } from "../core/url-policy.js";
 
+const MAX_BROWSER_EVENT_ITEMS = 50;
+
 export type BrowserCaptureInput = {
   url: string;
   resourceStore: ResourceStore;
@@ -29,17 +31,18 @@ export async function captureBrowserState(input: BrowserCaptureInput): Promise<{
   await assertAllowedNetworkUrl(input.url, { lookupAddress: input.urlLookup });
   const { chromium } = await import("playwright");
   const browser = await chromium.launch();
-  const page = await browser.newPage();
   const consoleErrors: string[] = [];
   const failedRequests: string[] = [];
-  page.on("console", (message) => {
-    if (message.type() === "error") {
-      consoleErrors.push(message.text());
-    }
-  });
-  page.on("requestfailed", (request) => failedRequests.push(request.url()));
 
   try {
+    const page = await browser.newPage();
+    page.on("console", (message) => {
+      if (message.type() === "error") {
+        pushBounded(consoleErrors, message.text());
+      }
+    });
+    page.on("requestfailed", (request) => pushBounded(failedRequests, request.url()));
+
     await page.route("**/*", async (route) => {
       try {
         await assertAllowedNetworkUrl(route.request().url(), { lookupAddress: input.urlLookup });
@@ -112,5 +115,11 @@ export async function captureBrowserState(input: BrowserCaptureInput): Promise<{
     return { summary, state, resources, tokenEstimate: estimateTokens(summary) };
   } finally {
     await browser.close();
+  }
+}
+
+function pushBounded(items: string[], item: string): void {
+  if (items.length < MAX_BROWSER_EVENT_ITEMS) {
+    items.push(item);
   }
 }

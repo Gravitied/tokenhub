@@ -1,5 +1,5 @@
 import { describe, expect, test } from "vitest";
-import { redactSensitiveOutput } from "../tools/mcp-warden-server/server.mjs";
+import { appendBoundedOutput, redactSensitiveOutput, resolveWardenCommand } from "../tools/mcp-warden-server/server.mjs";
 
 describe("mcp-warden Codex adapter", () => {
   test("redacts key-value secret output before returning it to Codex", () => {
@@ -11,5 +11,29 @@ describe("mcp-warden Codex adapter", () => {
     expect(output).not.toContain("abc123456789");
     expect(output).not.toContain("secret-value");
     expect(output).not.toContain("hunter2");
+  });
+
+  test("bounds captured child-process output before final truncation", () => {
+    const capture = { text: "", truncated: false };
+
+    appendBoundedOutput(capture, "x".repeat(26000), 24000);
+    appendBoundedOutput(capture, "more output", 24000);
+
+    expect(capture.text).toHaveLength(24000);
+    expect(capture.truncated).toBe(true);
+    expect(capture.text).not.toContain("more output");
+  });
+
+  test("resolves npx from the active Node installation instead of a machine-specific path", () => {
+    const execPath = "C:\\Tools\\node\\node.exe";
+    const npxCli = "C:\\Tools\\node\\node_modules\\npm\\bin\\npx-cli.js";
+
+    const command = resolveWardenCommand({
+      execPath,
+      env: {},
+      exists: (path) => path === npxCli
+    });
+
+    expect(command).toEqual({ executable: execPath, args: [npxCli] });
   });
 });
