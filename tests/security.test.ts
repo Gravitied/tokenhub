@@ -24,6 +24,35 @@ describe("security boundaries", () => {
     }
   });
 
+  test("validate workflow can run allowlisted npm scripts on Windows", async () => {
+    const dir = await mkdtemp(join(tmpdir(), "tokenhub-security-validate-npm-"));
+    try {
+      await writeFile(
+        join(dir, "package.json"),
+        JSON.stringify({
+          type: "module",
+          scripts: {
+            lint: "node -e \"console.log('TOKENHUB_VALIDATE_LINT_OK')\""
+          }
+        }),
+        "utf8"
+      );
+      const runtime = createTokenHubRuntime({ root: dir });
+
+      const result = await runtime.runWorkflow({
+        name: "validate",
+        command: "npm",
+        args: ["run", "lint"]
+      });
+
+      expect(result.summary).toContain("Validation passed: npm run lint");
+      expect(result.summary).toContain("TOKENHUB_VALIDATE_LINT_OK");
+      expect(result.warnings).toEqual([]);
+    } finally {
+      await rm(dir, { recursive: true, force: true });
+    }
+  });
+
   test("web retrieval rejects localhost and private network targets before fetching", async () => {
     const dir = await mkdtemp(join(tmpdir(), "tokenhub-security-web-"));
     const store = new ResourceStore({ rootDir: join(dir, ".tokenhub", "resources") });

@@ -1,4 +1,6 @@
 import { execFile } from "node:child_process";
+import { existsSync } from "node:fs";
+import { dirname, join } from "node:path";
 import { promisify } from "node:util";
 import type { ResourceLink, ResourceStore } from "../core/resources.js";
 import type { TokenTelemetry } from "../core/telemetry.js";
@@ -274,11 +276,26 @@ function parseValidationCommand(input: WorkflowInput): { executable: string; arg
   if (!isAllowed) {
     throw new Error("validate supports only npm test, npm run lint, or npm run build.");
   }
-  return {
-    executable: process.platform === "win32" ? "npm.cmd" : "npm",
-    args,
-    display: `npm ${args.join(" ")}`
-  };
+  const npmCommand = resolveNpmCommand(args);
+  return { ...npmCommand, display: `npm ${args.join(" ")}` };
+}
+
+function resolveNpmCommand(args: string[]): { executable: string; args: string[] } {
+  if (process.platform !== "win32") {
+    return { executable: "npm", args };
+  }
+
+  const candidates = [
+    process.env.npm_execpath,
+    join(dirname(process.execPath), "node_modules", "npm", "bin", "npm-cli.js")
+  ].filter((candidate): candidate is string => Boolean(candidate));
+  const npmCli = candidates.find((candidate) => candidate.endsWith("npm-cli.js") && existsSync(candidate));
+
+  if (npmCli) {
+    return { executable: process.execPath, args: [npmCli, ...args] };
+  }
+
+  return { executable: "npm", args };
 }
 
 function arraysEqual(left: string[], right: string[]): boolean {
