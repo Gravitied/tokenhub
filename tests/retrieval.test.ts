@@ -65,6 +65,31 @@ describe("filesystem retrieval", () => {
       await rm(dir, { recursive: true, force: true });
     }
   });
+
+  test("clips very long matching lines around the query", async () => {
+    const dir = await mkdtemp(join(tmpdir(), "tokenhub-fs-long-line-"));
+    const store = new ResourceStore({ rootDir: join(dir, ".tokenhub", "resources") });
+    try {
+      await writeFile(
+        join(dir, "fixture.html"),
+        `<html><body>${"noise ".repeat(80)}TOKENHUB_BENCHMARK_NEEDLE${" after ".repeat(80)}</body></html>`
+      );
+
+      const result = await searchFiles({
+        root: dir,
+        query: "TOKENHUB_BENCHMARK_NEEDLE",
+        limit: 1,
+        budgetTokens: 80,
+        resourceStore: store
+      });
+
+      expect(result.matches[0].snippet).toContain("TOKENHUB_BENCHMARK_NEEDLE");
+      expect(result.matches[0].snippet.length).toBeLessThan(220);
+      expect(result.matches[0].snippet).toContain("...");
+    } finally {
+      await rm(dir, { recursive: true, force: true });
+    }
+  });
 });
 
 describe("git retrieval", () => {

@@ -29,6 +29,8 @@ await mkdir(outDir, { recursive: true });
 
 const root = await mkdtemp(join(tmpdir(), "tokenhub-competitive-"));
 const fixture = await createBenchmarkFixtures(root);
+const previousAllowPrivateNetwork = process.env.TOKENHUB_ALLOW_PRIVATE_NETWORK;
+process.env.TOKENHUB_ALLOW_PRIVATE_NETWORK = "true";
 
 try {
   const tasks = [];
@@ -71,6 +73,11 @@ try {
     process.exitCode = 1;
   }
 } finally {
+  if (previousAllowPrivateNetwork === undefined) {
+    delete process.env.TOKENHUB_ALLOW_PRIVATE_NETWORK;
+  } else {
+    process.env.TOKENHUB_ALLOW_PRIVATE_NETWORK = previousAllowPrivateNetwork;
+  }
   await fixture.close();
 }
 

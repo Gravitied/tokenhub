@@ -100,7 +100,7 @@ export async function searchFiles(input: FileSearchInput): Promise<{
     }
 
     const line = content.slice(0, index).split(/\r?\n/).length;
-    const snippet = buildSnippet(content, line, input.budgetTokens ?? 200);
+    const snippet = buildSnippet(content, line, input.budgetTokens ?? 200, query);
     const redactedContent = redactSecrets(content);
     const link = await input.resourceStore.writeText({
       kind: "text",
@@ -218,12 +218,30 @@ function mutationsEnabled(): boolean {
   return process.env.TOKENHUB_ENABLE_FS_MUTATIONS === "true";
 }
 
-function buildSnippet(content: string, matchLine: number, budgetTokens: number): string {
+function buildSnippet(content: string, matchLine: number, budgetTokens: number, query: string): string {
   const lines = content.split(/\r?\n/);
   const start = Math.max(1, matchLine - 2);
   const end = Math.min(lines.length, matchLine + 2);
-  const numbered = lines.slice(start - 1, end).map((line, index) => `${start + index}: ${line}`);
+  const numbered = lines.slice(start - 1, end).map((line, index) => `${start + index}: ${clipLineAroundQuery(line, query)}`);
   return truncateToTokens(redactSecrets(numbered.join("\n")), budgetTokens).text;
+}
+
+function clipLineAroundQuery(line: string, query: string): string {
+  const maxLineLength = 96;
+  if (line.length <= maxLineLength) {
+    return line;
+  }
+
+  const lowerLine = line.toLowerCase();
+  const matchIndex = query ? lowerLine.indexOf(query) : -1;
+  if (matchIndex === -1) {
+    return `${line.slice(0, maxLineLength - 3)}...`;
+  }
+
+  const context = Math.max(24, Math.floor((maxLineLength - query.length - 6) / 2));
+  const start = Math.max(0, matchIndex - context);
+  const end = Math.min(line.length, matchIndex + query.length + context);
+  return `${start > 0 ? "..." : ""}${line.slice(start, end)}${end < line.length ? "..." : ""}`;
 }
 
 function redactSecrets(text: string): string {
