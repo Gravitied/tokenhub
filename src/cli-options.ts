@@ -1,14 +1,15 @@
 import { isLogLevel, type DiagnosticLogLevel } from "./core/logger.js";
 
 export type CliArgsResult =
-  | { kind: "start"; root: string; logLevel?: Exclude<DiagnosticLogLevel, "silent"> }
+  | { kind: "start"; root: string; logLevel?: Exclude<DiagnosticLogLevel, "silent">; extensionsPath?: string }
   | { kind: "help"; text: string }
   | { kind: "version"; text: string }
-  | { kind: "error"; code: "missing-root" | "missing-log-level" | "invalid-log-level" | "unknown-argument" };
+  | { kind: "error"; code: "missing-root" | "missing-log-level" | "missing-extensions" | "invalid-log-level" | "unknown-argument" };
 
 export function parseCliArgs(argv: string[], packageVersion: string): CliArgsResult {
   let root = process.cwd();
   let logLevel: Exclude<DiagnosticLogLevel, "silent"> | undefined;
+  let extensionsPath: string | undefined;
 
   for (let index = 0; index < argv.length; index += 1) {
     const arg = argv[index];
@@ -44,10 +45,20 @@ export function parseCliArgs(argv: string[], packageVersion: string): CliArgsRes
       continue;
     }
 
+    if (arg === "--extensions") {
+      const value = argv[index + 1];
+      if (!value || value.startsWith("-")) {
+        return { kind: "error", code: "missing-extensions" };
+      }
+      extensionsPath = value;
+      index += 1;
+      continue;
+    }
+
     return { kind: "error", code: "unknown-argument" };
   }
 
-  return { kind: "start", root, ...(logLevel ? { logLevel } : {}) };
+  return { kind: "start", root, ...(logLevel ? { logLevel } : {}), ...(extensionsPath ? { extensionsPath } : {}) };
 }
 
 export function buildHelpText(packageVersion: string): string {
@@ -59,6 +70,7 @@ export function buildHelpText(packageVersion: string): string {
     "",
     "Options:",
     "  --root <path>                Workspace root to serve.",
+    "  --extensions <path>          Optional extension manifest path.",
     "  --log-level <error|info|debug>  Emit opt-in structured diagnostics to stderr.",
     "  -h, --help                   Show this help.",
     "  -v, --version                Show the package version."

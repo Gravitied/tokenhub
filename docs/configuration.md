@@ -24,6 +24,12 @@ tokenhub-mcp --help
 tokenhub-mcp --version
 ```
 
+Load a custom extension manifest:
+
+```bash
+tokenhub-mcp --root /path/to/workspace --extensions /path/to/tokenhub.extensions.json
+```
+
 ## MCP Client Configuration
 
 Use `npx`:
@@ -68,6 +74,7 @@ On Windows, keep `--root` and the path as separate JSON args, and escape backsla
 | `SERPAPI_API_KEY` | Enables SerpAPI search provider selection. |
 | `TOKENHUB_ENABLE_FS_MUTATIONS` | Enables trusted-local filesystem write, move, and delete when set to `true`. |
 | `TOKENHUB_ALLOW_PRIVATE_NETWORK` | Allows trusted-local web and browser retrieval of localhost, private LAN, and other non-public network targets when set to `true`. |
+| `TOKENHUB_EXTENSIONS` | Optional path to a user extension manifest. The default path is `tokenhub.extensions.json` in the workspace root. |
 
 ## Per-Request Inputs
 
@@ -89,3 +96,56 @@ Filesystem tree listing and search are available by default. Write, move, and de
 - process env: `TOKENHUB_ENABLE_FS_MUTATIONS=true`
 
 Use mutation opt-in only for trusted local workspaces.
+
+## Extension Manifest
+
+TokenHub can load trusted-local user extensions from `tokenhub.extensions.json` in the workspace root, `--extensions <path>`, or `TOKENHUB_EXTENSIONS`.
+
+Command tools run a configured executable with fixed args and receive the workflow `input` as JSON on stdin:
+
+```json
+{
+  "version": 1,
+  "extensions": [
+    {
+      "id": "local-echo",
+      "type": "command",
+      "title": "Local Echo",
+      "command": "node",
+      "args": ["tools/echo.mjs"],
+      "inputSchema": { "type": "object" },
+      "timeoutMs": 5000
+    }
+  ]
+}
+```
+
+MCP extensions start a configured stdio MCP server and expose only allowlisted tools:
+
+```json
+{
+  "version": 1,
+  "extensions": [
+    {
+      "id": "fixture-mcp",
+      "type": "mcp",
+      "title": "Fixture MCP",
+      "command": "node",
+      "args": ["tools/fixture-mcp.mjs"],
+      "env": ["FIXTURE_TOKEN"],
+      "tools": ["lookup"]
+    }
+  ]
+}
+```
+
+Call extensions through `run_workflow`:
+
+```json
+{
+  "name": "extension_call",
+  "extensionId": "fixture-mcp",
+  "toolName": "lookup",
+  "input": { "query": "alpha" }
+}
+```

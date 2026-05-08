@@ -49,6 +49,14 @@ Web and browser retrieval validate outbound targets before fetching. By default 
 TOKENHUB_ALLOW_PRIVATE_NETWORK=true tokenhub-mcp --root /path/to/workspace
 ```
 
+## Extensions
+
+Extensions are trusted-local configuration loaded from `tokenhub.extensions.json`, `--extensions <path>`, or `TOKENHUB_EXTENSIONS`. They are not a remote plugin sandbox.
+
+`extension_call` cannot choose arbitrary executables or args. It can only call extension ids and tool names present in the manifest. Command extensions run without shell interpolation and receive JSON input on stdin. MCP extensions expose only the tool names listed in the manifest.
+
+Extension child processes inherit a small safe environment plus explicit variable names listed in each extension's `env` array. Do not add broad secret-bearing environment names unless the extension genuinely needs them.
+
 ## Git Actions
 
 `git_action` can stage, commit, and branch when explicitly requested. Run it only in a workspace where agent-driven git changes are acceptable, and review staged changes before pushing.

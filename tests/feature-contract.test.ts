@@ -12,6 +12,7 @@ const evidenceContracts = [
   { capability: "tools", files: ["src/server.ts"] },
   { capability: "workflows", files: ["src/workflows/index.ts"] },
   { capability: "retrieval sources", files: ["src/server.ts", "src/core/resources.ts"] },
+  { capability: "extension system", files: ["src/extensions/config.ts", "src/extensions/manager.ts", "src/workflows/index.ts"] },
   { capability: "eval artifacts", files: ["artifacts/evals/resolve-request-eval.json", "artifacts/evals/resolve-request-live-eval.json"] },
   { capability: "README sections", files: ["tests/docs-contract.test.ts", "README.md"] }
 ] as const;

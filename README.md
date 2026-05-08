@@ -38,6 +38,12 @@ TOKENHUB_LOG_LEVEL=debug npx tokenhub-mcp --root /path/to/workspace
 npx tokenhub-mcp --root /path/to/workspace --log-level info
 ```
 
+To load user-provided MCP servers or local command tools, add `tokenhub.extensions.json` to the workspace root or pass a custom path:
+
+```bash
+npx tokenhub-mcp --root /path/to/workspace --extensions <path>
+```
+
 ## Quick Start
 
 Start TokenHub with a workspace root that should bound filesystem and git operations:
@@ -117,13 +123,13 @@ TokenHub exposes exactly six public MCP tools:
 | Tool | Production status | Purpose |
 | --- | --- | --- |
 | `discover_capabilities` | Production | Finds deferred internal capabilities without loading every schema into the client context. |
-| `run_workflow` | Production | Runs server-side workflows such as `resolve_request`, `answer_from_web`, `validate`, `filesystem_action`, `git_action`, and `project_scan`. |
+| `run_workflow` | Production | Runs server-side workflows such as `resolve_request`, `answer_from_web`, `extension_call`, `validate`, `filesystem_action`, `git_action`, and `project_scan`. |
 | `retrieve_context` | Production | Retrieves token-budgeted context from runtime sources including files, git, web pages, search, databases, GitHub, npm docs, Sentry, and browser state. |
 | `read_resource` | Production | Reads a `tokenhub://resource/...` artifact by snippet, line range, or full content. |
 | `capture_state` | Production | Stores caller-provided logs, snapshots, or state summaries as resource artifacts. |
 | `estimate_cost` | Production | Estimates tool cost, saved tokens, and whether the operation clears the default ROI threshold. |
 
-The user-facing advertised capabilities in this README are `resolve_request`, `answer_from_web`, `web_fetch`, `web_search`, `filesystem`, and `git`. Those are not separate top-level MCP tools; they are workflows or retrieval capabilities reached through the six public tools above.
+The user-facing advertised capabilities in this README are `resolve_request`, `answer_from_web`, `extension_call`, `web_fetch`, `web_search`, `filesystem`, and `git`. Those are not separate top-level MCP tools; they are workflows or retrieval capabilities reached through the six public tools above.
 
 ## Workflows
 
@@ -131,6 +137,7 @@ The user-facing advertised capabilities in this README are `resolve_request`, `a
 | --- | --- | --- |
 | `resolve_request` | `run_workflow` | Infers intent, source strategy, output shape, depth, evidence mode, and execution mode from a natural-language request. It supports `answer_only` and `plan_only`; implementation execution modes are rejected instead of faking success. |
 | `answer_from_web` | `run_workflow` | Searches the web, fetches source pages, extracts clean text, and returns cited ranked-list or summary answers with source resource links. |
+| `extension_call` | `run_workflow` | Calls a configured extension tool from `tokenhub.extensions.json`, including user-provided MCP stdio servers and local command tools, without adding new top-level MCP tools. |
 | `validate` | `run_workflow` | Runs allowlisted validation commands (`npm test`, `npm run lint`, or `npm run build`), redacts secret-looking output, stores the full validation log as a resource, and reports pass/fail warnings. |
 | `filesystem_action` | `run_workflow` | Lists a workspace tree by default. Write, move, and delete require the service process to be started with `TOKENHUB_ENABLE_FS_MUTATIONS=true`. |
 | `git_action` | `run_workflow` | Runs bounded git status, diff, show, stage, commit, or branch operations inside the configured workspace. |
@@ -160,6 +167,61 @@ Validation example:
 
 Unsupported workflow modes, including `execution: "implement"` and `execution: "implement_and_verify"` for `resolve_request`, return explicit errors rather than claiming a mutation happened.
 
+## Extensions
+
+TokenHub can load trusted-local extensions from `tokenhub.extensions.json` in the workspace root, from `--extensions <path>`, or from `TOKENHUB_EXTENSIONS`. Extensions are discovered through `discover_capabilities` as ids such as `extension.local-echo.run` and `extension.fixture-mcp.lookup`; the public MCP tool list remains fixed at six tools.
+
+Command extension example:
+
+```json
+{
+  "version": 1,
+  "extensions": [
+    {
+      "id": "local-echo",
+      "type": "command",
+      "title": "Local Echo",
+      "command": "node",
+      "args": ["tools/echo.mjs"],
+      "inputSchema": { "type": "object" },
+      "timeoutMs": 5000
+    }
+  ]
+}
+```
+
+MCP stdio extension example:
+
+```json
+{
+  "version": 1,
+  "extensions": [
+    {
+      "id": "fixture-mcp",
+      "type": "mcp",
+      "title": "Fixture MCP",
+      "command": "node",
+      "args": ["tools/fixture-mcp.mjs"],
+      "env": ["FIXTURE_TOKEN"],
+      "tools": ["lookup"]
+    }
+  ]
+}
+```
+
+Call an extension through `run_workflow`:
+
+```json
+{
+  "name": "extension_call",
+  "extensionId": "fixture-mcp",
+  "toolName": "lookup",
+  "input": { "query": "alpha" }
+}
+```
+
+Extension commands are trusted configuration. Prompt input cannot change the configured executable, args, cwd, tool allowlist, timeout, or inherited environment.
+
 ## Retrieval Sources
 
 `retrieve_context.source` uses the runtime names shown below. The docs also name friendly advertised sources where they differ.
@@ -188,6 +250,7 @@ Unsupported workflow modes, including `execution: "implement"` and `execution: "
 | `TOKENHUB_ENABLE_FS_MUTATIONS` | When set to `true`, enables trusted-local filesystem write, move, and delete workflows. Leave unset for read/list behavior. |
 | `TOKENHUB_ALLOW_PRIVATE_NETWORK` | When set to `true`, allows trusted-local web and browser retrieval of localhost, private LAN, and other non-public network targets. Leave unset for public-network-only retrieval. |
 | `TOKENHUB_LOG_LEVEL` | Optional diagnostic logging level: `error`, `info`, or `debug`. Logs are JSON lines on stderr and are silent when unset. |
+| `TOKENHUB_EXTENSIONS` | Optional path to an extension manifest when you do not want to use the default `tokenhub.extensions.json` file or `--extensions <path>`. |
 
 GitHub tokens are supplied as `retrieve_context` input `token`; there is no dedicated GitHub environment variable in the runtime. Sentry tokens are supplied as `token`, Postgres uses `connectionString`, npm registry lookup uses the public registry URL, and browser capture uses local Playwright without a credential variable. Network timeouts are currently fixed in code: web fetch and DuckDuckGo search use 5000ms, browser navigation uses 20000ms, git commands use 10000ms, and validation commands use 120000ms.
 
@@ -200,6 +263,8 @@ File deletion and mutation are opt-in. `filesystem_action` `tree` is available b
 Git operations run in the workspace and can stage, commit, or branch when explicitly requested through `git_action`. Review paths and messages before allowing agent-driven git changes.
 
 Network fetches, search providers, GitHub, npm, Sentry, Postgres, and browser capture can contact external services. Web and browser retrieval reject localhost, private LAN, metadata, and unverified DNS targets by default; set `TOKENHUB_ALLOW_PRIVATE_NETWORK=true` only for trusted local network debugging. Treat URLs, credentials, connection strings, and returned third-party content as sensitive. Do not place secrets in prompts when they can be passed as tool input, and prefer resource links over copying raw logs into chat.
+
+Extensions run as trusted-local user configuration. TokenHub never lets an MCP caller supply arbitrary commands for `extension_call`; executables and fixed args must come from `tokenhub.extensions.json`. MCP extension tools must be listed in the manifest, and extension child processes inherit only a small safe environment plus explicitly allowlisted variable names.
 
 `read_resource` can expand redacted resources; screenshots may still contain visible secrets from the captured page. Share resource URIs only with clients that should have access to the workspace resource store.
 
@@ -215,6 +280,7 @@ Network fetches, search providers, GitHub, npm, Sentry, Postgres, and browser ca
 | Unsupported workflow mode | Use `execution: "answer_only"` or `execution: "plan_only"` for `resolve_request`; direct implementation modes are intentionally rejected. |
 | Filesystem mutation blocked | Restart TokenHub with `TOKENHUB_ENABLE_FS_MUTATIONS=true` only for trusted local workspaces. |
 | Need request-level diagnostics | Restart TokenHub with `--log-level debug` or `TOKENHUB_LOG_LEVEL=debug`. Logs include tool start/end/error events, request IDs, durations, and redacted metadata on stderr. |
+| Extension not discovered | Confirm `tokenhub.extensions.json` is in the workspace root, or start TokenHub with `--extensions <path>` or `TOKENHUB_EXTENSIONS`. Search for the extension id, title, or tool name with `discover_capabilities`. |
 
 ## Release Verification
 

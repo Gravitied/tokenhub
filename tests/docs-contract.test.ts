@@ -9,6 +9,7 @@ export const requiredReadmeHeadings = [
   "## Tools",
   "## Workflows",
   "## Retrieval Sources",
+  "## Extensions",
   "## Environment Variables",
   "## Security Notes",
   "## Troubleshooting",
@@ -18,6 +19,7 @@ export const requiredReadmeHeadings = [
 export const advertisedCapabilities = [
   "resolve_request",
   "answer_from_web",
+  "extension_call",
   "web_fetch",
   "web_search",
   "filesystem",
@@ -76,6 +78,15 @@ describe("README contract", () => {
     for (const source of documentedRetrievalSources) {
       expect(readme, `missing retrieval source: ${source}`).toContain(`\`${source}\``);
     }
+  });
+
+  test("documents the extension manifest and execution workflow", () => {
+    const readme = readReadme();
+
+    expect(readme).toContain("`tokenhub.extensions.json`");
+    expect(readme).toContain("`extension_call`");
+    expect(readme).toContain("`--extensions <path>`");
+    expect(readme).toContain("`TOKENHUB_EXTENSIONS`");
   });
 });
 

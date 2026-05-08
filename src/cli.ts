@@ -26,21 +26,24 @@ if (parsed.kind === "error") {
   process.exit(1);
 }
 
-await startServer({ root: parsed.root, logLevel: parsed.logLevel ?? logLevelFromEnv() });
+await startServer({ root: parsed.root, extensionsPath: parsed.extensionsPath, logLevel: parsed.logLevel ?? logLevelFromEnv() });
 
-async function startServer(options: { root: string; logLevel: ReturnType<typeof logLevelFromEnv> }): Promise<void> {
+async function startServer(options: { root: string; extensionsPath?: string; logLevel: ReturnType<typeof logLevelFromEnv> }): Promise<void> {
   const logger = createDiagnosticLogger({ level: options.logLevel });
-  logger.info("server.start", { root: options.root, logLevel: options.logLevel });
-  const server = createMcpServer({ root: options.root, logger });
+  logger.info("server.start", { root: options.root, extensionsPath: options.extensionsPath, logLevel: options.logLevel });
+  const server = createMcpServer({ root: options.root, extensionConfigPath: options.extensionsPath, logger });
   await server.connect(new StdioServerTransport());
 }
 
-function formatCliError(code: "missing-root" | "missing-log-level" | "invalid-log-level" | "unknown-argument"): string {
+function formatCliError(code: "missing-root" | "missing-log-level" | "missing-extensions" | "invalid-log-level" | "unknown-argument"): string {
   if (code === "missing-root") {
     return "Missing value for --root.";
   }
   if (code === "missing-log-level") {
     return "Missing value for --log-level.";
+  }
+  if (code === "missing-extensions") {
+    return "Missing value for --extensions.";
   }
   if (code === "invalid-log-level") {
     return "Invalid --log-level value; use error, info, or debug.";

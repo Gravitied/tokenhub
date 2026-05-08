@@ -17,6 +17,8 @@ import { lookupNpmPackage } from "./modules/docs.js";
 import { fetchSentryIssues, summarizeSentryIssues } from "./modules/sentry.js";
 import { captureBrowserState } from "./modules/browser.js";
 import { createDiagnosticLogger, logLevelFromEnv, type DiagnosticLogger, type DiagnosticLogLevel } from "./core/logger.js";
+import { loadExtensionConfigSync } from "./extensions/config.js";
+import { ExtensionManager } from "./extensions/manager.js";
 
 const PUBLIC_TOOLS = [
   "discover_capabilities",
@@ -32,6 +34,7 @@ export type PublicToolName = (typeof PUBLIC_TOOLS)[number];
 export type RuntimeOptions = {
   root: string;
   resourceDir?: string;
+  extensionConfigPath?: string;
   logLevel?: DiagnosticLogLevel;
   logger?: DiagnosticLogger;
 };
@@ -44,6 +47,9 @@ export function createTokenHubRuntime(options: RuntimeOptions) {
   const telemetry = new TokenTelemetry({ roiThreshold: 3 });
   const registry = createDefaultRegistry();
   const logger = options.logger ?? createDiagnosticLogger({ level: options.logLevel ?? logLevelFromEnv() });
+  const extensionConfig = loadExtensionConfigSync({ root, configPath: options.extensionConfigPath });
+  const extensionManager = new ExtensionManager({ root, config: extensionConfig, resourceStore });
+  extensionManager.registerCapabilities(registry);
   let requestCounter = 0;
 
   return {
@@ -80,13 +86,17 @@ export function createTokenHubRuntime(options: RuntimeOptions) {
       apiKey?: string;
       limit?: number;
       sourceLimit?: number;
+      extensionId?: string;
+      toolName?: string;
+      input?: unknown;
     }) =>
       instrumentTool(logger, "run_workflow", nextRequestId, input, () =>
         runWorkflowImpl({
           ...input,
           root,
           resourceStore,
-          telemetry
+          telemetry,
+          extensionManager
         })
       ),
     retrieveContext: async (input: {
@@ -344,7 +354,9 @@ function summarizeToolInput(tool: PublicToolName, input: Record<string, unknown>
       provider: input.provider,
       limit: input.limit,
       budgetTokens: input.budgetTokens,
-      includeRaw: input.includeRaw
+      includeRaw: input.includeRaw,
+      extensionId: input.extensionId,
+      toolName: input.toolName
     };
   }
   if (tool === "retrieve_context") {
@@ -440,7 +452,10 @@ export function createMcpServer(options: RuntimeOptions): McpServer {
         provider: z.enum(["brave", "exa", "tavily", "serpapi", "duckduckgo"]).optional(),
         apiKey: z.string().optional(),
         limit: z.number().int().positive().max(25).optional(),
-        sourceLimit: z.number().int().positive().max(10).optional()
+        sourceLimit: z.number().int().positive().max(10).optional(),
+        extensionId: z.string().optional(),
+        toolName: z.string().optional(),
+        input: z.unknown().optional()
       }
     },
     async (input) => asToolResult(await runtime.runWorkflow(input))

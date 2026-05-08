@@ -14,6 +14,7 @@ import type { FetchLike } from "../modules/github.js";
 import { runResolveRequestWorkflow } from "./resolve-request.js";
 import type { EvidenceMode, ExecutionMode, OutputShape, RequestDepth } from "../core/request-shape.js";
 import type { UrlAddressLookup } from "../core/url-policy.js";
+import type { ExtensionManager } from "../extensions/manager.js";
 
 const execFileAsync = promisify(execFile);
 
@@ -43,6 +44,10 @@ export type WorkflowInput = {
   apiKey?: string;
   limit?: number;
   sourceLimit?: number;
+  extensionId?: string;
+  toolName?: string;
+  input?: unknown;
+  extensionManager?: ExtensionManager;
   fetchImpl?: FetchLike;
   urlLookup?: UrlAddressLookup;
   resourceStore: ResourceStore;
@@ -84,6 +89,9 @@ export async function runWorkflow(input: WorkflowInput): Promise<{
       execution: input.execution,
       urlLookup: input.urlLookup
     });
+  }
+  if (input.name === "extension_call") {
+    return runExtensionCall(input);
   }
   if (input.name === "project_scan") {
     return runProjectScan(input);
@@ -260,6 +268,33 @@ async function runValidation(input: WorkflowInput) {
     resources: [link],
     telemetry,
     warnings: result.exitCode === 0 ? [] : [`Validation command exited with ${result.exitCode}.`]
+  };
+}
+
+async function runExtensionCall(input: WorkflowInput) {
+  if (!input.extensionManager) {
+    throw new Error("extension_call is unavailable because no extension manager is configured.");
+  }
+  const result = await input.extensionManager.call({
+    extensionId: input.extensionId,
+    toolName: input.toolName,
+    input: input.input,
+    budgetTokens: input.budgetTokens,
+    includeRaw: input.includeRaw
+  });
+  const telemetry = input.telemetry.record({
+    capability: `extension.${input.extensionId ?? "unknown"}.${input.toolName ?? "unknown"}`,
+    estimatedToolCostTokens: estimateTokens(result.summary),
+    estimatedSavedTokens: result.estimatedSavedTokens,
+    outputTokens: estimateTokens(result.summary)
+  });
+
+  return {
+    summary: result.summary,
+    resources: result.resources,
+    telemetry,
+    warnings: result.warnings,
+    data: result.data
   };
 }
 

@@ -20,12 +20,24 @@ describe("parseCliArgs", () => {
     });
   });
 
+  test("starts with an explicit extension manifest path", () => {
+    expect(parseCliArgs(["--root", "C:\\work", "--extensions", "C:\\work\\tokenhub.extensions.json"], packageVersion)).toEqual({
+      kind: "start",
+      root: "C:\\work",
+      extensionsPath: "C:\\work\\tokenhub.extensions.json"
+    });
+  });
+
   test("returns a structured error when --root is missing its path", () => {
     expect(parseCliArgs(["--root"], packageVersion)).toEqual({ kind: "error", code: "missing-root" });
   });
 
   test("returns a structured error when --log-level is invalid", () => {
     expect(parseCliArgs(["--log-level", "verbose"], packageVersion)).toEqual({ kind: "error", code: "invalid-log-level" });
+  });
+
+  test("returns a structured error when --extensions is missing its path", () => {
+    expect(parseCliArgs(["--extensions"], packageVersion)).toEqual({ kind: "error", code: "missing-extensions" });
   });
 
   test("returns help text for --help", () => {
@@ -35,6 +47,7 @@ describe("parseCliArgs", () => {
     expect(result).toEqual({ kind: "help", text: expect.any(String) });
     if (result.kind === "help") {
       expect(result.text).toContain("npx tokenhub-mcp --root");
+      expect(result.text).toContain("--extensions <path>");
     }
   });
 

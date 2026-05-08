@@ -6,8 +6,8 @@ This directory is the operator and contributor manual for TokenHub MCP. The root
 
 | Document | Audience | Covers |
 | --- | --- | --- |
-| [Architecture](architecture.md) | Maintainers and integrators | MCP server shape, public tool surface, internal modules, workflow routing, resource storage, eval artifacts. |
-| [Configuration](configuration.md) | Operators and MCP client users | CLI usage, MCP JSON examples, provider inputs, environment variables, filesystem mutation opt-in. |
+| [Architecture](architecture.md) | Maintainers and integrators | MCP server shape, public tool surface, internal modules, workflow routing, extension flow, resource storage, eval artifacts. |
+| [Configuration](configuration.md) | Operators and MCP client users | CLI usage, MCP JSON examples, provider inputs, environment variables, extension manifests, filesystem mutation opt-in. |
 | [Operations](operations.md) | Operators and support owners | Install, run, validate, smoke test, common failures, maintenance commands. |
 | [Security](security.md) | Security reviewers and operators | Workspace boundaries, filesystem mutation risk, secrets, network calls, Git actions, resource access. |
 | [Release](release.md) | Release owners | Verification gate, npm pack contract, smoke install, eval evidence, rollback checklist. |
@@ -36,7 +36,7 @@ It exposes exactly six public MCP tools:
 - `capture_state`
 - `estimate_cost`
 
-Larger capabilities are intentionally deferred behind workflows and retrieval sources so MCP clients do not need to load every schema up front.
+Larger capabilities are intentionally deferred behind workflows, retrieval sources, and configured extensions so MCP clients do not need to load every schema up front.
 
 ## Verification Summary
 
