@@ -2,7 +2,7 @@ import type { ResourceStore } from "../core/resources.js";
 import type { CapabilityRegistry } from "../core/registry.js";
 import type { ExtensionConfig, LoadedExtensionConfig } from "./config.js";
 import { runCommandExtension, type ExtensionAdapterResult } from "./command-adapter.js";
-import { runMcpExtension } from "./mcp-adapter.js";
+import { McpExtensionPool, runMcpExtension } from "./mcp-adapter.js";
 
 export type ExtensionCallInput = {
   extensionId?: string;
@@ -14,6 +14,7 @@ export type ExtensionCallInput = {
 
 export class ExtensionManager {
   private readonly extensions = new Map<string, ExtensionConfig>();
+  private readonly mcpPool = new McpExtensionPool();
 
   constructor(
     private readonly options: {
@@ -42,12 +43,12 @@ export class ExtensionManager {
         continue;
       }
 
-      for (const toolName of extension.tools) {
+      for (const toolName of extension.tools.includes("*") ? ["tool"] : extension.tools) {
         registry.register({
           id: `extension.${extension.id}.${toolName}`,
           module: "extension",
           title: `${extension.title}: ${toolName}`,
-          summary: extension.summary ?? `Call allowlisted MCP tool ${toolName} from ${extension.title}.`,
+          summary: extension.summary ?? `Call ${extension.tools.includes("*") ? "an advertised" : "allowlisted"} MCP tool from ${extension.title}.`,
           keywords: capabilityKeywords(extension, ["mcp", toolName]),
           costHintTokens: 160,
           inputSchema: { deferred: true }
@@ -83,8 +84,17 @@ export class ExtensionManager {
       toolInput: input.input,
       budgetTokens: input.budgetTokens,
       includeRaw: input.includeRaw,
-      resourceStore: this.options.resourceStore
+      resourceStore: this.options.resourceStore,
+      pool: this.mcpPool
     });
+  }
+
+  poolStats(): Array<{ extensionId: string; uses: number; active: boolean }> {
+    return this.mcpPool.stats();
+  }
+
+  async close(): Promise<void> {
+    await this.mcpPool.close();
   }
 }
 

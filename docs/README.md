@@ -11,6 +11,7 @@ This directory is the operator and contributor manual for TokenHub MCP. The root
 | [Operations](operations.md) | Operators and support owners | Install, run, validate, smoke test, common failures, maintenance commands. |
 | [Security](security.md) | Security reviewers and operators | Workspace boundaries, filesystem mutation risk, secrets, network calls, Git actions, resource access. |
 | [Release](release.md) | Release owners | Verification gate, npm pack contract, smoke install, eval evidence, rollback checklist. |
+| [Performance, token, quality, and modularity research](research/2026-05-09-performance-token-quality-modularity.md) | Maintainers | Research-backed improvement methods for performance, token savings, output quality, verbosity, and modularity. |
 
 Root-level public release files:
 

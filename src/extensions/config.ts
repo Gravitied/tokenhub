@@ -5,7 +5,7 @@ import { z } from "zod";
 const MAX_TIMEOUT_MS = 120000;
 const DEFAULT_TIMEOUT_MS = 30000;
 const EXTENSION_ID_PATTERN = /^[A-Za-z0-9][A-Za-z0-9_.-]{0,63}$/;
-const TOOL_NAME_PATTERN = /^[A-Za-z0-9][A-Za-z0-9_.-]{0,127}$/;
+const TOOL_NAME_PATTERN = /^(?:\*|[A-Za-z0-9][A-Za-z0-9_.-]{0,127})$/;
 const ENV_NAME_PATTERN = /^[A-Za-z_][A-Za-z0-9_]*$/;
 
 const jsonSchemaObject = z.record(z.string(), z.unknown());
@@ -29,7 +29,14 @@ const commandExtensionSchema = baseExtensionSchema.extend({
 
 const mcpExtensionSchema = baseExtensionSchema.extend({
   type: z.literal("mcp"),
-  tools: z.array(z.string().regex(TOOL_NAME_PATTERN)).min(1).max(100)
+  tools: z.array(z.string().regex(TOOL_NAME_PATTERN)).min(1).max(100),
+  pool: z
+    .object({
+      enabled: z.boolean().default(false),
+      ttlMs: z.number().int().positive().max(MAX_TIMEOUT_MS).default(30000),
+      maxUses: z.number().int().positive().max(1000).default(100)
+    })
+    .optional()
 });
 
 const extensionManifestSchema = z.object({

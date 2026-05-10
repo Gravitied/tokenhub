@@ -49,13 +49,31 @@ Web and browser retrieval validate outbound targets before fetching. By default 
 TOKENHUB_ALLOW_PRIVATE_NETWORK=true tokenhub-mcp --root /path/to/workspace
 ```
 
+An optional `tokenhub.policy.json` can further restrict hosts:
+
+```json
+{
+  "version": 1,
+  "network": {
+    "allowedHosts": ["docs.example.com"],
+    "blockedHosts": ["metadata.google.internal"]
+  }
+}
+```
+
 ## Extensions
 
 Extensions are trusted-local configuration loaded from `tokenhub.extensions.json`, `--extensions <path>`, or `TOKENHUB_EXTENSIONS`. They are not a remote plugin sandbox.
 
 `extension_call` cannot choose arbitrary executables or args. It can only call extension ids and tool names present in the manifest. Command extensions run without shell interpolation and receive JSON input on stdin. MCP extensions expose only the tool names listed in the manifest.
 
+Registry-installed MCP extensions may use `"tools": ["*"]` when the author has not supplied an allowlist yet. This is still trusted-local configuration, and TokenHub verifies the requested tool exists in the MCP server's advertised tool list before calling it.
+
 Extension child processes inherit a small safe environment plus explicit variable names listed in each extension's `env` array. Do not add broad secret-bearing environment names unless the extension genuinely needs them.
+
+## Security Policy
+
+`tokenhub.policy.json` or `TOKENHUB_POLICY` can deny or allow specific workflows, retrieval sources, and extension ids. Deny rules win over allow rules. Policy checks run before workflow/source/extension dispatch, so blocked actions do not reach adapters.
 
 ## Git Actions
 

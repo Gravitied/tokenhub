@@ -153,7 +153,8 @@ describe("feature evidence contract", () => {
 
       expect(workflowNames.length, `workflow row should start with a backticked workflow name: ${workflowCell}`).toBe(1);
       const [workflow] = workflowNames;
-      expect(workflows, `workflow dispatcher missing ${workflow}`).toContain(`input.name === "${workflow}"`);
+      expect(workflows, `workflow registry missing ${workflow}`).toContain(`"${workflow}"`);
+      expect(workflows, "workflow dispatcher should use the registry").toContain("registry.register");
     }
   });
 

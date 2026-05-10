@@ -1,0 +1,8 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "outDir": "dist-bench"
+  },
+  "include": ["src/bench/**/*.ts"],
+  "exclude": ["dist", "dist-bench", "node_modules", "artifacts"]
+}

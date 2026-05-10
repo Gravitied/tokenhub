@@ -1,8 +1,81 @@
 import { estimateTokens, truncateToTokens } from "../core/token.js";
 import type { ResourceStore } from "../core/resources.js";
 import { assertAllowedNetworkUrl, type UrlAddressLookup } from "../core/url-policy.js";
+import type { NetworkSecurityPolicy } from "../core/security-policy.js";
+import type { Page } from "playwright";
 
 const MAX_BROWSER_EVENT_ITEMS = 50;
+
+type BrowserLike = {
+  newPage: () => Promise<any>;
+  close: () => Promise<void>;
+};
+
+type BrowserPoolEntry = {
+  browser: BrowserLike;
+  createdAt: number;
+  lastUsedAt: number;
+  uses: number;
+};
+
+export class BrowserPool {
+  private entry?: BrowserPoolEntry;
+
+  constructor(
+    private readonly options: {
+      ttlMs: number;
+      maxUses: number;
+      launch?: () => Promise<BrowserLike>;
+    }
+  ) {}
+
+  async acquire(): Promise<{ browser: BrowserLike; release: () => Promise<void> }> {
+    const entry = await this.entryForUse();
+    return {
+      browser: entry.browser,
+      release: async () => {
+        entry.uses += 1;
+        entry.lastUsedAt = Date.now();
+        if (entry.uses >= this.options.maxUses) {
+          await this.close();
+        }
+      }
+    };
+  }
+
+  stats(): { active: boolean; uses: number } {
+    return { active: Boolean(this.entry), uses: this.entry?.uses ?? 0 };
+  }
+
+  async close(): Promise<void> {
+    const entry = this.entry;
+    this.entry = undefined;
+    await entry?.browser.close().catch(() => undefined);
+  }
+
+  private async entryForUse(): Promise<BrowserPoolEntry> {
+    if (this.entry && Date.now() - this.entry.lastUsedAt <= this.options.ttlMs) {
+      return this.entry;
+    }
+    await this.close();
+    const browser = await this.launchBrowser();
+    this.entry = {
+      browser,
+      createdAt: Date.now(),
+      lastUsedAt: Date.now(),
+      uses: 0
+    };
+    return this.entry;
+  }
+
+  private async launchBrowser(): Promise<BrowserLike> {
+    if (this.options.launch) {
+      return this.options.launch();
+    }
+    const { chromium } = await import("playwright");
+    return chromium.launch();
+  }
+}
 
 export type BrowserCaptureInput = {
   url: string;
@@ -10,6 +83,8 @@ export type BrowserCaptureInput = {
   includeScreenshot?: boolean;
   budgetTokens?: number;
   urlLookup?: UrlAddressLookup;
+  browserPool?: BrowserPool;
+  networkPolicy?: NetworkSecurityPolicy;
 };
 
 export async function captureBrowserState(input: BrowserCaptureInput): Promise<{
@@ -28,14 +103,19 @@ export async function captureBrowserState(input: BrowserCaptureInput): Promise<{
   resources: string[];
   tokenEstimate: number;
 }> {
-  await assertAllowedNetworkUrl(input.url, { lookupAddress: input.urlLookup });
-  const { chromium } = await import("playwright");
-  const browser = await chromium.launch();
+  await assertAllowedNetworkUrl(input.url, { lookupAddress: input.urlLookup, networkPolicy: input.networkPolicy });
+  const pooled = input.browserPool ? await input.browserPool.acquire() : undefined;
+  const ownedBrowser = pooled ? undefined : await launchBrowser();
+  const browser = pooled?.browser ?? ownedBrowser;
+  if (!browser) {
+    throw new Error("Unable to launch browser.");
+  }
+  let page: Page | undefined;
   const consoleErrors: string[] = [];
   const failedRequests: string[] = [];
 
   try {
-    const page = await browser.newPage();
+    page = (await browser.newPage()) as Page;
     page.on("console", (message) => {
       if (message.type() === "error") {
         pushBounded(consoleErrors, message.text());
@@ -45,7 +125,7 @@ export async function captureBrowserState(input: BrowserCaptureInput): Promise<{
 
     await page.route("**/*", async (route) => {
       try {
-        await assertAllowedNetworkUrl(route.request().url(), { lookupAddress: input.urlLookup });
+        await assertAllowedNetworkUrl(route.request().url(), { lookupAddress: input.urlLookup, networkPolicy: input.networkPolicy });
         await route.continue();
       } catch {
         await route.abort("blockedbyclient");
@@ -114,8 +194,18 @@ export async function captureBrowserState(input: BrowserCaptureInput): Promise<{
     ).text;
     return { summary, state, resources, tokenEstimate: estimateTokens(summary) };
   } finally {
-    await browser.close();
+    await page?.close?.().catch(() => undefined);
+    if (pooled) {
+      await pooled.release();
+    } else {
+      await ownedBrowser?.close();
+    }
   }
+}
+
+async function launchBrowser(): Promise<BrowserLike> {
+  const { chromium } = await import("playwright");
+  return chromium.launch();
 }
 
 function pushBounded(items: string[], item: string): void {

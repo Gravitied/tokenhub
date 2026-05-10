@@ -22,8 +22,10 @@
     "package.json"
   ],
   "scripts": {
-    "clean": "node -e \"require('node:fs').rmSync('dist',{recursive:true,force:true})\"",
-    "build": "npm run clean && tsc -p tsconfig.json",
+    "clean": "node -e \"const fs=require('node:fs'); for (const dir of ['dist','dist-bench']) fs.rmSync(dir,{recursive:true,force:true})\"",
+    "build": "npm run clean && npm run build:runtime && npm run build:bench",
+    "build:runtime": "tsc -p tsconfig.runtime.json",
+    "build:bench": "tsc -p tsconfig.bench.json",
     "test": "vitest run",
     "test:watch": "vitest",
     "lint": "tsc -p tsconfig.json --noEmit",
@@ -55,7 +57,7 @@
     "@types/pg": "^8.20.0",
     "@types/sql.js": "^1.4.11",
     "playwright": "^1.59.1",
-    "typescript": "^5.9.3",
+    "typescript": "^6.0.3",
     "vitest": "^4.1.5"
   },
   "engines": {

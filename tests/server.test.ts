@@ -111,6 +111,61 @@ describe("MCP runtime", () => {
     }
   });
 
+  test("applies response profiles and metrics to retrieval results", async () => {
+    const dir = await mkdtemp(join(tmpdir(), "tokenhub-profile-"));
+    try {
+      await writeFile(join(dir, "feature.ts"), "export const needle = 'TOKENHUB_PROFILE_NEEDLE';\n");
+      const runtime = createTokenHubRuntime({ root: dir });
+
+      const result = await runtime.retrieveContext({
+        source: "files",
+        query: "TOKENHUB_PROFILE_NEEDLE",
+        limit: 1,
+        responseProfile: "minimal"
+      });
+
+      expect(result).toMatchObject({
+        profile: "minimal",
+        metrics: {
+          estimatedTokens: expect.any(Number),
+          source: "files"
+        }
+      });
+      expect(result).toHaveProperty("m");
+      expect(result).not.toHaveProperty("matches");
+    } finally {
+      await rm(dir, { recursive: true, force: true });
+    }
+  });
+
+  test("exposes modular source and workflow registries through the runtime", () => {
+    const runtime = createTokenHubRuntime({ root: process.cwd() });
+
+    expect(runtime.sourceNames()).toEqual([
+      "files",
+      "git",
+      "web",
+      "github",
+      "search",
+      "sqlite",
+      "postgres",
+      "docs",
+      "sentry",
+      "browser"
+    ]);
+    expect(runtime.workflowNames()).toEqual([
+      "validate",
+      "filesystem_action",
+      "git_action",
+      "answer_from_web",
+      "resolve_request",
+      "extension_call",
+      "project_scan",
+      "browser_scenario",
+      "diagnostics_pack"
+    ]);
+  });
+
   test("discovers and accepts the dynamic resolve_request workflow", async () => {
     const runtime = createTokenHubRuntime({ root: process.cwd() });
 

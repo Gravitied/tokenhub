@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-05-07T17:04:25.522Z",
+  "generatedAt": "2026-05-10T21:12:57.570Z",
   "batches": [
     {
       "batch": 1,
@@ -10,8 +10,8 @@
           "request": "Give me a 1 paragraph summary of the latest DeepSeek research papers",
           "passed": true,
           "reason": "matched expected route, format, evidence, and resource contract",
-          "ms": 28,
-          "estimatedTokens": 1340,
+          "ms": 30,
+          "estimatedTokens": 1333,
           "actual": {
             "intent": "research",
             "subject": "paper",
@@ -21,18 +21,18 @@
               "web_pages"
             ],
             "resourceUris": [
-              "tokenhub://resource/875788e6-5e19-4712-b438-beea91a24e58",
-              "tokenhub://resource/161685b3-1182-4fb6-9f0e-c48c6216df47"
+              "tokenhub://resource/0d6370ec01d47dd762a110fad3c509ab",
+              "tokenhub://resource/f26d476ede956d67e4009a6978ce95f1"
             ],
             "telemetryCapability": "workflow.resolve_request",
             "telemetry": {
               "capability": "workflow.resolve_request",
               "estimatedToolCostTokens": 185,
-              "estimatedSavedTokens": 1517,
+              "estimatedSavedTokens": 1508,
               "outputTokens": 185,
               "id": "tel_1",
-              "createdAt": "2026-05-07T17:04:25.551Z",
-              "roi": 8.2,
+              "createdAt": "2026-05-10T21:12:57.601Z",
+              "roi": 8.151351351351352,
               "graduated": true
             },
             "summary": "Web context\nRecent deepseek surfaced by the workflow emphasizes DeepSeek Sparse Attention improves long-context efficiency and reasoning while preserving open model availability; DeepSeek Sparse Attention improves long-context efficiency and reasoning while preserving open model availability; and DeepSeek Sparse Attention improves long-context efficiency and reasoning while preserving open model availability.\n\nSources:\n\n[1] DeepSeek research papers - https://example.test/deepseek/1\n[2] DeepSeek ",
@@ -46,8 +46,8 @@
           "request": "Find the top 10 healthiest vegetables and return a ranked list",
           "passed": true,
           "reason": "matched expected route, format, evidence, and resource contract",
-          "ms": 8,
-          "estimatedTokens": 2540,
+          "ms": 7,
+          "estimatedTokens": 2515,
           "actual": {
             "intent": "answer",
             "subject": "data",
@@ -56,18 +56,18 @@
               "web_search"
             ],
             "resourceUris": [
-              "tokenhub://resource/84991af5-d1e4-4353-af5e-0c9578b65338",
-              "tokenhub://resource/f7298552-433a-49bc-bb90-4e001e12b588"
+              "tokenhub://resource/16a12bcbbd711e97c1bb7e693839f8d1",
+              "tokenhub://resource/a8475c113c41fb7894ec7a8a573b0649"
             ],
             "telemetryCapability": "workflow.resolve_request",
             "telemetry": {
               "capability": "workflow.resolve_request",
               "estimatedToolCostTokens": 148,
-              "estimatedSavedTokens": 2751,
+              "estimatedSavedTokens": 2728,
               "outputTokens": 148,
               "id": "tel_2",
-              "createdAt": "2026-05-07T17:04:25.559Z",
-              "roi": 18.58783783783784,
+              "createdAt": "2026-05-10T21:12:57.608Z",
+              "roi": 18.43243243243243,
               "graduated": true
             },
             "summary": "Web context\n1. Healthy vegetables Watercress (3 sources)\n2. Spinach (3 sources)\n3. Kale (3 sources)\n4. Swiss chard (3 sources)\n5. Beet greens (3 sources)\n6. Broccoli (3 sources)\n7. Brussels sprouts (3 sources)\n8. Carrots (3 sources)\n9. Red cabbage (3 sources)\n10. Bell peppers (3 sources)\n\nSources:\n\n[1] Healthy vegetables - https://example.test/vegetables/1\n[2] Healthy vegetables - https://example.test/vegetables/2\n[3] Healthy vegetables - https://example.test/vegetables/3\n\nRequest plan\nintent=an",
@@ -81,8 +81,8 @@
           "request": "Compare Bun and Node for a backend API and return the tradeoffs",
           "passed": true,
           "reason": "matched expected route, format, evidence, and resource contract",
-          "ms": 9,
-          "estimatedTokens": 1926,
+          "ms": 42,
+          "estimatedTokens": 1906,
           "actual": {
             "intent": "compare",
             "subject": "api",
@@ -94,18 +94,18 @@
               "docs"
             ],
             "resourceUris": [
-              "tokenhub://resource/c81c4279-c127-4cdd-8f37-ee008936c79f",
-              "tokenhub://resource/dba3f752-8464-4636-bb02-7d00bcafa429"
+              "tokenhub://resource/559e58d1fea9393ab13803c0632f3ee5",
+              "tokenhub://resource/7c68077e9f757870c39256140c125902"
             ],
             "telemetryCapability": "workflow.resolve_request",
             "telemetry": {
               "capability": "workflow.resolve_request",
               "estimatedToolCostTokens": 185,
-              "estimatedSavedTokens": 2099,
+              "estimatedSavedTokens": 2081,
               "outputTokens": 185,
               "id": "tel_3",
-              "createdAt": "2026-05-07T17:04:25.568Z",
-              "roi": 11.345945945945946,
+              "createdAt": "2026-05-10T21:12:57.650Z",
+              "roi": 11.248648648648649,
               "graduated": true
             },
             "summary": "Local context\nNo matching local files found.\n\nWeb context\nRecent compare node backend surfaced by the workflow emphasizes Bun Node backend API comparison Bun and Node both support backend API workloads; Bun Node backend API comparison Bun and Node both support backend API workloads; and Bun Node backend API comparison Bun and Node both support backend API workloads.\n\nSources:\n\n[1] Bun Node backend API comparison - https://example.test/bun-node/1\n[2] Bun Node backend API comparison - https://exam",
@@ -119,8 +119,8 @@
           "request": "Look up the latest Stripe Checkout API docs and give implementation context for subscriptions",
           "passed": true,
           "reason": "matched expected route, format, evidence, and resource contract",
-          "ms": 7,
-          "estimatedTokens": 2159,
+          "ms": 5,
+          "estimatedTokens": 2138,
           "actual": {
             "intent": "research",
             "subject": "api",
@@ -131,18 +131,18 @@
               "docs"
             ],
             "resourceUris": [
-              "tokenhub://resource/954163e5-c04e-4329-acbf-0efb0f520547",
-              "tokenhub://resource/e019542a-04a5-41f4-bddd-9eba33bd1619"
+              "tokenhub://resource/48c14b684748602c66c9fc2c24b10cca",
+              "tokenhub://resource/c6c40ce67da102f7ebc3da80a3e546b0"
             ],
             "telemetryCapability": "workflow.resolve_request",
             "telemetry": {
               "capability": "workflow.resolve_request",
               "estimatedToolCostTokens": 186,
-              "estimatedSavedTokens": 2316,
+              "estimatedSavedTokens": 2298,
               "outputTokens": 186,
               "id": "tel_4",
-              "createdAt": "2026-05-07T17:04:25.575Z",
-              "roi": 12.451612903225806,
+              "createdAt": "2026-05-10T21:12:57.655Z",
+              "roi": 12.35483870967742,
               "graduated": true
             },
             "summary": "Web context\nRecent stripe checkout docs surfaced by the workflow emphasizes Stripe Checkout API subscriptions source with current docs, implementation notes, and cited context; Stripe Checkout API subscriptions source with current docs, implementation notes, and cited context; and Stripe Checkout API subscriptions source with current docs, implementation notes, and cited context.\n\nSources:\n\n[1] Stripe Checkout API subscriptions - https://example.test/stripe/1\n[2] Stripe Checkout API subscription",
@@ -156,8 +156,8 @@
           "request": "Debug TypeError fetch failed in Node undici ECONNRESET",
           "passed": true,
           "reason": "matched expected route, format, evidence, and resource contract",
-          "ms": 7,
-          "estimatedTokens": 1386,
+          "ms": 5,
+          "estimatedTokens": 1375,
           "actual": {
             "intent": "debug",
             "subject": "error",
@@ -166,18 +166,18 @@
               "web_search"
             ],
             "resourceUris": [
-              "tokenhub://resource/2af60a24-d720-4126-a927-35431c2241b4",
-              "tokenhub://resource/6774ef78-312f-4c1d-a931-e94a43d1e9a0"
+              "tokenhub://resource/b69581b5eb5f1c2a2abdf62785416f2a",
+              "tokenhub://resource/89a771a67dd87da9fdb691aec0979ad0"
             ],
             "telemetryCapability": "workflow.resolve_request",
             "telemetry": {
               "capability": "workflow.resolve_request",
               "estimatedToolCostTokens": 222,
-              "estimatedSavedTokens": 1526,
+              "estimatedSavedTokens": 1517,
               "outputTokens": 222,
               "id": "tel_5",
-              "createdAt": "2026-05-07T17:04:25.582Z",
-              "roi": 6.873873873873874,
+              "createdAt": "2026-05-10T21:12:57.660Z",
+              "roi": 6.833333333333333,
               "graduated": true
             },
             "summary": "Web context\nRecent debug typeerror fetch surfaced by the workflow emphasizes Node undici ECONNRESET debug ECONNRESET in Node undici usually points to a closed socket, proxy reset, TLS interruption, or missing retry and timeout handling; Node undici ECONNRESET debug ECONNRESET in Node undici usually points to a closed socket, proxy reset, TLS interruption, or missing retry and timeout handling; and Node undici ECONNRESET debug ECONNRESET in Node undici usually points to a closed socket, proxy res",
@@ -191,8 +191,8 @@
           "request": "Extract a pricing table for GitHub Actions minutes",
           "passed": true,
           "reason": "matched expected route, format, evidence, and resource contract",
-          "ms": 8,
-          "estimatedTokens": 1385,
+          "ms": 5,
+          "estimatedTokens": 1374,
           "actual": {
             "intent": "extract",
             "subject": "data",
@@ -201,18 +201,18 @@
               "web_search"
             ],
             "resourceUris": [
-              "tokenhub://resource/ad98d842-4cb6-4d27-8858-070f14db4d21",
-              "tokenhub://resource/c6f769ea-0055-42d4-ba29-2e1cf9c0dccf"
+              "tokenhub://resource/8fd7b08f71c75ff4ed0b4d316124a96f",
+              "tokenhub://resource/f5f31678101f508be0ddf88b5bf73f09"
             ],
             "telemetryCapability": "workflow.resolve_request",
             "telemetry": {
               "capability": "workflow.resolve_request",
               "estimatedToolCostTokens": 219,
-              "estimatedSavedTokens": 1530,
+              "estimatedSavedTokens": 1521,
               "outputTokens": 219,
               "id": "tel_6",
-              "createdAt": "2026-05-07T17:04:25.590Z",
-              "roi": 6.986301369863014,
+              "createdAt": "2026-05-10T21:12:57.665Z",
+              "roi": 6.945205479452055,
               "graduated": true
             },
             "summary": "Web context\nRecent extract pricing table surfaced by the workflow emphasizes GitHub Actions pricing table GitHub Actions pricing table: Linux minutes, Windows minutes, macOS minutes, storage, included quota, and overage rates; GitHub Actions pricing table GitHub Actions pricing table: Linux minutes, Windows minutes, macOS minutes, storage, included quota, and overage rates; and GitHub Actions pricing table GitHub Actions pricing table: Linux minutes, Windows minutes, macOS minutes, storage, incl",
@@ -226,8 +226,8 @@
           "request": "Make a plan to migrate an Express app to Fastify using the latest docs",
           "passed": true,
           "reason": "matched expected route, format, evidence, and resource contract",
-          "ms": 8,
-          "estimatedTokens": 2274,
+          "ms": 5,
+          "estimatedTokens": 2254,
           "actual": {
             "intent": "plan",
             "subject": "docs",
@@ -238,18 +238,18 @@
               "docs"
             ],
             "resourceUris": [
-              "tokenhub://resource/57ba9167-5e10-4f91-b8fe-1dbd0981b940",
-              "tokenhub://resource/20818aa5-8c5e-4fde-89cf-766d192e1dc9"
+              "tokenhub://resource/8c34051d7d20cd37c7ff90708bf4cbc3",
+              "tokenhub://resource/3d137dbf2727d49384f2e986274d02d2"
             ],
             "telemetryCapability": "workflow.resolve_request",
             "telemetry": {
               "capability": "workflow.resolve_request",
               "estimatedToolCostTokens": 237,
-              "estimatedSavedTokens": 2394,
+              "estimatedSavedTokens": 2376,
               "outputTokens": 237,
               "id": "tel_7",
-              "createdAt": "2026-05-07T17:04:25.598Z",
-              "roi": 10.10126582278481,
+              "createdAt": "2026-05-10T21:12:57.670Z",
+              "roi": 10.025316455696203,
               "graduated": true
             },
             "summary": "Web context\nRecent make plan migrate surfaced by the workflow emphasizes Express to Fastify migration docs Fastify migration plan: audit Express middleware, convert routes, add schemas, update plugins, run integration tests, then switch traffic; Express to Fastify migration docs Fastify migration plan: audit Express middleware, convert routes, add schemas, update plugins, run integration tests, then switch traffic; and Express to Fastify migration docs Fastify migration plan: audit Express middl",
@@ -263,8 +263,8 @@
           "request": "Use the latest React Query package changelog to update caching code",
           "passed": true,
           "reason": "matched expected route, format, evidence, and resource contract",
-          "ms": 9,
-          "estimatedTokens": 2292,
+          "ms": 6,
+          "estimatedTokens": 2272,
           "actual": {
             "intent": "research",
             "subject": "package",
@@ -276,18 +276,18 @@
               "docs"
             ],
             "resourceUris": [
-              "tokenhub://resource/72557425-3b75-451a-99a1-6088c1c2bc92",
-              "tokenhub://resource/e6a8966d-c3d6-490f-af7c-7d6c927a6bc0"
+              "tokenhub://resource/1c9854549cee668818ec4d4a01181788",
+              "tokenhub://resource/01e5561cea3a7d52315186d02e41ce38"
             ],
             "telemetryCapability": "workflow.resolve_request",
             "telemetry": {
               "capability": "workflow.resolve_request",
               "estimatedToolCostTokens": 239,
-              "estimatedSavedTokens": 2378,
+              "estimatedSavedTokens": 2360,
               "outputTokens": 239,
               "id": "tel_8",
-              "createdAt": "2026-05-07T17:04:25.606Z",
-              "roi": 9.94979079497908,
+              "createdAt": "2026-05-10T21:12:57.676Z",
+              "roi": 9.874476987447698,
               "graduated": true
             },
             "summary": "Web context\nRecent react query package surfaced by the workflow emphasizes React Query package changelog React Query changelog highlights cache invalidation, stale time defaults, query client updates, and migration notes for caching code; React Query package changelog React Query changelog highlights cache invalidation, stale time defaults, query client updates, and migration notes for caching code; and React Query package changelog React Query changelog highlights cache invalidation, stale time",
@@ -302,8 +302,8 @@
           "request": "Find similar professional optimized implementations of retry backoff in TypeScript and compare them to this code",
           "passed": true,
           "reason": "matched expected route, format, evidence, and resource contract",
-          "ms": 14,
-          "estimatedTokens": 2692,
+          "ms": 61,
+          "estimatedTokens": 2646,
           "actual": {
             "intent": "compare",
             "subject": "code",
@@ -315,21 +315,21 @@
               "docs"
             ],
             "resourceUris": [
-              "tokenhub://resource/ae73bf15-a58d-45d6-934c-d001513e1d68",
-              "tokenhub://resource/53db1e50-c936-4b5d-aae1-3279dded2ee3"
+              "tokenhub://resource/f330388d288a0dcab544246284fc8dce",
+              "tokenhub://resource/659be67b38b68c7216e12732898b4467"
             ],
             "telemetryCapability": "workflow.resolve_request",
             "telemetry": {
               "capability": "workflow.resolve_request",
-              "estimatedToolCostTokens": 303,
-              "estimatedSavedTokens": 2715,
-              "outputTokens": 303,
+              "estimatedToolCostTokens": 290,
+              "estimatedSavedTokens": 2683,
+              "outputTokens": 290,
               "id": "tel_9",
-              "createdAt": "2026-05-07T17:04:25.621Z",
-              "roi": 8.96039603960396,
+              "createdAt": "2026-05-10T21:12:57.737Z",
+              "roi": 9.251724137931035,
               "graduated": true
             },
-            "summary": "Local context\n- src/retry.ts:1 1: export async function retryBackoff(fn: () => Promise<unknown>) { try { return await fn(); } catch { return await fn(); } }\n2: \n\nWeb context\nRecent similar professional optimized surfaced by the workflow emphasizes TypeScript retry backoff implementation A professional retry backoff implementation validates input, supports exponential jitter, typed errors, max attempts, abort signals, and testable timers; TypeScript retry backoff implementation A professional ret",
+            "summary": "Local context\n- src/retry.ts:1 1: export async function retryBackoff(fn: () => Promise<unknown>) { try ...\n2: \n\nWeb context\nRecent similar professional optimized surfaced by the workflow emphasizes TypeScript retry backoff implementation A professional retry backoff implementation validates input, supports exponential jitter, typed errors, max attempts, abort signals, and testable timers; TypeScript retry backoff implementation A professional retry backoff implementation validates input, support",
             "warnings": [
               "Using no-key DuckDuckGo HTML fallback; provider freshness metadata is limited."
             ]
@@ -340,8 +340,8 @@
           "request": "Who is the current CEO of Nvidia and cite sources",
           "passed": true,
           "reason": "matched expected route, format, evidence, and resource contract",
-          "ms": 8,
-          "estimatedTokens": 1201,
+          "ms": 5,
+          "estimatedTokens": 1190,
           "actual": {
             "intent": "research",
             "subject": "fact",
@@ -350,18 +350,18 @@
               "web_search"
             ],
             "resourceUris": [
-              "tokenhub://resource/9438b880-e40b-4b13-a084-d1ce417b8948",
-              "tokenhub://resource/c24e035a-9ddd-4add-8a5c-bc04b3edb2a5"
+              "tokenhub://resource/acfedb04d1198bd6cb305c6428a1a999",
+              "tokenhub://resource/acdd031b4ccf82bee9389faa162fff5a"
             ],
             "telemetryCapability": "workflow.resolve_request",
             "telemetry": {
               "capability": "workflow.resolve_request",
               "estimatedToolCostTokens": 155,
-              "estimatedSavedTokens": 1412,
+              "estimatedSavedTokens": 1403,
               "outputTokens": 155,
               "id": "tel_10",
-              "createdAt": "2026-05-07T17:04:25.629Z",
-              "roi": 9.109677419354838,
+              "createdAt": "2026-05-10T21:12:57.743Z",
+              "roi": 9.051612903225806,
               "graduated": true
             },
             "summary": "Web context\nRecent current nvidia cite surfaced by the workflow emphasizes Sources should cite current company leadership pages and recent filings; Sources should cite current company leadership pages and recent filings; and Sources should cite current company leadership pages and recent filings.\n\nSources:\n\n[1] Nvidia current CEO sources - https://example.test/nvidia/1\n[2] Nvidia current CEO sources - https://example.test/nvidia/2\n[3] Nvidia current CEO sources - https://example.test/nvidia/3\n\nR",
@@ -381,8 +381,8 @@
           "request": "Show me a TypeScript example for the latest OpenAI Responses API from official docs",
           "passed": true,
           "reason": "matched expected route, format, evidence, and resource contract",
-          "ms": 8,
-          "estimatedTokens": 2258,
+          "ms": 4,
+          "estimatedTokens": 2238,
           "actual": {
             "intent": "research",
             "subject": "api",
@@ -393,18 +393,18 @@
               "docs"
             ],
             "resourceUris": [
-              "tokenhub://resource/5ff4c3ba-449f-4785-b7ff-10b17db34724",
-              "tokenhub://resource/f38726bb-647d-47fd-b727-95437f6fec8b"
+              "tokenhub://resource/78cedf93b0b9c6d2e9b832dab035f50d",
+              "tokenhub://resource/9baabe6c261aa2614000ea3820c17585"
             ],
             "telemetryCapability": "workflow.resolve_request",
             "telemetry": {
               "capability": "workflow.resolve_request",
               "estimatedToolCostTokens": 231,
-              "estimatedSavedTokens": 2378,
+              "estimatedSavedTokens": 2360,
               "outputTokens": 231,
               "id": "tel_11",
-              "createdAt": "2026-05-07T17:04:25.637Z",
-              "roi": 10.294372294372295,
+              "createdAt": "2026-05-10T21:12:57.747Z",
+              "roi": 10.216450216450216,
               "graduated": true
             },
             "summary": "Web context\nRecent typescript example openai surfaced by the workflow emphasizes OpenAI Responses API TypeScript docs Responses API TypeScript example: create a client, call responses.create, pass model and input, then read output_text; OpenAI Responses API TypeScript docs Responses API TypeScript example: create a client, call responses.create, pass model and input, then read output_text; and OpenAI Responses API TypeScript docs Responses API TypeScript example: create a client, call responses.",
@@ -418,8 +418,8 @@
           "request": "Compare Postgres and SQLite for a local-first SaaS prototype",
           "passed": true,
           "reason": "matched expected route, format, evidence, and resource contract",
-          "ms": 8,
-          "estimatedTokens": 2251,
+          "ms": 28,
+          "estimatedTokens": 2231,
           "actual": {
             "intent": "compare",
             "subject": "unknown",
@@ -431,18 +431,18 @@
               "docs"
             ],
             "resourceUris": [
-              "tokenhub://resource/1614db04-f897-4705-9d37-5ad4acfedcfa",
-              "tokenhub://resource/a7d028ee-9f45-4425-9054-c32b22f739b2"
+              "tokenhub://resource/c048ff45bc5658ccb8888d678556e88c",
+              "tokenhub://resource/9ba3a719f2984edcc828fce0f231ac35"
             ],
             "telemetryCapability": "workflow.resolve_request",
             "telemetry": {
               "capability": "workflow.resolve_request",
               "estimatedToolCostTokens": 250,
-              "estimatedSavedTokens": 2362,
+              "estimatedSavedTokens": 2344,
               "outputTokens": 250,
               "id": "tel_12",
-              "createdAt": "2026-05-07T17:04:25.645Z",
-              "roi": 9.448,
+              "createdAt": "2026-05-10T21:12:57.775Z",
+              "roi": 9.376,
               "graduated": true
             },
             "summary": "Local context\nNo matching local files found.\n\nWeb context\nRecent compare postgres sqlite surfaced by the workflow emphasizes Postgres SQLite comparison Postgres supports concurrent SaaS workloads and managed operations, while SQLite is strong for local-first prototypes and embedded data; Postgres SQLite comparison Postgres supports concurrent SaaS workloads and managed operations, while SQLite is strong for local-first prototypes and embedded data; and Postgres SQLite comparison Postgres support",
@@ -456,8 +456,8 @@
           "request": "Extract the required environment variables from the deployment docs into structured data",
           "passed": true,
           "reason": "matched expected route, format, evidence, and resource contract",
-          "ms": 7,
-          "estimatedTokens": 2233,
+          "ms": 5,
+          "estimatedTokens": 2210,
           "actual": {
             "intent": "extract",
             "subject": "docs",
@@ -467,18 +467,18 @@
               "web_search"
             ],
             "resourceUris": [
-              "tokenhub://resource/d19064cc-9b9a-47f9-823a-6323f0db84e0",
-              "tokenhub://resource/bfc3846d-ec4b-4678-9e3f-b21b1888789a"
+              "tokenhub://resource/ec5e3ccfa844f9a8853a4990d65e5401",
+              "tokenhub://resource/e88b953187e5879e29bb4599682ae4b5"
             ],
             "telemetryCapability": "workflow.resolve_request",
             "telemetry": {
               "capability": "workflow.resolve_request",
               "estimatedToolCostTokens": 224,
-              "estimatedSavedTokens": 2356,
+              "estimatedSavedTokens": 2338,
               "outputTokens": 224,
               "id": "tel_13",
-              "createdAt": "2026-05-07T17:04:25.652Z",
-              "roi": 10.517857142857142,
+              "createdAt": "2026-05-10T21:12:57.780Z",
+              "roi": 10.4375,
               "graduated": true
             },
             "summary": "Web context\nRecent extract required environment surfaced by the workflow emphasizes Deployment environment variables docs Deployment docs require DATABASE_URL, API_KEY, NODE_ENV, SENTRY_DSN, and AUTH_SECRET environment variables; Deployment environment variables docs Deployment docs require DATABASE_URL, API_KEY, NODE_ENV, SENTRY_DSN, and AUTH_SECRET environment variables; and Deployment environment variables docs Deployment docs require DATABASE_URL, API_KEY, NODE_ENV, SENTRY_DSN, and AUTH_SECR",
@@ -492,8 +492,8 @@
           "request": "Research the latest Playwright MCP token efficiency guidance",
           "passed": true,
           "reason": "matched expected route, format, evidence, and resource contract",
-          "ms": 8,
-          "estimatedTokens": 2182,
+          "ms": 5,
+          "estimatedTokens": 2162,
           "actual": {
             "intent": "research",
             "subject": "docs",
@@ -504,18 +504,18 @@
               "docs"
             ],
             "resourceUris": [
-              "tokenhub://resource/46d438a1-a262-49fd-a397-604dcc0b8faa",
-              "tokenhub://resource/b6570627-2526-4e0b-b944-886a5dbaf897"
+              "tokenhub://resource/5eace6e5594909bfb62bc90d415756ee",
+              "tokenhub://resource/8e40b5106ef335ad8b80c8f0114a4c60"
             ],
             "telemetryCapability": "workflow.resolve_request",
             "telemetry": {
               "capability": "workflow.resolve_request",
               "estimatedToolCostTokens": 222,
-              "estimatedSavedTokens": 2320,
+              "estimatedSavedTokens": 2302,
               "outputTokens": 222,
               "id": "tel_14",
-              "createdAt": "2026-05-07T17:04:25.660Z",
-              "roi": 10.45045045045045,
+              "createdAt": "2026-05-10T21:12:57.785Z",
+              "roi": 10.36936936936937,
               "graduated": true
             },
             "summary": "Web context\nRecent playwright token efficiency surfaced by the workflow emphasizes Playwright MCP token efficiency Playwright MCP guidance emphasizes compact snapshots and CLI usage when full MCP page trees cost too many tokens; Playwright MCP token efficiency Playwright MCP guidance emphasizes compact snapshots and CLI usage when full MCP page trees cost too many tokens; and Playwright MCP token efficiency Playwright MCP guidance emphasizes compact snapshots and CLI usage when full MCP page tre",
@@ -529,8 +529,8 @@
           "request": "Fix a GitHub Actions node setup cache failure and cite likely causes",
           "passed": true,
           "reason": "matched expected route, format, evidence, and resource contract",
-          "ms": 8,
-          "estimatedTokens": 2232,
+          "ms": 28,
+          "estimatedTokens": 2208,
           "actual": {
             "intent": "implement",
             "subject": "error",
@@ -542,18 +542,18 @@
               "docs"
             ],
             "resourceUris": [
-              "tokenhub://resource/80238193-868c-46d4-baa9-b3100111a7b5",
-              "tokenhub://resource/335c2ed2-db53-4283-968a-c2cbe3362e87"
+              "tokenhub://resource/8e09c35a6e57fe623a77fb0c5d3b2769",
+              "tokenhub://resource/0098cf6c162293684e689ff2fc782173"
             ],
             "telemetryCapability": "workflow.resolve_request",
             "telemetry": {
               "capability": "workflow.resolve_request",
               "estimatedToolCostTokens": 214,
-              "estimatedSavedTokens": 2372,
+              "estimatedSavedTokens": 2354,
               "outputTokens": 214,
               "id": "tel_15",
-              "createdAt": "2026-05-07T17:04:25.668Z",
-              "roi": 11.08411214953271,
+              "createdAt": "2026-05-10T21:12:57.812Z",
+              "roi": 11,
               "graduated": true
             },
             "summary": "Local context\nNo matching local files found.\n\nWeb context\nRecent github actions node surfaced by the workflow emphasizes GitHub Actions node setup cache failure source with current docs, implementation notes, and cited context; GitHub Actions node setup cache failure source with current docs, implementation notes, and cited context; and GitHub Actions node setup cache failure source with current docs, implementation notes, and cited context.\n\nSources:\n\n[1] GitHub Actions node setup cache failure",
@@ -567,8 +567,8 @@
           "request": "Find the latest Next.js changelog and make an upgrade plan",
           "passed": true,
           "reason": "matched expected route, format, evidence, and resource contract",
-          "ms": 9,
-          "estimatedTokens": 2157,
+          "ms": 4,
+          "estimatedTokens": 2137,
           "actual": {
             "intent": "plan",
             "subject": "package",
@@ -580,18 +580,18 @@
               "docs"
             ],
             "resourceUris": [
-              "tokenhub://resource/cd702fc9-ed0f-4be1-90d6-d48d74db6f8b",
-              "tokenhub://resource/d08a5139-70c0-485c-910e-ea04e3b24845"
+              "tokenhub://resource/d9b51370890d2fd6c51cc5f03b5cf0f0",
+              "tokenhub://resource/bb4137a08563c0034bde5f2b47973811"
             ],
             "telemetryCapability": "workflow.resolve_request",
             "telemetry": {
               "capability": "workflow.resolve_request",
               "estimatedToolCostTokens": 222,
-              "estimatedSavedTokens": 2269,
+              "estimatedSavedTokens": 2251,
               "outputTokens": 222,
               "id": "tel_16",
-              "createdAt": "2026-05-07T17:04:25.677Z",
-              "roi": 10.22072072072072,
+              "createdAt": "2026-05-10T21:12:57.817Z",
+              "roi": 10.13963963963964,
               "graduated": true
             },
             "summary": "Web context\nRecent next changelog make surfaced by the workflow emphasizes Next.js package changelog Next.js changelog upgrade plan: read breaking changes, update package, run codemods, test routes, and check runtime configuration; Next.js package changelog Next.js changelog upgrade plan: read breaking changes, update package, run codemods, test routes, and check runtime configuration; and Next.js package changelog Next.js changelog upgrade plan: read breaking changes, update package, run codemo",
@@ -606,8 +606,8 @@
           "request": "Collect npm package metadata for zod and return a table",
           "passed": true,
           "reason": "matched expected route, format, evidence, and resource contract",
-          "ms": 8,
-          "estimatedTokens": 2094,
+          "ms": 5,
+          "estimatedTokens": 2074,
           "actual": {
             "intent": "extract",
             "subject": "package",
@@ -618,18 +618,18 @@
               "docs"
             ],
             "resourceUris": [
-              "tokenhub://resource/b85ac52b-aef0-4fa2-8946-a3a88f8861c1",
-              "tokenhub://resource/50072ac1-060b-481f-9c5a-4196ad43a751"
+              "tokenhub://resource/d53bf58f5693accf04ad027173640455",
+              "tokenhub://resource/7b07103e734d9f93d7e4bf8a1c759802"
             ],
             "telemetryCapability": "workflow.resolve_request",
             "telemetry": {
               "capability": "workflow.resolve_request",
               "estimatedToolCostTokens": 214,
-              "estimatedSavedTokens": 2214,
+              "estimatedSavedTokens": 2196,
               "outputTokens": 214,
               "id": "tel_17",
-              "createdAt": "2026-05-07T17:04:25.685Z",
-              "roi": 10.345794392523365,
+              "createdAt": "2026-05-10T21:12:57.822Z",
+              "roi": 10.261682242990654,
               "graduated": true
             },
             "summary": "Web context\nRecent collect package metadata surfaced by the workflow emphasizes zod npm package metadata zod npm package metadata table includes package name, latest version, license, repository, types, and documentation links; zod npm package metadata zod npm package metadata table includes package name, latest version, license, repository, types, and documentation links; and zod npm package metadata zod npm package metadata table includes package name, latest version, license, repository, type",
@@ -644,8 +644,8 @@
           "request": "Summarize the latest Sentry JavaScript SDK release notes",
           "passed": true,
           "reason": "matched expected route, format, evidence, and resource contract",
-          "ms": 9,
-          "estimatedTokens": 2277,
+          "ms": 5,
+          "estimatedTokens": 2256,
           "actual": {
             "intent": "research",
             "subject": "package",
@@ -657,18 +657,18 @@
               "docs"
             ],
             "resourceUris": [
-              "tokenhub://resource/a31fb9c0-7025-42a7-a9a2-12c5cb4e7322",
-              "tokenhub://resource/5cbf7aee-2817-4b62-901a-193281972703"
+              "tokenhub://resource/f0b20ac737e1e484e029201a2a981d07",
+              "tokenhub://resource/e40ffb385a0fa01df63a3d88fbb464ea"
             ],
             "telemetryCapability": "workflow.resolve_request",
             "telemetry": {
               "capability": "workflow.resolve_request",
               "estimatedToolCostTokens": 236,
-              "estimatedSavedTokens": 2370,
+              "estimatedSavedTokens": 2352,
               "outputTokens": 236,
               "id": "tel_18",
-              "createdAt": "2026-05-07T17:04:25.694Z",
-              "roi": 10.042372881355933,
+              "createdAt": "2026-05-10T21:12:57.827Z",
+              "roi": 9.966101694915254,
               "graduated": true
             },
             "summary": "Web context\nRecent sentry javascript release surfaced by the workflow emphasizes Sentry JavaScript SDK release notes Sentry JavaScript SDK release notes summarize tracing changes, browser integrations, Node support, and migration guidance; Sentry JavaScript SDK release notes Sentry JavaScript SDK release notes summarize tracing changes, browser integrations, Node support, and migration guidance; and Sentry JavaScript SDK release notes Sentry JavaScript SDK release notes summarize tracing changes",
@@ -683,8 +683,8 @@
           "request": "Compare professional MCP filesystem server implementations to ours and list gaps",
           "passed": true,
           "reason": "matched expected route, format, evidence, and resource contract",
-          "ms": 17,
-          "estimatedTokens": 2574,
+          "ms": 217,
+          "estimatedTokens": 2554,
           "actual": {
             "intent": "compare",
             "subject": "code",
@@ -696,18 +696,18 @@
               "docs"
             ],
             "resourceUris": [
-              "tokenhub://resource/4bad7233-afb7-42f0-b429-96b814ef44d4",
-              "tokenhub://resource/40ac0c57-758b-4bfb-a477-ffd0ca35efea"
+              "tokenhub://resource/6364ec3d33be8301ab62fb1d3730875a",
+              "tokenhub://resource/90f2204fd7dd99a46b3490bd7d380c24"
             ],
             "telemetryCapability": "workflow.resolve_request",
             "telemetry": {
               "capability": "workflow.resolve_request",
               "estimatedToolCostTokens": 272,
-              "estimatedSavedTokens": 2642,
+              "estimatedSavedTokens": 2624,
               "outputTokens": 272,
               "id": "tel_19",
-              "createdAt": "2026-05-07T17:04:25.710Z",
-              "roi": 9.713235294117647,
+              "createdAt": "2026-05-10T21:12:58.043Z",
+              "roi": 9.647058823529411,
               "graduated": true
             },
             "summary": "Local context\nNo matching local files found.\n\nWeb context\nRecent compare professional filesystem surfaced by the workflow emphasizes MCP filesystem implementation comparison Professional MCP filesystem implementations include allowed roots, path validation, read/write tools, tree listing, and safe error messages; MCP filesystem implementation comparison Professional MCP filesystem implementations include allowed roots, path validation, read/write tools, tree listing, and safe error messages; and",
@@ -721,8 +721,8 @@
           "request": "Generate commands to deploy a Vite app to Cloudflare Pages using current docs",
           "passed": true,
           "reason": "matched expected route, format, evidence, and resource contract",
-          "ms": 6,
-          "estimatedTokens": 2135,
+          "ms": 5,
+          "estimatedTokens": 2115,
           "actual": {
             "intent": "plan",
             "subject": "docs",
@@ -732,18 +732,18 @@
               "web_search"
             ],
             "resourceUris": [
-              "tokenhub://resource/44487aec-2b2c-4f8b-8a79-efcc1461be83",
-              "tokenhub://resource/6b2f3877-6641-4556-bb6a-5e9cc62e537c"
+              "tokenhub://resource/21fcaba6667d23ef333e403ca321807f",
+              "tokenhub://resource/ab160faea6045fe211727518ca0df80e"
             ],
             "telemetryCapability": "workflow.resolve_request",
             "telemetry": {
               "capability": "workflow.resolve_request",
               "estimatedToolCostTokens": 183,
-              "estimatedSavedTokens": 2302,
+              "estimatedSavedTokens": 2284,
               "outputTokens": 183,
               "id": "tel_20",
-              "createdAt": "2026-05-07T17:04:25.717Z",
-              "roi": 12.579234972677595,
+              "createdAt": "2026-05-10T21:12:58.049Z",
+              "roi": 12.480874316939891,
               "graduated": true
             },
             "summary": "Web context\nRecent generate commands deploy surfaced by the workflow emphasizes Cloudflare Pages Vite deployment source with current docs, implementation notes, and cited context; Cloudflare Pages Vite deployment source with current docs, implementation notes, and cited context; and Cloudflare Pages Vite deployment source with current docs, implementation notes, and cited context.\n\nSources:\n\n[1] Cloudflare Pages Vite deployment - https://example.test/cloudflare/1\n[2] Cloudflare Pages Vite deploy",
@@ -763,8 +763,8 @@
           "request": "Find current Prisma migration docs and create a checklist",
           "passed": true,
           "reason": "matched expected route, format, evidence, and resource contract",
-          "ms": 8,
-          "estimatedTokens": 2051,
+          "ms": 5,
+          "estimatedTokens": 2031,
           "actual": {
             "intent": "plan",
             "subject": "docs",
@@ -774,18 +774,18 @@
               "web_search"
             ],
             "resourceUris": [
-              "tokenhub://resource/109f64d1-1d63-4b93-8ad4-8ac70928cf6f",
-              "tokenhub://resource/8d840eb7-d65f-4dae-91e7-518ee3f844d4"
+              "tokenhub://resource/2c579ef91105d8ef655b6d5384a13880",
+              "tokenhub://resource/3ca8566671dbed7a8922869238ac3336"
             ],
             "telemetryCapability": "workflow.resolve_request",
             "telemetry": {
               "capability": "workflow.resolve_request",
               "estimatedToolCostTokens": 209,
-              "estimatedSavedTokens": 2204,
+              "estimatedSavedTokens": 2186,
               "outputTokens": 209,
               "id": "tel_21",
-              "createdAt": "2026-05-07T17:04:25.725Z",
-              "roi": 10.545454545454545,
+              "createdAt": "2026-05-10T21:12:58.054Z",
+              "roi": 10.45933014354067,
               "graduated": true
             },
             "summary": "Web context\nRecent current prisma migration surfaced by the workflow emphasizes Prisma migration docs Prisma migration docs checklist: run prisma migrate dev, review generated SQL, apply migrations in CI, and verify schema drift; Prisma migration docs Prisma migration docs checklist: run prisma migrate dev, review generated SQL, apply migrations in CI, and verify schema drift; and Prisma migration docs Prisma migration docs checklist: run prisma migrate dev, review generated SQL, apply migration",
@@ -799,8 +799,8 @@
           "request": "Debug Vercel FUNCTION_INVOCATION_FAILED 500 errors",
           "passed": true,
           "reason": "matched expected route, format, evidence, and resource contract",
-          "ms": 7,
-          "estimatedTokens": 1442,
+          "ms": 6,
+          "estimatedTokens": 1431,
           "actual": {
             "intent": "debug",
             "subject": "error",
@@ -809,18 +809,18 @@
               "web_search"
             ],
             "resourceUris": [
-              "tokenhub://resource/60367e67-3407-403a-8605-2ae94212c65d",
-              "tokenhub://resource/75ae264c-c3a3-470c-b4ba-efbc41b11438"
+              "tokenhub://resource/2c71ee7ca481260cc83b462ee1095233",
+              "tokenhub://resource/2c9ab27f38ba226ee601f8acadc98ba6"
             ],
             "telemetryCapability": "workflow.resolve_request",
             "telemetry": {
               "capability": "workflow.resolve_request",
               "estimatedToolCostTokens": 239,
-              "estimatedSavedTokens": 1567,
+              "estimatedSavedTokens": 1558,
               "outputTokens": 239,
               "id": "tel_22",
-              "createdAt": "2026-05-07T17:04:25.732Z",
-              "roi": 6.556485355648536,
+              "createdAt": "2026-05-10T21:12:58.060Z",
+              "roi": 6.518828451882845,
               "graduated": true
             },
             "summary": "Web context\nRecent debug vercel function surfaced by the workflow emphasizes Vercel function invocation debug Vercel FUNCTION_INVOCATION_FAILED 500 errors can come from runtime exceptions, missing environment variables, timeouts, or unsupported Node APIs; Vercel function invocation debug Vercel FUNCTION_INVOCATION_FAILED 500 errors can come from runtime exceptions, missing environment variables, timeouts, or unsupported Node APIs; and Vercel function invocation debug Vercel FUNCTION_INVOCATION_F",
@@ -834,8 +834,8 @@
           "request": "Extract Cloudflare cache headers from current docs as a table",
           "passed": true,
           "reason": "matched expected route, format, evidence, and resource contract",
-          "ms": 7,
-          "estimatedTokens": 2195,
+          "ms": 5,
+          "estimatedTokens": 2175,
           "actual": {
             "intent": "extract",
             "subject": "docs",
@@ -845,18 +845,18 @@
               "web_search"
             ],
             "resourceUris": [
-              "tokenhub://resource/56aaa9fd-bc56-4608-9e0b-dd41cdfa78f2",
-              "tokenhub://resource/7512e5bc-ea0a-41de-8173-239302c098f2"
+              "tokenhub://resource/88e25be9b0c2bf039b317b7f3c6a92e2",
+              "tokenhub://resource/723e0922d0b3afe41053811944e35670"
             ],
             "telemetryCapability": "workflow.resolve_request",
             "telemetry": {
               "capability": "workflow.resolve_request",
               "estimatedToolCostTokens": 224,
-              "estimatedSavedTokens": 2330,
+              "estimatedSavedTokens": 2312,
               "outputTokens": 224,
               "id": "tel_23",
-              "createdAt": "2026-05-07T17:04:25.739Z",
-              "roi": 10.401785714285714,
+              "createdAt": "2026-05-10T21:12:58.065Z",
+              "roi": 10.321428571428571,
               "graduated": true
             },
             "summary": "Web context\nRecent extract cloudflare cache surfaced by the workflow emphasizes Cloudflare cache headers docs Cloudflare cache headers table includes Cache-Control, CDN-Cache-Control, Cloudflare-CDN-Cache-Control, ETag, and Vary; Cloudflare cache headers docs Cloudflare cache headers table includes Cache-Control, CDN-Cache-Control, Cloudflare-CDN-Cache-Control, ETag, and Vary; and Cloudflare cache headers docs Cloudflare cache headers table includes Cache-Control, CDN-Cache-Control, Cloudflare-C",
@@ -870,8 +870,8 @@
           "request": "Compare Redis and Upstash for API rate limiting",
           "passed": true,
           "reason": "matched expected route, format, evidence, and resource contract",
-          "ms": 10,
-          "estimatedTokens": 1932,
+          "ms": 35,
+          "estimatedTokens": 1912,
           "actual": {
             "intent": "compare",
             "subject": "api",
@@ -883,18 +883,18 @@
               "docs"
             ],
             "resourceUris": [
-              "tokenhub://resource/fcfacc7c-efa9-4929-b731-aff741f0e544",
-              "tokenhub://resource/112253d0-ccbf-40c3-98f0-897f6d2545fb"
+              "tokenhub://resource/eee7ebb6ab17fb832302fa3d2da1edb8",
+              "tokenhub://resource/d5191208fef42b45f9a1f6b0d0b4f020"
             ],
             "telemetryCapability": "workflow.resolve_request",
             "telemetry": {
               "capability": "workflow.resolve_request",
               "estimatedToolCostTokens": 189,
-              "estimatedSavedTokens": 2107,
+              "estimatedSavedTokens": 2089,
               "outputTokens": 189,
               "id": "tel_24",
-              "createdAt": "2026-05-07T17:04:25.749Z",
-              "roi": 11.148148148148149,
+              "createdAt": "2026-05-10T21:12:58.100Z",
+              "roi": 11.052910052910052,
               "graduated": true
             },
             "summary": "Local context\nNo matching local files found.\n\nWeb context\nRecent compare redis upstash surfaced by the workflow emphasizes Redis Upstash API rate limiting Redis and Upstash both support API rate limiting; Redis Upstash API rate limiting Redis and Upstash both support API rate limiting; and Redis Upstash API rate limiting Redis and Upstash both support API rate limiting.\n\nSources:\n\n[1] Redis Upstash API rate limiting - https://example.test/redis-upstash/1\n[2] Redis Upstash API rate limiting - htt",
@@ -908,8 +908,8 @@
           "request": "Summarize the latest TypeScript release notes in one paragraph",
           "passed": true,
           "reason": "matched expected route, format, evidence, and resource contract",
-          "ms": 8,
-          "estimatedTokens": 2172,
+          "ms": 5,
+          "estimatedTokens": 2152,
           "actual": {
             "intent": "research",
             "subject": "package",
@@ -921,18 +921,18 @@
               "docs"
             ],
             "resourceUris": [
-              "tokenhub://resource/54811eae-e600-4113-8c5d-8e9c305fea49",
-              "tokenhub://resource/2ba1129f-167b-4981-b0d0-ef00e6004125"
+              "tokenhub://resource/5a99b81381c044e480160c9a02dabe22",
+              "tokenhub://resource/8ba6678139c4c55f6a1c70da8dd60fbd"
             ],
             "telemetryCapability": "workflow.resolve_request",
             "telemetry": {
               "capability": "workflow.resolve_request",
               "estimatedToolCostTokens": 222,
-              "estimatedSavedTokens": 2280,
+              "estimatedSavedTokens": 2262,
               "outputTokens": 222,
               "id": "tel_25",
-              "createdAt": "2026-05-07T17:04:25.757Z",
-              "roi": 10.27027027027027,
+              "createdAt": "2026-05-10T21:12:58.105Z",
+              "roi": 10.18918918918919,
               "graduated": true
             },
             "summary": "Web context\nRecent typescript release notes surfaced by the workflow emphasizes TypeScript release notes TypeScript release notes summarize compiler changes, editor improvements, stricter checks, and migration recommendations; TypeScript release notes TypeScript release notes summarize compiler changes, editor improvements, stricter checks, and migration recommendations; and TypeScript release notes TypeScript release notes summarize compiler changes, editor improvements, stricter checks, and mi",
@@ -947,8 +947,8 @@
           "request": "Find official Docker Node image best practices and give commands",
           "passed": true,
           "reason": "matched expected route, format, evidence, and resource contract",
-          "ms": 8,
-          "estimatedTokens": 2205,
+          "ms": 6,
+          "estimatedTokens": 2185,
           "actual": {
             "intent": "plan",
             "subject": "docs",
@@ -958,18 +958,18 @@
               "web_search"
             ],
             "resourceUris": [
-              "tokenhub://resource/6ba3d225-64af-41d4-96b7-c863a6f3b3cd",
-              "tokenhub://resource/c67a56c8-baf7-447b-bdb7-f5db7376dffc"
+              "tokenhub://resource/c1bad60c1957b2eb389060cc2141e422",
+              "tokenhub://resource/c17bb82c9a5484afe53f50294b58862e"
             ],
             "telemetryCapability": "workflow.resolve_request",
             "telemetry": {
               "capability": "workflow.resolve_request",
               "estimatedToolCostTokens": 225,
-              "estimatedSavedTokens": 2338,
+              "estimatedSavedTokens": 2320,
               "outputTokens": 225,
               "id": "tel_26",
-              "createdAt": "2026-05-07T17:04:25.765Z",
-              "roi": 10.391111111111112,
+              "createdAt": "2026-05-10T21:12:58.111Z",
+              "roi": 10.311111111111112,
               "graduated": true
             },
             "summary": "Web context\nRecent official docker node surfaced by the workflow emphasizes Docker Node image best practices Docker Node image best practices commands include docker build, npm ci --omit=dev, non-root users, and multi-stage builds; Docker Node image best practices Docker Node image best practices commands include docker build, npm ci --omit=dev, non-root users, and multi-stage builds; and Docker Node image best practices Docker Node image best practices commands include docker build, npm ci --om",
@@ -983,8 +983,8 @@
           "request": "Look up GitHub REST API rate limits and return structured data",
           "passed": true,
           "reason": "matched expected route, format, evidence, and resource contract",
-          "ms": 8,
-          "estimatedTokens": 2176,
+          "ms": 5,
+          "estimatedTokens": 2156,
           "actual": {
             "intent": "answer",
             "subject": "api",
@@ -994,18 +994,18 @@
               "web_search"
             ],
             "resourceUris": [
-              "tokenhub://resource/b2aa32db-8e50-428e-a617-461a9589b381",
-              "tokenhub://resource/2c344737-92b2-4010-a420-c93b450b88e3"
+              "tokenhub://resource/3b7b1da3c015b33b79f2cb1b1a1930dc",
+              "tokenhub://resource/9cb901b895139c13ec3ecd9a1f0c12b6"
             ],
             "telemetryCapability": "workflow.resolve_request",
             "telemetry": {
               "capability": "workflow.resolve_request",
               "estimatedToolCostTokens": 221,
-              "estimatedSavedTokens": 2313,
+              "estimatedSavedTokens": 2295,
               "outputTokens": 221,
               "id": "tel_27",
-              "createdAt": "2026-05-07T17:04:25.773Z",
-              "roi": 10.46606334841629,
+              "createdAt": "2026-05-10T21:12:58.116Z",
+              "roi": 10.384615384615385,
               "graduated": true
             },
             "summary": "Web context\nRecent github rest rate surfaced by the workflow emphasizes GitHub REST API rate limits GitHub REST API rate limit structured data includes core limit, search limit, GraphQL points, reset time, and headers; GitHub REST API rate limits GitHub REST API rate limit structured data includes core limit, search limit, GraphQL points, reset time, and headers; and GitHub REST API rate limits GitHub REST API rate limit structured data includes core limit, search limit, GraphQL points, reset ti",
@@ -1019,8 +1019,8 @@
           "request": "Summarize latest PostgreSQL release notes",
           "passed": true,
           "reason": "matched expected route, format, evidence, and resource contract",
-          "ms": 8,
-          "estimatedTokens": 2155,
+          "ms": 6,
+          "estimatedTokens": 2138,
           "actual": {
             "intent": "research",
             "subject": "package",
@@ -1032,18 +1032,18 @@
               "docs"
             ],
             "resourceUris": [
-              "tokenhub://resource/35ec5b3a-5424-4e4c-b1a5-afee23050a39",
-              "tokenhub://resource/c6f60812-b247-4c3c-b5bd-56894e1e5d36"
+              "tokenhub://resource/6b16927051fb46e8ec919bf9077a8c95",
+              "tokenhub://resource/40019ed2d54cf75f30bf9d131619405a"
             ],
             "telemetryCapability": "workflow.resolve_request",
             "telemetry": {
               "capability": "workflow.resolve_request",
               "estimatedToolCostTokens": 220,
-              "estimatedSavedTokens": 2277,
+              "estimatedSavedTokens": 2259,
               "outputTokens": 220,
               "id": "tel_28",
-              "createdAt": "2026-05-07T17:04:25.781Z",
-              "roi": 10.35,
+              "createdAt": "2026-05-10T21:12:58.122Z",
+              "roi": 10.268181818181818,
               "graduated": true
             },
             "summary": "Web context\nRecent postgresql release notes surfaced by the workflow emphasizes PostgreSQL release notes PostgreSQL release notes summarize planner improvements, SQL features, replication changes, and upgrade cautions; PostgreSQL release notes PostgreSQL release notes summarize planner improvements, SQL features, replication changes, and upgrade cautions; and PostgreSQL release notes PostgreSQL release notes summarize planner improvements, SQL features, replication changes, and upgrade cautions.",
@@ -1058,8 +1058,8 @@
           "request": "Compare professional browser automation state capture implementations to ours",
           "passed": true,
           "reason": "matched expected route, format, evidence, and resource contract",
-          "ms": 12,
-          "estimatedTokens": 2585,
+          "ms": 56,
+          "estimatedTokens": 2564,
           "actual": {
             "intent": "compare",
             "subject": "code",
@@ -1071,18 +1071,18 @@
               "docs"
             ],
             "resourceUris": [
-              "tokenhub://resource/26302b76-eff9-4e06-a0c9-bfd71a297316",
-              "tokenhub://resource/77e8fa60-f6c5-4107-8378-7ac8999504f7"
+              "tokenhub://resource/9fb3e4e122c2bbc1c1e2b3c9e139e3e3",
+              "tokenhub://resource/4e37ca3efc99c70d6259fd0945a9d3a0"
             ],
             "telemetryCapability": "workflow.resolve_request",
             "telemetry": {
               "capability": "workflow.resolve_request",
               "estimatedToolCostTokens": 291,
-              "estimatedSavedTokens": 2635,
+              "estimatedSavedTokens": 2616,
               "outputTokens": 291,
               "id": "tel_29",
-              "createdAt": "2026-05-07T17:04:25.793Z",
-              "roi": 9.054982817869416,
+              "createdAt": "2026-05-10T21:12:58.178Z",
+              "roi": 8.989690721649485,
               "graduated": true
             },
             "summary": "Local context\n- src/browser.ts:1 1: export function captureBrowserState() { return { headings: [], links: [], consoleErrors: [] }; }\n2: \n\nWeb context\nRecent compare professional browser surfaced by the workflow emphasizes Browser automation state capture Professional browser automation state capture uses compact DOM maps, stable element refs, console errors, network failures, and screenshot resources; Browser automation state capture Professional browser automation state capture uses compact DOM",
@@ -1096,8 +1096,8 @@
           "request": "Find current OAuth 2.1 spec changes and cite sources",
           "passed": true,
           "reason": "matched expected route, format, evidence, and resource contract",
-          "ms": 7,
-          "estimatedTokens": 2083,
+          "ms": 6,
+          "estimatedTokens": 2063,
           "actual": {
             "intent": "research",
             "subject": "docs",
@@ -1107,18 +1107,18 @@
               "web_search"
             ],
             "resourceUris": [
-              "tokenhub://resource/d6ece1fa-0c87-410f-99a1-ef8a3132c9bd",
-              "tokenhub://resource/28d6e190-ccf7-4013-94c0-1bfe70b874d0"
+              "tokenhub://resource/f6a4b19a459555304b0baace5d766529",
+              "tokenhub://resource/e0693f112eaf1d36e8832fad87285c07"
             ],
             "telemetryCapability": "workflow.resolve_request",
             "telemetry": {
               "capability": "workflow.resolve_request",
               "estimatedToolCostTokens": 217,
-              "estimatedSavedTokens": 2230,
+              "estimatedSavedTokens": 2212,
               "outputTokens": 217,
               "id": "tel_30",
-              "createdAt": "2026-05-07T17:04:25.800Z",
-              "roi": 10.276497695852534,
+              "createdAt": "2026-05-10T21:12:58.184Z",
+              "roi": 10.193548387096774,
               "graduated": true
             },
             "summary": "Web context\nRecent current oauth spec surfaced by the workflow emphasizes OAuth 2.1 spec changes OAuth 2.1 spec changes consolidate PKCE, remove implicit flow guidance, tighten redirect URI rules, and cite current standards sources; OAuth 2.1 spec changes OAuth 2.1 spec changes consolidate PKCE, remove implicit flow guidance, tighten redirect URI rules, and cite current standards sources; and OAuth 2.1 spec changes OAuth 2.1 spec changes consolidate PKCE, remove implicit flow guidance, tighten r",

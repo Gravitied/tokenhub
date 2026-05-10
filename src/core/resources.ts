@@ -1,5 +1,5 @@
-import { createHash, randomUUID } from "node:crypto";
-import { mkdir, readFile, writeFile } from "node:fs/promises";
+import { createHash } from "node:crypto";
+import { mkdir, readdir, readFile, writeFile } from "node:fs/promises";
 import { isAbsolute, join, relative, resolve } from "node:path";
 import { estimateTokens, truncateToTokens } from "./token.js";
 
@@ -47,11 +47,17 @@ export class ResourceStore {
 
   async writeText(input: ResourceWriteInput): Promise<ResourceLink> {
     await mkdir(this.rootDir, { recursive: true });
-    const id = randomUUID();
-    const uri = `tokenhub://resource/${id}`;
     const content = Buffer.isBuffer(input.content) ? input.content : Buffer.from(input.content, "utf8");
-    const contentFile = `${id}.bin`;
     const sha256 = createHash("sha256").update(content).digest("hex");
+    const id = createResourceId(input.kind, sha256);
+    const uri = `tokenhub://resource/${id}`;
+    const contentFile = `${id}.bin`;
+    const existing = await readFile(join(this.rootDir, `${id}.json`), "utf8")
+      .then((raw) => JSON.parse(raw) as ResourceManifest)
+      .catch(() => undefined);
+    if (existing?.uri === uri && existing.contentFile === contentFile && existing.sha256 === sha256 && existing.kind === input.kind) {
+      return publicLink(existing);
+    }
     const link: ResourceManifest = {
       uri,
       kind: input.kind,
@@ -101,6 +107,19 @@ export class ResourceStore {
     };
   }
 
+  async list(): Promise<ResourceLink[]> {
+    const entries = await readdir(this.rootDir).catch(() => []);
+    const manifests = await Promise.all(
+      entries
+        .filter((entry) => entry.endsWith(".json"))
+        .map(async (entry) => {
+          const manifest = JSON.parse(await readFile(join(this.rootDir, entry), "utf8")) as ResourceManifest;
+          return publicLink(manifest);
+        })
+    );
+    return manifests.sort((left, right) => left.label.localeCompare(right.label) || left.uri.localeCompare(right.uri));
+  }
+
   private contentPathForManifest(id: string, manifest: ResourceManifest, uri: string): string {
     if (manifest.uri !== uri || manifest.contentFile !== `${id}.bin`) {
       throw new Error(`Invalid resource manifest: ${uri}`);
@@ -125,4 +144,8 @@ function selectLineRange(text: string, startLine = 1, endLine = startLine): stri
 function publicLink(manifest: ResourceManifest): ResourceLink {
   const { contentFile: _contentFile, ...link } = manifest;
   return link;
+}
+
+function createResourceId(kind: ResourceKind, sha256: string): string {
+  return createHash("sha256").update(`${kind}\0${sha256}`).digest("hex").slice(0, 32);
 }

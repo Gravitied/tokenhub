@@ -20,6 +20,8 @@ export const advertisedCapabilities = [
   "resolve_request",
   "answer_from_web",
   "extension_call",
+  "browser_scenario",
+  "diagnostics_pack",
   "web_fetch",
   "web_search",
   "filesystem",

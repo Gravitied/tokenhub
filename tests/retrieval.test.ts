@@ -5,9 +5,11 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { promisify } from "node:util";
 import { ResourceStore } from "../src/core/resources.js";
+import { MemoryCache } from "../src/core/cache.js";
 import { searchFiles } from "../src/modules/filesystem.js";
 import { summarizeGit } from "../src/modules/git.js";
-import { cleanHtmlToText, fetchAndScrape } from "../src/modules/web.js";
+import { cleanHtmlToText, fetchAndScrape, type CachedWebPage } from "../src/modules/web.js";
+import { BrowserPool } from "../src/modules/browser.js";
 
 const execFileAsync = promisify(execFile);
 
@@ -146,5 +148,73 @@ describe("web cleanup", () => {
     } finally {
       await rm(dir, { recursive: true, force: true });
     }
+  });
+
+  test("reuses cached web fetches and deduped resources", async () => {
+    const dir = await mkdtemp(join(tmpdir(), "tokenhub-web-cache-"));
+    const store = new ResourceStore({ rootDir: join(dir, ".tokenhub", "resources") });
+    const cache = new MemoryCache<CachedWebPage>({ ttlMs: 60000 });
+    let calls = 0;
+    try {
+      const first = await fetchAndScrape({
+        url: "https://example.test/cache",
+        resourceStore: store,
+        cache,
+        urlLookup: async () => [{ address: "93.184.216.34", family: 4 }],
+        fetchImpl: async () => {
+          calls += 1;
+          return new Response("<title>Cached</title><p>Reusable page text.</p>", { status: 200 });
+        }
+      });
+      const second = await fetchAndScrape({
+        url: "https://example.test/cache",
+        resourceStore: store,
+        cache,
+        urlLookup: async () => [{ address: "93.184.216.34", family: 4 }],
+        fetchImpl: async () => {
+          calls += 1;
+          return new Response("<title>Cached</title><p>Should not be fetched.</p>", { status: 200 });
+        }
+      });
+
+      expect(calls).toBe(1);
+      expect(first.cacheStatus).toBe("miss");
+      expect(second.cacheStatus).toBe("hit");
+      expect(second.text).toContain("Reusable page text");
+      expect(second.resourceUri).toBe(first.resourceUri);
+    } finally {
+      await rm(dir, { recursive: true, force: true });
+    }
+  });
+});
+
+describe("browser pool", () => {
+  test("reuses browser instances and closes them after max uses", async () => {
+    let launches = 0;
+    let closes = 0;
+    const pool = new BrowserPool({
+      ttlMs: 60000,
+      maxUses: 2,
+      launch: async () => {
+        launches += 1;
+        return {
+          newPage: async () => ({ close: async () => undefined }),
+          close: async () => {
+            closes += 1;
+          }
+        };
+      }
+    });
+
+    const first = await pool.acquire();
+    await first.release();
+    const second = await pool.acquire();
+    await second.release();
+    const third = await pool.acquire();
+    await third.release();
+    await pool.close();
+
+    expect(launches).toBe(2);
+    expect(closes).toBe(2);
   });
 });

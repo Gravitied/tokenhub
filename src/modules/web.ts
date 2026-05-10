@@ -1,6 +1,8 @@
 import type { ResourceStore } from "../core/resources.js";
+import type { CacheStatus, MemoryCache } from "../core/cache.js";
 import { estimateTokens, truncateToTokens } from "../core/token.js";
 import { assertAllowedNetworkUrl, type UrlAddressLookup } from "../core/url-policy.js";
+import type { NetworkSecurityPolicy } from "../core/security-policy.js";
 import type { FetchLike } from "./github.js";
 
 export type CleanHtmlResult = {
@@ -16,6 +18,14 @@ export type FetchWebInput = {
   fetchImpl?: FetchLike;
   urlLookup?: UrlAddressLookup;
   timeoutMs?: number;
+  cache?: MemoryCache<CachedWebPage>;
+  networkPolicy?: NetworkSecurityPolicy;
+};
+
+export type CachedWebPage = {
+  title?: string;
+  text: string;
+  storedContent: string;
 };
 
 export function cleanHtmlToText(html: string): CleanHtmlResult {
@@ -43,38 +53,56 @@ export async function fetchAndScrape(input: FetchWebInput): Promise<{
   resourceUri: string;
   tokenEstimate: number;
   warnings: string[];
+  cacheStatus: CacheStatus;
 }> {
   const fetchImpl = input.fetchImpl ?? fetch;
+  await assertAllowedNetworkUrl(input.url, { lookupAddress: input.urlLookup, networkPolicy: input.networkPolicy });
+  const cacheKey = `${input.includeRaw ? "raw" : "clean"}:${input.url}`;
+  const cached = input.cache?.get(cacheKey);
+  const page = cached ?? (await fetchPage(fetchImpl, input));
+  if (!cached) {
+    input.cache?.set(cacheKey, page);
+  }
+  const link = await input.resourceStore.writeText({
+    kind: "html",
+    label: page.title ?? input.url,
+    source: input.url,
+    content: page.storedContent
+  });
+  const truncated = truncateToTokens(page.text, input.budgetTokens ?? 800);
+
+  return {
+    title: page.title,
+    text: truncated.text,
+    resourceUri: link.uri,
+    tokenEstimate: estimateTokens(truncated.text),
+    warnings: truncated.truncated ? ["Web content was truncated; read_resource can expand the artifact."] : [],
+    cacheStatus: cached ? "hit" : "miss"
+  };
+}
+
+async function fetchPage(fetchImpl: FetchLike, input: FetchWebInput): Promise<CachedWebPage> {
   const response = await fetchWithAllowedRedirects(
     fetchImpl,
     input.url,
     {
-    headers: {
-      "user-agent": "tokenhub-mcp/0.1 (+https://github.com/Gravitied/tokenhub)"
-    }
+      headers: {
+        "user-agent": "tokenhub-mcp/0.1 (+https://github.com/Gravitied/tokenhub)"
+      }
     },
     input.timeoutMs ?? 5000,
-    input.urlLookup
+    input.urlLookup,
+    input.networkPolicy
   );
   if (!response.ok) {
     throw new Error(`Fetch failed for ${input.url}: HTTP ${response.status}`);
   }
   const html = await response.text();
   const cleaned = cleanHtmlToText(html);
-  const link = await input.resourceStore.writeText({
-    kind: "html",
-    label: cleaned.title ?? input.url,
-    source: input.url,
-    content: input.includeRaw ? html : cleaned.text
-  });
-  const truncated = truncateToTokens(cleaned.text, input.budgetTokens ?? 800);
-
   return {
     title: cleaned.title,
-    text: truncated.text,
-    resourceUri: link.uri,
-    tokenEstimate: estimateTokens(truncated.text),
-    warnings: truncated.truncated ? ["Web content was truncated; read_resource can expand the artifact."] : []
+    text: cleaned.text,
+    storedContent: input.includeRaw ? html : cleaned.text
   };
 }
 
@@ -83,11 +111,12 @@ async function fetchWithAllowedRedirects(
   initialUrl: string,
   init: RequestInit,
   timeoutMs: number,
-  urlLookup?: UrlAddressLookup
+  urlLookup?: UrlAddressLookup,
+  networkPolicy?: NetworkSecurityPolicy
 ): Promise<Response> {
   let currentUrl = initialUrl;
   for (let redirectCount = 0; redirectCount <= 5; redirectCount++) {
-    const checkedUrl = await assertAllowedNetworkUrl(currentUrl, { lookupAddress: urlLookup });
+    const checkedUrl = await assertAllowedNetworkUrl(currentUrl, { lookupAddress: urlLookup, networkPolicy });
     const response = await fetchWithTimeout(fetchImpl, checkedUrl.toString(), { ...init, redirect: "manual" }, timeoutMs);
     if (![301, 302, 303, 307, 308].includes(response.status)) {
       return response;

@@ -22,6 +22,7 @@ export type AnswerFromWebResult = {
   query: string;
   target: AnswerTarget;
   summary: string;
+  claims: EvidenceClaim[];
   items: Array<{
     rank: number;
     name: string;
@@ -33,6 +34,11 @@ export type AnswerFromWebResult = {
   resources: ResourceLink[];
   tokenEstimate: number;
   warnings: string[];
+  metrics: {
+    elapsedMs: number;
+    sourcesFetched: number;
+    sourceFailures: number;
+  };
 };
 
 export type AnswerTarget = "ranked_list" | "summary";
@@ -43,7 +49,14 @@ type CandidateMention = {
   line: number;
 };
 
+export type EvidenceClaim = {
+  claim: string;
+  confidence: "low" | "medium" | "high";
+  evidence: Array<{ title: string; url: string; snippet: string; resourceUri?: string }>;
+};
+
 export async function answerFromWeb(input: AnswerFromWebInput): Promise<AnswerFromWebResult> {
+  const startedAt = Date.now();
   const target = input.target ?? "ranked_list";
   if (target !== "ranked_list" && target !== "summary") {
     throw new Error("answer_from_web supports target=ranked_list or target=summary.");
@@ -62,10 +75,8 @@ export async function answerFromWeb(input: AnswerFromWebInput): Promise<AnswerFr
 
   const warnings = [...search.warnings];
   const sourceRecords: Array<{ searchResult: SearchResult; title: string; url: string; resourceUri?: string; text: string }> = [];
-  for (const result of search.results) {
-    if (sourceRecords.length >= sourceLimit) {
-      break;
-    }
+  const candidateResults = search.results.slice(0, Math.max(sourceLimit, sourceLimit * 2));
+  const fetched = await mapWithConcurrency(candidateResults, Math.min(4, sourceLimit), async (result) => {
     try {
       const fetchUrl = normalizeContextUrl(result.url);
       const page = await fetchAndScrape({
@@ -75,15 +86,31 @@ export async function answerFromWeb(input: AnswerFromWebInput): Promise<AnswerFr
         fetchImpl: input.fetchImpl,
         urlLookup: input.urlLookup
       });
-      sourceRecords.push({
-        searchResult: result,
-        title: page.title || result.title,
-        url: result.url,
-        resourceUri: page.resourceUri,
-        text: page.text
-      });
+      return {
+        ok: true as const,
+        record: {
+          searchResult: result,
+          title: page.title || result.title,
+          url: result.url,
+          resourceUri: page.resourceUri,
+          text: page.text
+        }
+      };
     } catch (error) {
-      warnings.push(`Could not fetch ${result.url}: ${error instanceof Error ? error.message : String(error)}`);
+      return {
+        ok: false as const,
+        searchResult: result,
+        error: error instanceof Error ? error.message : String(error)
+      };
+    }
+  });
+  for (const item of fetched) {
+    if (item.ok) {
+      if (sourceRecords.length < sourceLimit) {
+        sourceRecords.push(item.record);
+      }
+    } else {
+      warnings.push(`Could not fetch ${item.searchResult.url}: ${item.error}`);
     }
   }
 
@@ -96,24 +123,72 @@ export async function answerFromWeb(input: AnswerFromWebInput): Promise<AnswerFr
     "\n\n"
   );
   const summary = truncateToTokens(summaryText, input.budgetTokens ?? 900).text;
+  const claims = buildEvidenceClaims(answer, sourceRecords);
   const resource = await input.resourceStore.writeText({
     kind: "json",
     label: `answer_from_web:${input.query}`,
     source: "answer_from_web",
-    content: JSON.stringify({ query: input.query, target, items: answer.items, contextSnippets: answer.contextSnippets, sources: sourceRecords }, null, 2)
+    content: JSON.stringify({ query: input.query, target, claims, items: answer.items, contextSnippets: answer.contextSnippets, sources: sourceRecords }, null, 2)
   });
 
   return {
     query: input.query,
     target,
     summary,
+    claims,
     items: answer.items,
     sources: sourceRecords.map((source) => ({ title: source.title, url: source.url, resourceUri: source.resourceUri })),
     contextSnippets: answer.contextSnippets,
     resources: [resource],
     tokenEstimate: estimateTokens(summary),
-    warnings
+    warnings,
+    metrics: {
+      elapsedMs: Date.now() - startedAt,
+      sourcesFetched: sourceRecords.length,
+      sourceFailures: fetched.filter((item) => !item.ok).length
+    }
   };
+}
+
+async function mapWithConcurrency<T, R>(items: T[], concurrency: number, worker: (item: T) => Promise<R>): Promise<R[]> {
+  const results: R[] = new Array(items.length);
+  let nextIndex = 0;
+  const workerCount = Math.max(1, Math.min(concurrency, items.length));
+  await Promise.all(
+    Array.from({ length: workerCount }, async () => {
+      while (nextIndex < items.length) {
+        const currentIndex = nextIndex;
+        nextIndex += 1;
+        results[currentIndex] = await worker(items[currentIndex]);
+      }
+    })
+  );
+  return results;
+}
+
+function buildEvidenceClaims(
+  answer: Pick<AnswerFromWebResult, "items" | "contextSnippets" | "summary">,
+  sourceRecords: Array<{ title: string; url: string; resourceUri?: string; text: string }>
+): EvidenceClaim[] {
+  if (answer.items.length > 0) {
+    return answer.items.slice(0, 5).map((item) => ({
+      claim: `${item.name} appears in the ranked answer with ${item.sources.length} supporting source${item.sources.length === 1 ? "" : "s"}.`,
+      confidence: item.sources.length >= 2 ? "high" : "medium",
+      evidence: item.sources.slice(0, 3).map((source) => ({
+        title: source.title,
+        url: source.url,
+        snippet: source.evidence,
+        resourceUri: sourceRecords.find((record) => record.url === source.url)?.resourceUri
+      }))
+    }));
+  }
+
+  const snippets = answer.contextSnippets.slice(0, 4);
+  return snippets.map((snippet) => ({
+    claim: summaryClause(snippet.snippet),
+    confidence: sourceRecords.length >= 2 ? "medium" : "low",
+    evidence: [snippet]
+  }));
 }
 
 function buildRankedListAnswer(

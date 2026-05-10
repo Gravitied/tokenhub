@@ -1,24 +1,18 @@
-import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
+import { McpServer, ResourceTemplate } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { z } from "zod";
 import { join, resolve } from "node:path";
 import { CapabilityRegistry } from "./core/registry.js";
 import { ResourceStore } from "./core/resources.js";
 import { TokenTelemetry } from "./core/telemetry.js";
 import { estimateTokens } from "./core/token.js";
-import { searchFiles } from "./modules/filesystem.js";
-import { fetchAndScrape } from "./modules/web.js";
-import { summarizeGit } from "./modules/git.js";
-import { runWorkflow as runWorkflowImpl } from "./workflows/index.js";
-import { summarizeGitHubRepo } from "./modules/github.js";
-import { searchWeb } from "./modules/search.js";
+import { listWorkflowNames, runWorkflow as runWorkflowImpl } from "./workflows/index.js";
 import type { SearchProvider } from "./modules/search.js";
-import { inspectPostgres, inspectSqlite } from "./modules/database.js";
-import { lookupNpmPackage } from "./modules/docs.js";
-import { fetchSentryIssues, summarizeSentryIssues } from "./modules/sentry.js";
-import { captureBrowserState } from "./modules/browser.js";
 import { createDiagnosticLogger, logLevelFromEnv, type DiagnosticLogger, type DiagnosticLogLevel } from "./core/logger.js";
 import { loadExtensionConfigSync } from "./extensions/config.js";
 import { ExtensionManager } from "./extensions/manager.js";
+import { createDefaultSourceRegistry } from "./sources/defaults.js";
+import type { RetrieveContextInput } from "./sources/registry.js";
+import { loadSecurityPolicy } from "./core/security-policy.js";
 
 const PUBLIC_TOOLS = [
   "discover_capabilities",
@@ -35,6 +29,7 @@ export type RuntimeOptions = {
   root: string;
   resourceDir?: string;
   extensionConfigPath?: string;
+  policyPath?: string;
   logLevel?: DiagnosticLogLevel;
   logger?: DiagnosticLogger;
 };
@@ -46,8 +41,10 @@ export function createTokenHubRuntime(options: RuntimeOptions) {
   });
   const telemetry = new TokenTelemetry({ roiThreshold: 3 });
   const registry = createDefaultRegistry();
+  const sourceRegistry = createDefaultSourceRegistry();
   const logger = options.logger ?? createDiagnosticLogger({ level: options.logLevel ?? logLevelFromEnv() });
   const extensionConfig = loadExtensionConfigSync({ root, configPath: options.extensionConfigPath });
+  const securityPolicy = loadSecurityPolicy({ root, policyPath: options.policyPath });
   const extensionManager = new ExtensionManager({ root, config: extensionConfig, resourceStore });
   extensionManager.registerCapabilities(registry);
   let requestCounter = 0;
@@ -57,6 +54,13 @@ export function createTokenHubRuntime(options: RuntimeOptions) {
     resourceStore,
     telemetry,
     publicToolNames: (): PublicToolName[] => [...PUBLIC_TOOLS],
+    sourceNames: () => sourceRegistry.names(),
+    workflowNames: () => listWorkflowNames(),
+    extensionPoolStats: () => extensionManager.poolStats(),
+    securityPolicySummary: () => securityPolicy.summary(),
+    close: async () => {
+      await Promise.all([extensionManager.close(), sourceRegistry.close()]);
+    },
     discoverCapabilities: (input: { query: string; limit?: number }) =>
       instrumentTool(logger, "discover_capabilities", nextRequestId, input, () =>
         registry.discover(input.query, { limit: input.limit })
@@ -76,6 +80,7 @@ export function createTokenHubRuntime(options: RuntimeOptions) {
       ref?: string;
       branch?: string;
       query?: string;
+      url?: string;
       request?: string;
       target?: "ranked_list" | "summary";
       depth?: "fast" | "standard" | "deep" | "exhaustive";
@@ -90,181 +95,30 @@ export function createTokenHubRuntime(options: RuntimeOptions) {
       toolName?: string;
       input?: unknown;
     }) =>
-      instrumentTool(logger, "run_workflow", nextRequestId, input, () =>
-        runWorkflowImpl({
-          ...input,
-          root,
-          resourceStore,
-          telemetry,
-          extensionManager
-        })
-      ),
-    retrieveContext: async (input: {
-      source:
-        | "files"
-        | "git"
-        | "web"
-        | "github"
-        | "search"
-        | "sqlite"
-        | "postgres"
-        | "docs"
-        | "sentry"
-        | "browser";
-      query?: string;
-      url?: string;
-      owner?: string;
-      repo?: string;
-      provider?: "brave" | "exa" | "tavily" | "serpapi" | "duckduckgo";
-      apiKey?: string;
-      packageName?: string;
-      databaseBase64?: string;
-      connectionString?: string;
-      organization?: string;
-      project?: string;
-      token?: string;
-      issues?: Array<Record<string, unknown>>;
-      budgetTokens?: number;
-      limit?: number;
-      includeRaw?: boolean;
-      returnMode?: "summary" | "compact";
-    }) => instrumentTool(logger, "retrieve_context", nextRequestId, input, async () => {
-      if (input.source === "git") {
-        return summarizeGit({ root, resourceStore, budgetTokens: input.budgetTokens });
-      }
-      if (input.source === "web") {
-        if (!input.url) {
-          throw new Error("retrieve_context source=web requires url.");
-        }
-        return fetchAndScrape({
-          url: input.url,
-          resourceStore,
-          budgetTokens: input.budgetTokens,
-          includeRaw: input.includeRaw
-        });
-      }
-      if (input.source === "github") {
-        if (!input.owner || !input.repo) {
-          throw new Error("retrieve_context source=github requires owner and repo.");
-        }
-        return summarizeGitHubRepo({
-          owner: input.owner,
-          repo: input.repo,
-          token: input.token,
-          limit: input.limit,
-          budgetTokens: input.budgetTokens
-        });
-      }
-      if (input.source === "search") {
-        if (!input.query) {
-          throw new Error("retrieve_context source=search requires query.");
-        }
-        const result = await searchWeb({
-          query: input.query,
-          provider: input.provider,
-          apiKey: input.apiKey,
-          limit: input.limit,
-          budgetTokens: input.budgetTokens
-        });
-        if (input.returnMode === "compact") {
-          return { r: result.results.map((item) => [item.title, item.url, item.provider, item.confidence]) };
-        }
-        return result;
-      }
-      if (input.source === "sqlite") {
-        if (!input.databaseBase64) {
-          throw new Error("retrieve_context source=sqlite requires databaseBase64.");
-        }
-        const result = await inspectSqlite({
-          databaseBytes: Buffer.from(input.databaseBase64, "base64"),
-          query: input.query,
-          limit: input.limit,
-          budgetTokens: input.budgetTokens
-        });
-        if (input.returnMode === "compact") {
-          return {
-            s: result.schema.map((table) => [table.table, table.columns]),
-            r: result.rows.map((row) => Object.values(row))
-          };
-        }
-        return result;
-      }
-      if (input.source === "postgres") {
-        if (!input.connectionString) {
-          throw new Error("retrieve_context source=postgres requires connectionString.");
-        }
-        return inspectPostgres({
-          connectionString: input.connectionString,
-          query: input.query,
-          limit: input.limit,
-          budgetTokens: input.budgetTokens
-        });
-      }
-      if (input.source === "docs") {
-        if (!input.packageName && !input.query) {
-          throw new Error("retrieve_context source=docs requires packageName or query.");
-        }
-        return lookupNpmPackage({ name: input.packageName ?? input.query ?? "", budgetTokens: input.budgetTokens });
-      }
-      if (input.source === "sentry") {
-        if (input.issues) {
-          const result = summarizeSentryIssues(input.issues, { budgetTokens: input.budgetTokens });
-          if (input.returnMode === "compact") {
-            return { c: result.clusters.map((cluster) => [cluster.culprit, cluster.issues, cluster.events, cluster.users]) };
+      instrumentTool(logger, "run_workflow", nextRequestId, input, async () =>
+        {
+          securityPolicy.assertWorkflow(input.name);
+          if (input.name === "extension_call") {
+            securityPolicy.assertExtension(input.extensionId);
           }
-          return result;
+          return runWorkflowImpl({
+            ...input,
+            root,
+            resourceStore,
+            telemetry,
+            extensionManager,
+            securityPolicy,
+            sourceNames: sourceRegistry.names(),
+            workflowNames: listWorkflowNames(),
+            extensionPoolStats: extensionManager.poolStats()
+          });
         }
-        if (!input.organization || !input.token) {
-          throw new Error("retrieve_context source=sentry requires issues or organization and token.");
-        }
-        return fetchSentryIssues({
-          organization: input.organization,
-          project: input.project,
-          token: input.token,
-          query: input.query,
-          budgetTokens: input.budgetTokens
-        });
-      }
-      if (input.source === "browser") {
-        if (!input.url) {
-          throw new Error("retrieve_context source=browser requires url.");
-        }
-        const result = await captureBrowserState({
-          url: input.url,
-          resourceStore,
-          includeScreenshot: input.includeRaw,
-          budgetTokens: input.budgetTokens
-        });
-        if (input.returnMode === "compact") {
-          return {
-            h: result.state.headings,
-            t: result.state.textSnippets,
-            l: result.state.links.map((link) => [link.text, link.href]),
-            e: [result.state.consoleErrors.length, result.state.failedRequests.length],
-            r: result.resources
-          };
-        }
-        return result;
-      }
-      const fileResult = await searchFiles({
-        root,
-        query: input.query,
-        limit: input.limit,
-        budgetTokens: input.budgetTokens,
-        resourceStore
-      });
-      if (input.returnMode === "compact") {
-        return {
-          m: fileResult.matches.map((match) => [
-            match.path,
-            match.line,
-            compactMatchingLine(match.snippet, input.query),
-            match.resourceUri
-          ])
-        };
-      }
-      return fileResult;
-    }),
+      ),
+    retrieveContext: async (input: RetrieveContextInput) =>
+      instrumentTool(logger, "retrieve_context", nextRequestId, input, async () => {
+        securityPolicy.assertSource(input.source);
+        return sourceRegistry.retrieve(input, { root, resourceStore, securityPolicy });
+      }),
     readResource: (input: {
       uri: string;
       mode?: "snippet" | "range" | "full";
@@ -410,6 +264,50 @@ export function createMcpServer(options: RuntimeOptions): McpServer {
     version: "0.1.0"
   });
 
+  server.registerResource(
+    "tokenhub-artifacts",
+    new ResourceTemplate("tokenhub://resource/{id}", {
+      list: async () => ({
+        resources: (await runtime.resourceStore.list()).map((resource) => ({
+          uri: resource.uri,
+          name: resource.label,
+          title: resource.label,
+          description: resource.source ?? `TokenHub ${resource.kind} resource`,
+          mimeType: mimeTypeForResource(resource.kind),
+          size: resource.bytes
+        }))
+      })
+    }),
+    {
+      title: "TokenHub artifacts",
+      description: "Generated TokenHub resources such as logs, scraped pages, screenshots, and captured state.",
+      mimeType: "text/plain"
+    },
+    async (uri) => {
+      const resource = await runtime.resourceStore.read(uri.toString(), { mode: "full" });
+      if (resource.kind === "screenshot") {
+        return {
+          contents: [
+            {
+              uri: resource.uri,
+              mimeType: "image/png",
+              blob: resource.content.replace(/^data:image\/png;base64,/, "")
+            }
+          ]
+        };
+      }
+      return {
+        contents: [
+          {
+            uri: resource.uri,
+            mimeType: mimeTypeForResource(resource.kind),
+            text: resource.content
+          }
+        ]
+      };
+    }
+  );
+
   server.registerTool(
     "discover_capabilities",
     {
@@ -443,6 +341,7 @@ export function createMcpServer(options: RuntimeOptions): McpServer {
         ref: z.string().optional(),
         branch: z.string().optional(),
         query: z.string().optional(),
+        url: z.string().url().optional(),
         request: z.string().optional(),
         target: z.enum(["ranked_list", "summary"]).optional(),
         depth: z.enum(["fast", "standard", "deep", "exhaustive"]).optional(),
@@ -483,9 +382,9 @@ export function createMcpServer(options: RuntimeOptions): McpServer {
         issues: z.array(z.record(z.string(), z.unknown())).optional(),
         budgetTokens: z.number().int().positive().optional(),
         limit: z.number().int().positive().max(50).optional(),
-        includeRaw: z.boolean().optional()
-        ,
-        returnMode: z.enum(["summary", "compact"]).optional()
+        includeRaw: z.boolean().optional(),
+        returnMode: z.enum(["summary", "compact"]).optional(),
+        responseProfile: z.enum(["minimal", "standard", "detailed", "audit"]).optional()
       }
     },
     async (input) => asToolResult(await runtime.retrieveContext(input))
@@ -535,6 +434,19 @@ export function createMcpServer(options: RuntimeOptions): McpServer {
   );
 
   return server;
+}
+
+function mimeTypeForResource(kind: "text" | "log" | "screenshot" | "json" | "html"): string {
+  if (kind === "json") {
+    return "application/json";
+  }
+  if (kind === "html") {
+    return "text/html";
+  }
+  if (kind === "screenshot") {
+    return "image/png";
+  }
+  return "text/plain";
 }
 
 function createDefaultRegistry(): CapabilityRegistry {
@@ -594,6 +506,15 @@ function createDefaultRegistry(): CapabilityRegistry {
     inputSchema: { deferred: true }
   });
   registry.register({
+    id: "workflow.browser_scenario",
+    module: "browser",
+    title: "Run browser scenario",
+    summary: "Run a bounded Playwright step scenario with assertions, screenshots, and a compact trace resource.",
+    keywords: ["browser", "playwright", "scenario", "click", "fill", "assert", "screenshot"],
+    costHintTokens: 210,
+    inputSchema: { deferred: true }
+  });
+  registry.register({
     id: "web.search",
     module: "search",
     title: "Search web providers",
@@ -619,6 +540,15 @@ function createDefaultRegistry(): CapabilityRegistry {
       "Infer intent, sources, depth, evidence, and output shape from a natural-language request, then gather compact context or answer from the right internal modules.",
     keywords: ["dynamic", "resolve", "request", "router", "auto", "intent", "research", "compare", "implement"],
     costHintTokens: 260,
+    inputSchema: { deferred: true }
+  });
+  registry.register({
+    id: "workflow.diagnostics_pack",
+    module: "diagnostics",
+    title: "Create diagnostics pack",
+    summary: "Capture a redacted JSON diagnostics artifact with runtime, workspace, git, policy, source, workflow, and extension status.",
+    keywords: ["diagnostics", "debug", "support", "logs", "environment", "policy"],
+    costHintTokens: 180,
     inputSchema: { deferred: true }
   });
   registry.register({
@@ -661,7 +591,10 @@ function createDefaultRegistry(): CapabilityRegistry {
 }
 
 function asToolResult(value: unknown) {
+  const structuredContent =
+    value && typeof value === "object" && !Array.isArray(value) ? (value as Record<string, unknown>) : { value };
   return {
+    structuredContent,
     content: [
       {
         type: "text" as const,

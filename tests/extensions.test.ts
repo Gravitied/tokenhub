@@ -1,9 +1,10 @@
 import { describe, expect, test } from "vitest";
-import { mkdir, mkdtemp, rm, writeFile } from "node:fs/promises";
+import { mkdir, mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { pathToFileURL } from "node:url";
 import { loadExtensionConfig } from "../src/extensions/config.js";
+import { lintExtensionManifest, testExtensionManifest } from "../src/extensions/doctor.js";
 import { createTokenHubRuntime } from "../src/server.js";
 
 function mcpFixtureServer(): string {
@@ -31,6 +32,43 @@ server.registerTool(
   },
   async ({ query }) => ({
     content: [{ type: "text", text: \`fixture lookup: \${query}\` }]
+  })
+);
+
+await server.connect(new StdioServerTransport());
+`;
+}
+
+function pooledMcpFixtureServer(): string {
+  const mcpModule = pathToFileURL(
+    join(process.cwd(), "node_modules", "@modelcontextprotocol", "sdk", "dist", "esm", "server", "mcp.js")
+  ).href;
+  const stdioModule = pathToFileURL(
+    join(process.cwd(), "node_modules", "@modelcontextprotocol", "sdk", "dist", "esm", "server", "stdio.js")
+  ).href;
+  const zodModule = pathToFileURL(join(process.cwd(), "node_modules", "zod", "index.js")).href;
+
+  return `
+import { appendFileSync } from "node:fs";
+import { McpServer } from ${JSON.stringify(mcpModule)};
+import { StdioServerTransport } from ${JSON.stringify(stdioModule)};
+import { z } from ${JSON.stringify(zodModule)};
+
+if (process.env.STARTUP_LOG) {
+  appendFileSync(process.env.STARTUP_LOG, "started\\n", "utf8");
+}
+
+const server = new McpServer({ name: "pooled-fixture-mcp", version: "1.0.0" });
+
+server.registerTool(
+  "lookup",
+  {
+    title: "Lookup",
+    description: "Lookup fixture values.",
+    inputSchema: { query: z.string() }
+  },
+  async ({ query }) => ({
+    content: [{ type: "text", text: \`pooled lookup: \${query}\` }]
   })
 );
 
@@ -89,6 +127,85 @@ describe("extension config", () => {
         extensions: [],
         warnings: []
       });
+    } finally {
+      await rm(dir, { recursive: true, force: true });
+    }
+  });
+});
+
+describe("extension doctor", () => {
+  test("lints manifests and checks local command script paths", async () => {
+    const dir = await mkdtemp(join(tmpdir(), "tokenhub-extension-lint-"));
+    try {
+      await mkdir(join(dir, "tools"), { recursive: true });
+      await writeFile(join(dir, "tools", "echo.mjs"), "console.log('ok');", "utf8");
+      await writeFile(
+        join(dir, "tokenhub.extensions.json"),
+        JSON.stringify({
+          version: 1,
+          extensions: [
+            {
+              id: "local-echo",
+              type: "command",
+              title: "Local Echo",
+              command: process.execPath,
+              args: ["tools/echo.mjs"]
+            }
+          ]
+        }),
+        "utf8"
+      );
+
+      const result = await lintExtensionManifest({ root: dir });
+
+      expect(result.ok).toBe(true);
+      expect(result.checks).toEqual([
+        expect.objectContaining({ level: "info", extensionId: "local-echo", message: expect.stringContaining("command") })
+      ]);
+    } finally {
+      await rm(dir, { recursive: true, force: true });
+    }
+  });
+
+  test("tests command extensions through the same adapter path as runtime calls", async () => {
+    const dir = await mkdtemp(join(tmpdir(), "tokenhub-extension-test-"));
+    try {
+      await mkdir(join(dir, "tools"), { recursive: true });
+      await writeFile(
+        join(dir, "tools", "echo.mjs"),
+        [
+          "let body = '';",
+          "process.stdin.on('data', chunk => body += chunk);",
+          "process.stdin.on('end', () => {",
+          "  const input = JSON.parse(body || '{}');",
+          "  console.log(JSON.stringify({ ok: true, message: input.message }));",
+          "});"
+        ].join("\n"),
+        "utf8"
+      );
+      await writeFile(
+        join(dir, "tokenhub.extensions.json"),
+        JSON.stringify({
+          version: 1,
+          extensions: [
+            {
+              id: "local-echo",
+              type: "command",
+              title: "Local Echo",
+              command: process.execPath,
+              args: ["tools/echo.mjs"]
+            }
+          ]
+        }),
+        "utf8"
+      );
+
+      const result = await testExtensionManifest({ root: dir, extensionId: "local-echo", toolName: "run", input: { message: "doctor" } });
+
+      expect(result.ok).toBe(true);
+      expect(result.results).toEqual([
+        expect.objectContaining({ extensionId: "local-echo", toolName: "run", ok: true, summary: expect.stringContaining("doctor") })
+      ]);
     } finally {
       await rm(dir, { recursive: true, force: true });
     }
@@ -273,6 +390,64 @@ describe("extension runtime", () => {
       expect(result.summary).toContain("fixture lookup: alpha");
       expect(result.resources[0].uri).toMatch(/^tokenhub:\/\/resource\//);
     } finally {
+      await rm(dir, { recursive: true, force: true });
+    }
+  });
+
+  test("reuses pooled MCP extension clients until runtime shutdown", async () => {
+    const dir = await mkdtemp(join(tmpdir(), "tokenhub-pooled-mcp-extension-"));
+    const startupLog = join(dir, "startup.log");
+    let runtime: ReturnType<typeof createTokenHubRuntime> | undefined;
+    const previousStartupLog = process.env.STARTUP_LOG;
+    process.env.STARTUP_LOG = startupLog;
+    try {
+      await mkdir(join(dir, "tools"), { recursive: true });
+      await writeFile(join(dir, "tools", "pooled-mcp.mjs"), pooledMcpFixtureServer(), "utf8");
+      await writeFile(
+        join(dir, "tokenhub.extensions.json"),
+        JSON.stringify({
+          version: 1,
+          extensions: [
+            {
+              id: "pooled-fixture",
+              type: "mcp",
+              title: "Pooled Fixture MCP",
+              command: process.execPath,
+              args: ["tools/pooled-mcp.mjs"],
+              env: ["STARTUP_LOG"],
+              tools: ["lookup"],
+              pool: { enabled: true, ttlMs: 30000, maxUses: 5 }
+            }
+          ]
+        }),
+        "utf8"
+      );
+
+      runtime = createTokenHubRuntime({ root: dir });
+      const first = await runtime.runWorkflow({
+        name: "extension_call",
+        extensionId: "pooled-fixture",
+        toolName: "lookup",
+        input: { query: "alpha" }
+      });
+      const second = await runtime.runWorkflow({
+        name: "extension_call",
+        extensionId: "pooled-fixture",
+        toolName: "lookup",
+        input: { query: "beta" }
+      });
+
+      expect(first.summary).toContain("pooled lookup: alpha");
+      expect(second.summary).toContain("pooled lookup: beta");
+      expect(await readFile(startupLog, "utf8")).toBe("started\n");
+      expect(runtime.extensionPoolStats()).toEqual([{ extensionId: "pooled-fixture", uses: 2, active: true }]);
+    } finally {
+      await runtime?.close();
+      if (previousStartupLog === undefined) {
+        delete process.env.STARTUP_LOG;
+      } else {
+        process.env.STARTUP_LOG = previousStartupLog;
+      }
       await rm(dir, { recursive: true, force: true });
     }
   });

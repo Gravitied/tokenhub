@@ -9,14 +9,34 @@ import { searchFiles } from "../modules/filesystem.js";
 import { applyFilesystemAction } from "../modules/filesystem.js";
 import { runGitAction, summarizeGit } from "../modules/git.js";
 import { answerFromWeb } from "../modules/answer-web.js";
+import { runBrowserScenario, type BrowserScenarioStep } from "../modules/browser-scenario.js";
 import type { SearchProvider } from "../modules/search.js";
 import type { FetchLike } from "../modules/github.js";
 import { runResolveRequestWorkflow } from "./resolve-request.js";
 import type { EvidenceMode, ExecutionMode, OutputShape, RequestDepth } from "../core/request-shape.js";
 import type { UrlAddressLookup } from "../core/url-policy.js";
 import type { ExtensionManager } from "../extensions/manager.js";
+import type { SecurityPolicy } from "../core/security-policy.js";
+import { createDiagnosticsPack } from "../core/diagnostics-pack.js";
+import { WorkflowRegistry } from "./registry.js";
 
 const execFileAsync = promisify(execFile);
+
+export const WORKFLOW_NAMES = [
+  "validate",
+  "filesystem_action",
+  "git_action",
+  "answer_from_web",
+  "resolve_request",
+  "extension_call",
+  "project_scan",
+  "browser_scenario",
+  "diagnostics_pack"
+] as const;
+
+export function listWorkflowNames(): string[] {
+  return [...WORKFLOW_NAMES];
+}
 
 export type WorkflowInput = {
   name: string;
@@ -34,6 +54,7 @@ export type WorkflowInput = {
   ref?: string;
   branch?: string;
   query?: string;
+  url?: string;
   request?: string;
   target?: "ranked_list" | "summary";
   depth?: RequestDepth;
@@ -48,6 +69,10 @@ export type WorkflowInput = {
   toolName?: string;
   input?: unknown;
   extensionManager?: ExtensionManager;
+  securityPolicy?: SecurityPolicy;
+  sourceNames?: string[];
+  workflowNames?: string[];
+  extensionPoolStats?: Array<Record<string, unknown>>;
   fetchImpl?: FetchLike;
   urlLookup?: UrlAddressLookup;
   resourceStore: ResourceStore;
@@ -61,42 +86,39 @@ export async function runWorkflow(input: WorkflowInput): Promise<{
   warnings: string[];
   data?: unknown;
 }> {
-  if (input.name === "validate") {
-    return runValidation(input);
-  }
-  if (input.name === "filesystem_action") {
-    return runFilesystemActionWorkflow(input);
-  }
-  if (input.name === "git_action") {
-    return runGitActionWorkflow(input);
-  }
-  if (input.name === "answer_from_web") {
-    return runAnswerFromWebWorkflow(input);
-  }
-  if (input.name === "resolve_request") {
-    return runResolveRequestWorkflow({
-      root: input.root,
-      request: requireRequest(input.request),
-      budgetTokens: input.budgetTokens,
-      provider: input.provider,
-      apiKey: input.apiKey,
-      resourceStore: input.resourceStore,
-      telemetry: input.telemetry,
-      fetchImpl: input.fetchImpl,
-      depth: input.depth,
-      outputShape: input.outputShape,
-      evidence: input.evidence,
-      execution: input.execution,
-      urlLookup: input.urlLookup
-    });
-  }
-  if (input.name === "extension_call") {
-    return runExtensionCall(input);
-  }
-  if (input.name === "project_scan") {
-    return runProjectScan(input);
-  }
-  throw new Error(`Unknown workflow: ${input.name}`);
+  return createDefaultWorkflowRegistry().run(input.name, input);
+}
+
+function createDefaultWorkflowRegistry(): WorkflowRegistry<WorkflowInput, Awaited<ReturnType<typeof runValidation>>> {
+  const registry = new WorkflowRegistry<WorkflowInput, Awaited<ReturnType<typeof runValidation>>>();
+  registry.register({ name: "validate", run: runValidation });
+  registry.register({ name: "filesystem_action", run: runFilesystemActionWorkflow });
+  registry.register({ name: "git_action", run: runGitActionWorkflow });
+  registry.register({ name: "answer_from_web", run: runAnswerFromWebWorkflow });
+  registry.register({
+    name: "resolve_request",
+    run: (input) =>
+      runResolveRequestWorkflow({
+        root: input.root,
+        request: requireRequest(input.request),
+        budgetTokens: input.budgetTokens,
+        provider: input.provider,
+        apiKey: input.apiKey,
+        resourceStore: input.resourceStore,
+        telemetry: input.telemetry,
+        fetchImpl: input.fetchImpl,
+        depth: input.depth,
+        outputShape: input.outputShape,
+        evidence: input.evidence,
+        execution: input.execution,
+        urlLookup: input.urlLookup
+      })
+  });
+  registry.register({ name: "extension_call", run: runExtensionCall });
+  registry.register({ name: "project_scan", run: runProjectScan });
+  registry.register({ name: "browser_scenario", run: runBrowserScenarioWorkflow });
+  registry.register({ name: "diagnostics_pack", run: runDiagnosticsPackWorkflow });
+  return registry;
 }
 
 function requireRequest(request: string | undefined): string {
@@ -296,6 +318,91 @@ async function runExtensionCall(input: WorkflowInput) {
     warnings: result.warnings,
     data: result.data
   };
+}
+
+async function runBrowserScenarioWorkflow(input: WorkflowInput) {
+  if (!input.url) {
+    throw new Error("browser_scenario requires url.");
+  }
+  const result = await runBrowserScenario({
+    url: input.url,
+    steps: parseBrowserScenarioSteps(input.input),
+    resourceStore: input.resourceStore,
+    budgetTokens: input.budgetTokens,
+    urlLookup: input.urlLookup,
+    networkPolicy: input.securityPolicy?.networkPolicy()
+  });
+  const telemetry = input.telemetry.record({
+    capability: "workflow.browser_scenario",
+    estimatedToolCostTokens: result.tokenEstimate,
+    estimatedSavedTokens: Math.max(450, result.steps.length * 120 + result.resources.length * 250),
+    outputTokens: result.tokenEstimate
+  });
+  return {
+    summary: result.summary,
+    resources: result.resources,
+    telemetry,
+    warnings: result.warnings,
+    data: { passed: result.passed, steps: result.steps }
+  };
+}
+
+async function runDiagnosticsPackWorkflow(input: WorkflowInput) {
+  const result = await createDiagnosticsPack({
+    root: input.root,
+    resourceStore: input.resourceStore,
+    sourceNames: input.sourceNames ?? [],
+    workflowNames: input.workflowNames ?? [],
+    extensionPoolStats: input.extensionPoolStats ?? [],
+    policySummary: input.securityPolicy?.summary()
+  });
+  const telemetry = input.telemetry.record({
+    capability: "workflow.diagnostics_pack",
+    estimatedToolCostTokens: estimateTokens(result.summary),
+    estimatedSavedTokens: 800,
+    outputTokens: estimateTokens(result.summary)
+  });
+  return {
+    summary: result.summary,
+    resources: result.resources,
+    telemetry,
+    warnings: [],
+    data: result.pack
+  };
+}
+
+function parseBrowserScenarioSteps(value: unknown): BrowserScenarioStep[] {
+  const candidate = Array.isArray(value) ? value : value && typeof value === "object" ? (value as { steps?: unknown }).steps : undefined;
+  if (!Array.isArray(candidate)) {
+    throw new Error("browser_scenario input must be an array of steps or an object with steps.");
+  }
+  return candidate.map(parseBrowserScenarioStep);
+}
+
+function parseBrowserScenarioStep(value: unknown): BrowserScenarioStep {
+  if (!value || typeof value !== "object") {
+    throw new Error("browser_scenario steps must be objects.");
+  }
+  const step = value as Record<string, unknown>;
+  if (step.action === "click" && typeof step.selector === "string") {
+    return { action: "click", selector: step.selector };
+  }
+  if (step.action === "fill" && typeof step.selector === "string" && typeof step.value === "string") {
+    return { action: "fill", selector: step.selector, value: step.value };
+  }
+  if (step.action === "press" && typeof step.selector === "string" && typeof step.key === "string") {
+    return { action: "press", selector: step.selector, key: step.key };
+  }
+  if (step.action === "waitForText" && typeof step.text === "string") {
+    return { action: "waitForText", text: step.text, timeoutMs: typeof step.timeoutMs === "number" ? step.timeoutMs : undefined };
+  }
+  if (step.action === "expectText" && typeof step.text === "string") {
+    return { action: "expectText", text: step.text };
+  }
+  if (step.action === "screenshot") {
+    return { action: "screenshot", label: typeof step.label === "string" ? step.label : undefined };
+  }
+  throw new Error(`Unsupported browser_scenario step: ${String(step.action)}`);
 }
 
 function parseValidationCommand(input: WorkflowInput): { executable: string; args: string[]; display: string } {

@@ -1,5 +1,6 @@
 import { lookup } from "node:dns/promises";
 import { isIP } from "node:net";
+import type { NetworkSecurityPolicy } from "./security-policy.js";
 
 export type UrlAddress = {
   address: string;
@@ -8,7 +9,10 @@ export type UrlAddress = {
 
 export type UrlAddressLookup = (hostname: string) => Promise<UrlAddress[]>;
 
-export async function assertAllowedNetworkUrl(inputUrl: string | URL, options: { lookupAddress?: UrlAddressLookup } = {}): Promise<URL> {
+export async function assertAllowedNetworkUrl(
+  inputUrl: string | URL,
+  options: { lookupAddress?: UrlAddressLookup; networkPolicy?: NetworkSecurityPolicy } = {}
+): Promise<URL> {
   const url = inputUrl instanceof URL ? inputUrl : new URL(inputUrl);
   if (url.protocol !== "http:" && url.protocol !== "https:") {
     throw new Error(`URL is not allowed: only http and https are supported.`);
@@ -19,7 +23,9 @@ export async function assertAllowedNetworkUrl(inputUrl: string | URL, options: {
     throw new Error("URL is not allowed: missing hostname.");
   }
 
-  if (process.env.TOKENHUB_ALLOW_PRIVATE_NETWORK === "true") {
+  assertHostPolicy(hostname, options.networkPolicy);
+
+  if (options.networkPolicy?.allowPrivateNetwork === true || process.env.TOKENHUB_ALLOW_PRIVATE_NETWORK === "true") {
     return url;
   }
 
@@ -49,6 +55,32 @@ export async function assertAllowedNetworkUrl(inputUrl: string | URL, options: {
   }
 
   return url;
+}
+
+function assertHostPolicy(hostname: string, policy: NetworkSecurityPolicy | undefined): void {
+  if (!policy) {
+    return;
+  }
+  if (matchesHostPolicy(hostname, policy.blockedHosts)) {
+    throw new Error(`URL is not allowed: ${hostname} is blocked by security policy.`);
+  }
+  if (policy.allowedHosts.length > 0 && !matchesHostPolicy(hostname, policy.allowedHosts)) {
+    throw new Error(`URL is not allowed: ${hostname} is not in security policy allowedHosts.`);
+  }
+}
+
+function matchesHostPolicy(hostname: string, patterns: string[]): boolean {
+  return patterns.some((pattern) => {
+    const normalized = normalizeHostname(pattern);
+    if (normalized === "*") {
+      return true;
+    }
+    if (normalized.startsWith("*.")) {
+      const suffix = normalized.slice(1);
+      return hostname.endsWith(suffix);
+    }
+    return hostname === normalized;
+  });
 }
 
 async function defaultLookupAddress(hostname: string): Promise<UrlAddress[]> {

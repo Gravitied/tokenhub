@@ -28,6 +28,43 @@ describe("parseCliArgs", () => {
     });
   });
 
+  test("parses extension lint and test subcommands", () => {
+    expect(parseCliArgs(["extensions", "lint", "--root", "C:\\work", "--extensions", "manifest.json"], packageVersion)).toEqual({
+      kind: "extensions-lint",
+      root: "C:\\work",
+      extensionsPath: "manifest.json"
+    });
+    expect(
+      parseCliArgs(
+        ["extensions", "test", "--root", "C:\\work", "--extension", "local-echo", "--tool", "run", "--input-json", "{\"ok\":true}"],
+        packageVersion
+      )
+    ).toEqual({
+      kind: "extensions-test",
+      root: "C:\\work",
+      extensionId: "local-echo",
+      toolName: "run",
+      input: { ok: true }
+    });
+  });
+
+  test("parses MCP Registry search and install subcommands", () => {
+    expect(parseCliArgs(["registry", "search", "filesystem", "--limit", "3"], packageVersion)).toEqual({
+      kind: "registry-search",
+      query: "filesystem",
+      limit: 3
+    });
+    expect(
+      parseCliArgs(["registry", "install", "filesystem", "--root", "C:\\work", "--id", "filesystem", "--tools", "read,write"], packageVersion)
+    ).toEqual({
+      kind: "registry-install",
+      query: "filesystem",
+      root: "C:\\work",
+      extensionId: "filesystem",
+      tools: ["read", "write"]
+    });
+  });
+
   test("returns a structured error when --root is missing its path", () => {
     expect(parseCliArgs(["--root"], packageVersion)).toEqual({ kind: "error", code: "missing-root" });
   });
@@ -48,6 +85,8 @@ describe("parseCliArgs", () => {
     if (result.kind === "help") {
       expect(result.text).toContain("npx tokenhub-mcp --root");
       expect(result.text).toContain("--extensions <path>");
+      expect(result.text).toContain("tokenhub-mcp extensions lint");
+      expect(result.text).toContain("tokenhub-mcp registry install");
     }
   });
 

@@ -91,6 +91,59 @@ describe("answer from web", () => {
       expect(result.sources).toHaveLength(3);
       expect(result.sources.every((source) => source.resourceUri?.startsWith("tokenhub://resource/"))).toBe(true);
       expect(result.contextSnippets.length).toBeGreaterThanOrEqual(3);
+      expect(result.claims.length).toBeGreaterThan(0);
+      expect(result.claims.every((claim) => claim.evidence.length > 0)).toBe(true);
+      expect(result.claims[0].evidence[0].resourceUri).toMatch(/^tokenhub:\/\/resource\//);
+    } finally {
+      await rm(dir, { recursive: true, force: true });
+    }
+  });
+
+  test("fetches source pages with bounded parallelism and reports retrieval metrics", async () => {
+    const dir = await mkdtemp(join(tmpdir(), "tokenhub-answer-parallel-"));
+    const resourceStore = new ResourceStore({ rootDir: join(dir, ".tokenhub", "resources") });
+    const started = Date.now();
+    let activePageFetches = 0;
+    let maxActivePageFetches = 0;
+    try {
+      const result = await answerFromWeb({
+        query: "parallel retrieval",
+        target: "summary",
+        sourceLimit: 3,
+        provider: "tavily",
+        apiKey: "test-key",
+        resourceStore,
+        urlLookup: testUrlLookup,
+        fetchImpl: async (url) => {
+          const urlText = url.toString();
+          if (urlText.includes("api.tavily.com")) {
+            return new Response(
+              JSON.stringify({
+                results: [
+                  { title: "A", url: "https://parallel.test/a", content: "A" },
+                  { title: "B", url: "https://parallel.test/b", content: "B" },
+                  { title: "C", url: "https://parallel.test/c", content: "C" }
+                ]
+              }),
+              { status: 200 }
+            );
+          }
+          activePageFetches += 1;
+          maxActivePageFetches = Math.max(maxActivePageFetches, activePageFetches);
+          await delay(120);
+          activePageFetches -= 1;
+          return new Response(`<!doctype html><title>${urlText}</title><p>${urlText} supports parallel retrieval evidence.</p>`, {
+            status: 200
+          });
+        }
+      });
+
+      expect(Date.now() - started).toBeLessThan(500);
+      expect(maxActivePageFetches).toBeGreaterThan(1);
+      expect(result.sources).toHaveLength(3);
+      expect(result.metrics.sourcesFetched).toBe(3);
+      expect(result.metrics.sourceFailures).toBe(0);
+      expect(result.metrics.elapsedMs).toBeGreaterThanOrEqual(0);
     } finally {
       await rm(dir, { recursive: true, force: true });
     }
@@ -244,4 +297,8 @@ function deepSeekPaperHtml(url: string): string {
       "The DeepSeek technical series connects V3 mixture-of-experts training with R1 reasoning models. It highlights efficient training, reinforcement learning for reasoning, and open research directions."
   };
   return `<!doctype html><html><head><title>${url}</title></head><body><article><p>${pages[url]}</p></article></body></html>`;
+}
+
+function delay(ms: number): Promise<void> {
+  return new Promise((resolve) => setTimeout(resolve, ms));
 }

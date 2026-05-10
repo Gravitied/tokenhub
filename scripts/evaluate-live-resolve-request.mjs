@@ -4,7 +4,7 @@ import { join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { createTokenHubRuntime } from "../dist/server.js";
 import { estimateTokens } from "../dist/core/token.js";
-import { scoreSourceQuality } from "../dist/bench/source-quality.js";
+import { scoreSourceQuality } from "../dist-bench/bench/source-quality.js";
 
 const workspace = resolve(fileURLToPath(new URL("..", import.meta.url)));
 const artifactsDir = join(workspace, "artifacts", "evals");

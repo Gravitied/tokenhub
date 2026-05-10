@@ -3,6 +3,7 @@ import { dirname, isAbsolute, relative, resolve, sep } from "node:path";
 import type { ResourceStore } from "../core/resources.js";
 import { estimateTokens, truncateToTokens } from "../core/token.js";
 import { resolveWorkspacePath } from "../core/workspace-path.js";
+import { searchWorkspaceIndex, type WorkspaceCommandRunner } from "../core/workspace-index.js";
 
 const IGNORED_DIRS = new Set([".git", "node_modules", "dist", "artifacts", ".tokenhub"]);
 
@@ -12,6 +13,8 @@ export type FileSearchInput = {
   limit?: number;
   budgetTokens?: number;
   resourceStore: ResourceStore;
+  preferRg?: boolean;
+  runner?: WorkspaceCommandRunner;
 };
 
 export type FileSearchMatch = {
@@ -77,41 +80,37 @@ export async function searchFiles(input: FileSearchInput): Promise<{
   matches: FileSearchMatch[];
   tokenEstimate: number;
   warnings: string[];
+  backend: "rg" | "walk";
+  indexedFiles: number;
 }> {
   const root = workspacePathOrThrow(input.root, ".");
-  const query = input.query?.toLowerCase().trim() ?? "";
-  const files = await walk(root);
+  const search = await searchWorkspaceIndex({
+    root,
+    query: input.query,
+    limit: input.limit,
+    preferRg: input.preferRg,
+    runner: input.runner
+  });
   const matches: FileSearchMatch[] = [];
-  const warnings: string[] = [];
+  const warnings: string[] = [...search.warnings];
 
-  for (const file of files) {
-    if (matches.length >= (input.limit ?? 10)) {
-      break;
-    }
-
-    const content = await readFile(file, "utf8").catch(() => undefined);
+  for (const match of search.matches) {
+    const content = await readFile(match.absolutePath, "utf8").catch(() => undefined);
     if (content === undefined) {
       continue;
     }
-    const lower = content.toLowerCase();
-    const index = query ? lower.indexOf(query) : 0;
-    if (index === -1) {
-      continue;
-    }
-
-    const line = content.slice(0, index).split(/\r?\n/).length;
-    const snippet = buildSnippet(content, line, input.budgetTokens ?? 200, query);
+    const snippet = buildSnippet(content, match.line, input.budgetTokens ?? 200, input.query?.toLowerCase().trim() ?? "");
     const redactedContent = redactSecrets(content);
     const link = await input.resourceStore.writeText({
       kind: "text",
-      label: `file:${relative(root, file)}`,
-      source: file,
+      label: `file:${match.path}`,
+      source: match.absolutePath,
       content: redactedContent
     });
     matches.push({
-      path: relative(root, file).split(sep).join("/"),
+      path: match.path,
       snippet,
-      line,
+      line: match.line,
       resourceUri: link.uri
     });
   }
@@ -121,7 +120,7 @@ export async function searchFiles(input: FileSearchInput): Promise<{
     warnings.push("File search result exceeded budget; snippets were truncated and full files are available as resources.");
   }
 
-  return { matches, tokenEstimate, warnings };
+  return { matches, tokenEstimate, warnings, backend: search.backend, indexedFiles: search.indexedFiles };
 }
 
 async function walk(dir: string): Promise<string[]> {

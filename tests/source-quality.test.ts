@@ -36,4 +36,35 @@ describe("source quality scoring", () => {
     expect(result.score).toBeLessThan(70);
     expect(result.checks.some((check) => check.reason.includes("synthetic"))).toBe(true);
   });
+
+  test("scores claim faithfulness and reports unsupported claims", () => {
+    const result = scoreSourceQuality({
+      request: "Compare Vitest and Jest for TypeScript projects",
+      expectedKeywords: ["Vitest", "Jest", "TypeScript"],
+      sources: [
+        { title: "Vitest Guide", url: "https://vitest.dev/guide/", resourceUri: "tokenhub://resource/a" },
+        { title: "Jest Docs", url: "https://jestjs.io/docs/getting-started", resourceUri: "tokenhub://resource/b" }
+      ],
+      contextSnippets: [
+        { title: "Vitest Guide", url: "https://vitest.dev/guide/", snippet: "Vitest supports TypeScript projects and modern ESM workflows." },
+        { title: "Jest Docs", url: "https://jestjs.io/docs/getting-started", snippet: "Jest provides testing APIs for JavaScript and TypeScript." }
+      ],
+      summary: "Vitest and Jest both support TypeScript testing. Unsupported claim is present.",
+      claims: [
+        {
+          claim: "Vitest supports TypeScript projects.",
+          evidence: [{ snippet: "Vitest supports TypeScript projects and modern ESM workflows.", resourceUri: "tokenhub://resource/a" }]
+        },
+        {
+          claim: "Unsupported claim is present.",
+          evidence: []
+        }
+      ]
+    });
+
+    expect(result.citationCoverage).toBe(0.5);
+    expect(result.faithfulnessScore).toBeLessThan(1);
+    expect(result.unsupportedClaims).toEqual(["Unsupported claim is present."]);
+    expect(result.checks.some((check) => check.name === "claim_faithfulness" && !check.ok)).toBe(true);
+  });
 });

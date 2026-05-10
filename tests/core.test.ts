@@ -5,7 +5,7 @@ import { join } from "node:path";
 import { CapabilityRegistry } from "../src/core/registry.js";
 import { ResourceStore } from "../src/core/resources.js";
 import { TokenTelemetry } from "../src/core/telemetry.js";
-import { estimateTokens, truncateToTokens } from "../src/core/token.js";
+import { estimateTokens, responseProfileBudget, truncateToTokens } from "../src/core/token.js";
 
 describe("token utilities", () => {
   test("estimates tokens and truncates with a deterministic marker", () => {
@@ -16,6 +16,25 @@ describe("token utilities", () => {
     expect(estimateTokens(truncated.text)).toBeLessThanOrEqual(12);
     expect(truncated.truncated).toBe(true);
     expect(truncated.text).toContain("[truncated");
+  });
+
+  test("supports model-aware estimates, balanced truncation, and response profile budgets", () => {
+    const codeLike = `const url = "https://example.com/docs?query=tokenhub&mode=compact";\n${"return value;\n".repeat(20)}`;
+    const gptEstimate = estimateTokens(codeLike, { model: "gpt-5" });
+    const legacyEstimate = Math.ceil(codeLike.length / 4);
+
+    expect(gptEstimate).toBeGreaterThan(legacyEstimate);
+    expect(responseProfileBudget("minimal", 1200)).toBeLessThan(responseProfileBudget("standard", 1200));
+    expect(responseProfileBudget("audit", 1200)).toBeGreaterThan(responseProfileBudget("detailed", 1200));
+
+    const balanced = truncateToTokens(["alpha ".repeat(80), "omega ".repeat(80)].join("\n"), 24, {
+      preserve: "balanced"
+    });
+
+    expect(balanced.truncated).toBe(true);
+    expect(balanced.text).toContain("alpha");
+    expect(balanced.text).toContain("omega");
+    expect(balanced.text).toContain("[truncated");
   });
 });
 
@@ -98,6 +117,31 @@ describe("resource store", () => {
 
       const full = await store.read(link.uri, { mode: "full" });
       expect(full.content).toBe(content);
+    } finally {
+      await rm(dir, { recursive: true, force: true });
+    }
+  });
+
+  test("deduplicates identical resource content by hash", async () => {
+    const dir = await mkdtemp(join(tmpdir(), "tokenhub-resources-dedupe-"));
+    const store = new ResourceStore({ rootDir: dir });
+    try {
+      const first = await store.writeText({
+        kind: "text",
+        label: "first",
+        content: "same content",
+        source: "unit-test"
+      });
+      const second = await store.writeText({
+        kind: "text",
+        label: "second",
+        content: "same content",
+        source: "unit-test"
+      });
+
+      expect(second.uri).toBe(first.uri);
+      expect(second.sha256).toBe(first.sha256);
+      expect((await store.read(second.uri, { mode: "full" })).content).toBe("same content");
     } finally {
       await rm(dir, { recursive: true, force: true });
     }

@@ -5,6 +5,10 @@ export type SourceQualityInput = {
   sources: Array<{ title: string; url: string; resourceUri?: string }>;
   contextSnippets: Array<{ title: string; url: string; snippet: string; resourceUri?: string }>;
   summary: string;
+  claims?: Array<{
+    claim: string;
+    evidence: Array<{ snippet: string; resourceUri?: string; url?: string; title?: string }>;
+  }>;
   minSources?: number;
   minUniqueDomains?: number;
   minContextSnippets?: number;
@@ -25,6 +29,9 @@ export type SourceQualityResult = {
   checks: SourceQualityCheck[];
   uniqueDomains: string[];
   keywordCoverage: number;
+  citationCoverage: number;
+  faithfulnessScore: number;
+  unsupportedClaims: string[];
 };
 
 const SYNTHETIC_HOSTS = new Set(["example.test", "example.com", "localhost", "127.0.0.1"]);
@@ -40,6 +47,7 @@ export function scoreSourceQuality(input: SourceQualityInput): SourceQualityResu
   const combinedText = [input.summary, ...input.sources.map((source) => source.title), ...input.contextSnippets.map((item) => item.snippet)].join(" ");
   const keywordCoverage = keywordCoverageRatio(input.expectedKeywords, combinedText);
   const preferredDomains = (input.preferredDomains ?? []).map(normalizeDomain);
+  const claimFaithfulness = scoreClaimFaithfulness(input.claims, input.contextSnippets);
 
   const checks: SourceQualityCheck[] = [
     {
@@ -89,6 +97,14 @@ export function scoreSourceQuality(input: SourceQualityInput): SourceQualityResu
       ok: preferredDomains.length === 0 || uniqueDomains.some((domain) => preferredDomains.some((preferred) => domain === preferred || domain.endsWith(`.${preferred}`))),
       reason: preferredDomains.length ? `expected at least one preferred source domain: ${preferredDomains.join(", ")}` : "no preferred source domains requested",
       weight: preferredDomains.length ? 10 : 0
+    },
+    {
+      name: "claim_faithfulness",
+      ok: claimFaithfulness.faithfulnessScore >= 0.8,
+      reason: claimFaithfulness.unsupportedClaims.length
+        ? `unsupported claims: ${claimFaithfulness.unsupportedClaims.join("; ")}`
+        : "claims have supporting evidence",
+      weight: (input.claims?.length ?? 0) > 0 ? 14 : 0
     }
   ];
   const totalWeight = checks.reduce((sum, check) => sum + check.weight, 0);
@@ -100,8 +116,54 @@ export function scoreSourceQuality(input: SourceQualityInput): SourceQualityResu
     score,
     checks,
     uniqueDomains,
-    keywordCoverage
+    keywordCoverage,
+    citationCoverage: claimFaithfulness.citationCoverage,
+    faithfulnessScore: claimFaithfulness.faithfulnessScore,
+    unsupportedClaims: claimFaithfulness.unsupportedClaims
   };
+}
+
+function scoreClaimFaithfulness(
+  claims: SourceQualityInput["claims"] = [],
+  contextSnippets: SourceQualityInput["contextSnippets"]
+): { citationCoverage: number; faithfulnessScore: number; unsupportedClaims: string[] } {
+  if (claims.length === 0) {
+    return { citationCoverage: 1, faithfulnessScore: 1, unsupportedClaims: [] };
+  }
+
+  const contextText = contextSnippets.map((item) => item.snippet).join(" ");
+  const unsupportedClaims: string[] = [];
+  let citedClaims = 0;
+  let faithfulClaims = 0;
+
+  for (const claim of claims) {
+    if (claim.evidence.length > 0) {
+      citedClaims += 1;
+    }
+    const evidenceText = claim.evidence.map((item) => item.snippet).join(" ");
+    const supportText = evidenceText || contextText;
+    const coverage = keywordCoverageRatio(claimKeywords(claim.claim), supportText);
+    if (claim.evidence.length > 0 && coverage >= 0.5) {
+      faithfulClaims += 1;
+    } else {
+      unsupportedClaims.push(claim.claim);
+    }
+  }
+
+  return {
+    citationCoverage: roundRatio(citedClaims / claims.length),
+    faithfulnessScore: roundRatio(faithfulClaims / claims.length),
+    unsupportedClaims
+  };
+}
+
+function claimKeywords(claim: string): string[] {
+  const stopwords = new Set(["and", "are", "both", "for", "from", "has", "have", "into", "the", "this", "that", "with"]);
+  return [...new Set(claim.toLowerCase().match(/[a-z0-9][a-z0-9-]{3,}/g) ?? [])].filter((word) => !stopwords.has(word));
+}
+
+function roundRatio(value: number): number {
+  return Math.round(value * 100) / 100;
 }
 
 function keywordCoverageRatio(keywords: string[], text: string): number {

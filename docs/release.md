@@ -46,6 +46,8 @@ The published package root must contain only:
 - `LICENSE`
 - `package.json`
 
+Benchmark and eval helpers compile to `dist-bench` for local verification but must not appear under `package/dist/bench` in the packed artifact.
+
 `tests/packaging.test.ts` enforces this contract.
 
 ## Smoke Install
@@ -75,10 +77,11 @@ The local eval should pass all fixture prompts. The live eval uses DuckDuckGo an
 2. Run `npm run verify:release`.
 3. Confirm no `tokenhub-mcp-*.tgz` tarball remains in the repo root.
 4. Review `npm pack --dry-run --json` contents.
-5. Confirm `CHANGELOG.md`, `SECURITY.md`, `CONTRIBUTING.md`, `CODE_OF_CONDUCT.md`, and `.github/workflows/ci.yml` are present and current.
-6. Tag the release commit.
-7. Publish to npm from the verified commit.
-8. Confirm `npx tokenhub-mcp --version` resolves to the published version.
+5. Run `tokenhub-mcp extensions lint --root <fixture>` against at least one extension manifest fixture when extension behavior changed.
+6. Confirm `CHANGELOG.md`, `SECURITY.md`, `CONTRIBUTING.md`, `CODE_OF_CONDUCT.md`, and `.github/workflows/ci.yml` are present and current.
+7. Tag the release commit.
+8. Publish to npm from the verified commit.
+9. Confirm `npx tokenhub-mcp --version` resolves to the published version.
 
 ## Rollback
 

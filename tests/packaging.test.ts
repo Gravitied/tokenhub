@@ -71,6 +71,7 @@ describe("npm package contents", () => {
       expect(allowedPackageFiles.includes(path) || allowedPackagePrefixes.some((prefix) => path.startsWith(prefix))).toBe(
         true
       );
+      expect(path).not.toMatch(/^package\/dist\/bench\//);
     }
   });
 
